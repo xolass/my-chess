@@ -1,20 +1,22 @@
+'use client'
 import React, { useRef } from 'react';
 import BoardCell from './cell';
+import { getBoardAsMatrix } from '../../state';
+import { PieceComponent } from './piece';
+
 
 function Board() {
-  const BOARD_SIZE = 8;
-  const coordinates = useRef(Array(BOARD_SIZE).map(() => Array(BOARD_SIZE)));
+  const coordinates = useRef(getBoardAsMatrix());
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className='flex flex-col'>
       {coordinates.current.map((row, rowIndex) => {
         return (
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            {row.map((_, colIndex) => {
-              console.log('df ')
-              return (
-                <BoardCell row={rowIndex} col={colIndex} />
-              );
-            })}
+          <div key={rowIndex} className='flex flex-row'>
+            {row.map((piece, colIndex) => (
+              <BoardCell key={colIndex} row={rowIndex} col={colIndex}>
+                <PieceComponent piece={piece} />
+              </BoardCell>))}
           </div>
         )
       })}

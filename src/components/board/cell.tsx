@@ -1,8 +1,10 @@
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 interface IBoardCell {
   col: number;
   row: number;
+  children?: React.ReactNode
 }
 
 function BoardCell(props: IBoardCell) {
@@ -13,8 +15,8 @@ function BoardCell(props: IBoardCell) {
   }
 
   return (
-    <div style={{ height: '20px', width: '20px', backgroundColor: isCellWhite() ? 'yellow' : 'brown' }}>
-
+    <div className={twMerge("size-12 flex justify-center items-center", isCellWhite() ? "bg-yellow-100" : "bg-yellow-900")}>
+      {props.children}
     </div>
   );
 }
