@@ -1,14 +1,19 @@
+import { BlackKingAsset } from '@/assets/blackKing';
+import { WhiteKingAsset } from '@/assets/whiteKing';
+import { GenericPiece } from '@/types';
 import React from 'react';
 
-interface IKingPiece {
+function KingPiece({ color }: GenericPiece) {
 
-}
-
-function KingPiece(props: IKingPiece) {
+  if (color === 'w') {
+    return (
+      <WhiteKingAsset size={45} />
+    );
+  }
 
   return (
-    <></>
-  );
+    <BlackKingAsset size={45} />
+  )
 }
 
 export default KingPiece;

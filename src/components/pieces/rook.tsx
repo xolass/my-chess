@@ -1,14 +1,19 @@
 import React from 'react';
+import { WhiteRookAsset } from '@/assets/whiteRook';
+import { BlackRookAsset } from '@/assets/blackRook';
+import { GenericPiece } from '@/types';
 
-interface IRookPiece {
+function RookPiece({ color }: GenericPiece) {
 
-}
-
-function RookPiece(props: IRookPiece) {
+  if (color === 'w') {
+    return (
+      <WhiteRookAsset size={45} />
+    );
+  }
 
   return (
-    <></>
-  );
+    <BlackRookAsset size={45} />
+  )
 }
 
 export default RookPiece;
