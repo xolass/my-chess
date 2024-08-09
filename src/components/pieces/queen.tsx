@@ -1,14 +1,19 @@
 import React from 'react';
+import { GenericPiece } from '../../types';
+import { WhiteQueenAsset } from '@/assets/whiteQueen';
+import { BlackQueenAsset } from '@/assets/blackQueen';
 
-interface IQueenPiece {
+function QueenPiece({ color }: GenericPiece) {
 
-}
-
-function QueenPiece(props: IQueenPiece) {
+  if (color === 'w') {
+    return (
+      <WhiteQueenAsset size={45} />
+    );
+  }
 
   return (
-    <></>
-  );
+    <BlackQueenAsset size={45} />
+  )
 }
 
 export default QueenPiece;
