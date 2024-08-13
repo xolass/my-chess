@@ -1,16 +1,26 @@
-import { Piece } from "../../types";
+'use client'
+import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { Coordinates, Piece } from "../../types";
 import BishopPiece from "../pieces/bishop";
 import KingPiece from "../pieces/king";
 import KnightPiece from "../pieces/knight";
 import PawnPiece from "../pieces/pawn";
 import QueenPiece from "../pieces/queen";
 import RookPiece from "../pieces/rook";
+import React from "react";
 
 interface Props {
-  piece: Piece | null
+  piece: Piece | null;
+  coordinates: Coordinates;
 }
 
-export function PieceComponent({ piece }: Props) {
+function PieceComponent({ piece, coordinates }: Props) {
+
+  const { attributes, listeners, setNodeRef, } = useDraggable({
+    id: `${piece} ${coordinates.col}-${coordinates.row}`,
+    data: { piece, coordinates },
+  });
+
   function getPiece() {
     switch (piece) {
       case 'P':
@@ -43,8 +53,10 @@ export function PieceComponent({ piece }: Props) {
   }
 
   return (
-    <div className="cursor-pointer">
+    <div ref={setNodeRef} className="cursor-pointer" {...listeners} {...attributes}>
       {getPiece()}
     </div>
   )
 }
+
+export default React.memo(PieceComponent);	
