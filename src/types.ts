@@ -1,6 +1,6 @@
 export type Coordinates = {
   row: number;
-  col: number
+  col: number;
 }
 
 export type Board = Array<Array<Piece | null>>

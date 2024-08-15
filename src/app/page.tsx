@@ -17,13 +17,18 @@ export default function Home() {
 
           setMovingPiece(current.piece, current.coordinates)
         }}
-        onDragEnd={({ active, over }) => movePiece({
-          col: active.data.current?.coordinates.col,
-          row: active.data.current?.coordinates.row
-        }, {
-          col: over?.data.current?.col,
-          row: over?.data.current?.row
-        })}>
+        onDragEnd={({ active, over }) => {
+          if (!active.data.current) return
+          if (!over?.data.current) return
+          movePiece({
+            col: active.data.current?.coordinates.col,
+            row: active.data.current?.coordinates.row
+          }, {
+            col: over?.data.current?.col,
+            row: over?.data.current?.row
+          })
+        }
+        }>
         <Board board={boardAsMatrix} />
       </DndContext>
     </main >

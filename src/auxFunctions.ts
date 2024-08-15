@@ -87,12 +87,15 @@ export function isPawnWayOfMoving(board: Board, from: Coordinates, to: Coordinat
 
   if (from.col !== to.col) return false
 
-  if (Math.abs(from.row - to.row) === 2 && !isFirstMove()) return false
+  if (isFirstMove()) {
+    if (Math.abs(from.row - to.row) === 2)
+      return true
+  }
 
   if (pieceColor === 'white') {
-    if (from.row < to.row) return false
+    if (from.row - to.row > 1) return false
   } else if (pieceColor === 'black') {
-    if (from.row > to.row) return false
+    if (from.row - to.row < -1) return false
   }
 
   return true
