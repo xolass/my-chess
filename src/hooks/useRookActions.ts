@@ -1,4 +1,4 @@
-import { canCapture, isSamePosition } from "@/auxFunctions";
+import { canCapture, isRookWayOfMoving, isSamePosition } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export function useRookActions() {
@@ -22,9 +22,6 @@ export function useRookActions() {
     return true
   }
 
-  const isRookWayOfMoving = (from: Coordinates, to: Coordinates) => {
-    return from.col === to.col || from.row === to.row
-  }
 
   const isTherePieceBetween = (board: Board, from: Coordinates, to: Coordinates) => {
     if (from.col === to.col) {

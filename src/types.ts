@@ -5,14 +5,16 @@ export type Coordinates = {
 
 export type Board = Array<Array<Piece | null>>
 
-export type Colors = 'w' | 'b'
+export type FenColors = 'w' | 'b'
 
 export type Piece = 'p' | 'P' | 'r' | 'R' | 'n' | 'N' | 'b' | 'B' | 'q' | 'Q' | 'k' | 'K'
 
-export type FenType = `${string}/${string}/${string}/${string}/${string}/${string}/${string}/${string} ${Colors} ${string}`
+export type FenPieces = `${string}/${string}/${string}/${string}/${string}/${string}/${string}/${string}`
+
+export type FenType = `${FenPieces} ${FenColors} ${string} ${string} ${string} ${string}`
 
 export interface GenericPiece {
-  color: Colors
+  color: FenColors
 }
 
 export interface GenericPieceAsset {

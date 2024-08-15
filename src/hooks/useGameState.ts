@@ -1,35 +1,46 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Board, Coordinates, FenType, Piece } from "../types";
+import { Board, FenColors, Coordinates, FenPieces, FenType, Piece } from "../types";
 import { useRookActions } from "./useRookActions";
 import { isSamePosition } from "@/auxFunctions";
 import { useBishopActions } from "./useBishopActions";
 import { useKnightActions } from "./useKnightActions";
+import { useQueenActions } from "./useQueenActions";
+import { useKingActions } from "./useKingActions";
+import { usePawnActions } from "./usePawnActions";
 
-
+// TODO: remove things that are not state related, for example game logic (canPieceMove, movePiece)
 export function useGameState() {
   const { canRookMove, isRook } = useRookActions()
   const { canBishopMove, isBishop } = useBishopActions()
   const { canKnightMove, isKnight } = useKnightActions()
+  const { canQueenMove, isQueen } = useQueenActions()
+  const { canKingMove, isKing } = useKingActions()
+  const { canPawnMove, isPawn } = usePawnActions()
 
   const [FENHistory, setFENHistory] = useState<FenType[]>(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"])
   const [currentMovingPiece, setCurrentMovingPiece] = useState<{ piece: Piece; coordinates: Coordinates }>()
 
   const currentFEN = useMemo(() => FENHistory[FENHistory.length - 1], [FENHistory])
 
-  const addFENToHistory = useCallback((fen: FenType) => {
-    setFENHistory([...FENHistory, fen])
-  }, [FENHistory])
+  const addFENToHistory = (fen: FenType) => setFENHistory((prevFenHistory) => [...prevFenHistory, fen])
 
-  const getFENPieces = useCallback(() => currentFEN.split(' ')[0], [currentFEN])
-  const getTurn = useCallback(() => currentFEN.split(' ')[1], [currentFEN])
-  const getFENCastleStatus = useCallback(() => currentFEN.split(' ')[2], [currentFEN])
-  const getEnPeasentTargetSquare = useCallback(() => currentFEN.split(' ')[3], [currentFEN])
-  const getHalfMoveClock = useCallback(() => currentFEN.split(' ')[4], [currentFEN])
-  const getTurns = useCallback(() => currentFEN.split(' ')[5], [currentFEN])
+  const fenPieces = useMemo(() => currentFEN.split(' ')[0] as FenPieces, [currentFEN])
+  const turn = useMemo(() => currentFEN.split(' ')[1] as FenColors, [currentFEN])
+  const castleStatus = useMemo(() => currentFEN.split(' ')[2], [currentFEN])
+  const enPeasentTargetSquare = useMemo(() => currentFEN.split(' ')[3], [currentFEN])
+  const halfMoveClock = useMemo(() => Number(currentFEN.split(' ')[4]), [currentFEN])
+  const turnsCount = useMemo(() => Number(currentFEN.split(' ')[5]), [currentFEN])
 
+  const switchTurn = (turn: FenColors): FenColors => {
+    if (turn === 'w') {
+      return 'b'
+    }
 
-  const transformMatrixInFEN = useCallback((matrix: Board): FenType => {
-    const piecesPartOfFEN = matrix.map((row) => {
+    return 'w'
+  }
+
+  const transformMatrixInFEN = useCallback((matrix: Board): FenPieces => {
+    return matrix.map((row) => {
       let result = ''
       let emptySpaces = 0
 
@@ -52,20 +63,17 @@ export function useGameState() {
       }
 
       return result
-    }).join('/')
-
-    return `${piecesPartOfFEN} ${currentFEN.split(' ').slice(1).join(' ')}` as FenType
-  }, [currentFEN])
+    }).join('/') as FenPieces
+  }, [])
 
 
   const boardAsMatrix = useMemo(() => {
-    const boardAsFEN = getFENPieces()
-    const rows = boardAsFEN.split('/')
+    const rows = fenPieces.split('/')
 
     const boardMatrix = rows.map((row) => getFENRowAsArray(row))
 
     return boardMatrix
-  }, [getFENPieces])
+  }, [fenPieces])
 
   function getFENRowAsArray(row: string) {
     const cells: Array<Piece | null> = []
@@ -94,16 +102,37 @@ export function useGameState() {
     if (isBishop(piece)) {
       return canBishopMove(boardAsMatrix, from, to)
     }
-    if (isBishop(piece)) {
-      return canBishopMove(boardAsMatrix, from, to)
+    if (isQueen(piece)) {
+      return canQueenMove(boardAsMatrix, from, to)
     }
     if (isKnight(piece)) {
       return canKnightMove(boardAsMatrix, from, to)
     }
+    if (isKing(piece)) {
+      return canKingMove(boardAsMatrix, from, to)
+    }
+    if (isPawn(piece)) {
+      return canPawnMove(boardAsMatrix, from, to, enPeasentTargetSquare)
+    }
 
     return true
 
-  }, [boardAsMatrix, canRookMove, isRook, canBishopMove, isBishop, isKnight, canKnightMove])
+  }, [
+    isPawn,
+    canPawnMove,
+    enPeasentTargetSquare,
+    boardAsMatrix,
+    canRookMove,
+    isRook,
+    canBishopMove,
+    isBishop,
+    isKnight,
+    canKnightMove,
+    isQueen,
+    canQueenMove,
+    isKing,
+    canKingMove
+  ])
 
   const movePiece = useCallback((from: Coordinates, to: Coordinates) => {
     const piece = boardAsMatrix[from.row][from.col]
@@ -115,13 +144,26 @@ export function useGameState() {
     boardAsMatrix[from.row][from.col] = null
     boardAsMatrix[to.row][to.col] = piece
 
-    setCurrentMovingPiece(undefined)
-    addFENToHistory(transformMatrixInFEN(boardAsMatrix))
-  }, [boardAsMatrix, addFENToHistory, transformMatrixInFEN, canPieceMove])
+    const pieces = transformMatrixInFEN(boardAsMatrix)
+    const newTurn = switchTurn(turn)
+    const fen: FenType = `${pieces} ${newTurn} ${castleStatus} ${enPeasentTargetSquare} ${halfMoveClock} ${turnsCount}`
 
-  const setMovingPiece = useCallback((piece: Piece, coordinates: Coordinates) => {
+    addFENToHistory(fen)
+    setCurrentMovingPiece(undefined)
+  }, [
+    boardAsMatrix,
+    transformMatrixInFEN,
+    canPieceMove,
+    turn,
+    castleStatus,
+    enPeasentTargetSquare,
+    halfMoveClock,
+    turnsCount
+  ])
+
+  const setMovingPiece = (piece: Piece, coordinates: Coordinates) => {
     setCurrentMovingPiece({ piece, coordinates })
-  }, [])
+  }
 
 
   return {
