@@ -1,4 +1,4 @@
-import { canCapture, isSamePosition } from "@/auxFunctions";
+import { canCapture, getDirection, isBishopWayOfMoving, isSamePosition } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export function useBishopActions() {
@@ -22,19 +22,7 @@ export function useBishopActions() {
     return true
   }
 
-  const isBishopWayOfMoving = (from: Coordinates, to: Coordinates) => {
-    return Math.abs(from.col - to.col) === Math.abs(from.row - to.row)
-  }
-
   const isTherePieceBetween = (board: Board, from: Coordinates, to: Coordinates) => {
-    function getDirection(from: Coordinates, to: Coordinates) {
-      if (from.row < to.row && from.col < to.col) return 'downRight'
-      if (from.row < to.row && from.col > to.col) return 'downLeft'
-      if (from.row > to.row && from.col < to.col) return 'upRight'
-      if (from.row > to.row && from.col > to.col) return 'upLeft'
-
-      return 'wtf'
-    }
     const lengthWalked = Math.abs(from.row - to.row)
 
     const direction = getDirection(from, to)
