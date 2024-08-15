@@ -2,10 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Board, Coordinates, FenType, Piece } from "../types";
 import { useRookActions } from "./useRookActions";
 import { isSamePosition } from "@/auxFunctions";
+import { useBishopActions } from "./useBishopActions";
 
 
 export function useGameState() {
   const { canRookMove, isRook } = useRookActions()
+  const { canBishopMove, isBishop } = useBishopActions()
+
   const [FENHistory, setFENHistory] = useState<FenType[]>(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"])
   const [currentMovingPiece, setCurrentMovingPiece] = useState<{ piece: Piece; coordinates: Coordinates }>()
 
@@ -86,7 +89,13 @@ export function useGameState() {
     if (isRook(piece)) {
       return canRookMove(boardAsMatrix, from, to)
     }
-  }, [boardAsMatrix, canRookMove, isRook])
+    if (isBishop(piece)) {
+      return canBishopMove(boardAsMatrix, from, to)
+    }
+
+    return true
+
+  }, [boardAsMatrix, canRookMove, isRook, canBishopMove, isBishop])
 
   const movePiece = useCallback((from: Coordinates, to: Coordinates) => {
     const piece = boardAsMatrix[from.row][from.col]

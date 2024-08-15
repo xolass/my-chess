@@ -1,4 +1,4 @@
-import { isSamePosition } from "@/auxFunctions";
+import { canCapture, isSamePosition } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export function useRookActions() {
@@ -17,14 +17,13 @@ export function useRookActions() {
 
     if (!canCapture(board, from, to)) return false
 
-    if (from.col === to.col && from.row !== to.row) {
-      return true
-    }
+    if (!isRookWayOfMoving(from, to)) return false
 
-    if (from.col !== to.col && from.row === to.row) {
-      return true
-    }
-    return false
+    return true
+  }
+
+  const isRookWayOfMoving = (from: Coordinates, to: Coordinates) => {
+    return from.col === to.col || from.row === to.row
   }
 
   const isTherePieceBetween = (board: Board, from: Coordinates, to: Coordinates) => {
@@ -45,20 +44,6 @@ export function useRookActions() {
     }
 
     return false
-  }
-
-  const canCapture = (board: Board, from: Coordinates, to: Coordinates) => {
-    const piece = board[from.row][from.col]
-    const target = board[to.row][to.col]
-
-    if (!piece || !target) return false
-
-    const pieceColor = piece === piece.toUpperCase() ? 'white' : 'black'
-    const tartgetColor = target === target.toUpperCase() ? 'white' : 'black'
-
-    if (pieceColor === tartgetColor) return false
-
-    return true
   }
 
   return {
