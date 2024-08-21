@@ -5,7 +5,7 @@ import { DndContext } from "@dnd-kit/core";
 import { useId } from "react";
 
 export default function Home() {
-  const { movePiece, getBoardAsMatrix, setMovingPiece } = useGame();
+  const { movePiece, boardAsMatrix, setMovingPiece } = useGame();
   const id = useId();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -31,7 +31,7 @@ export default function Home() {
           );
         }}
       >
-        <Board board={getBoardAsMatrix()} />
+        <Board board={boardAsMatrix} />
       </DndContext>
     </main>
   );
