@@ -1,22 +1,13 @@
-import { isSamePosition } from "@/auxFunctions";
-import { gameState } from "@/classes/GameState";
+import { getPieceColor, isSamePosition, isTurnOfPiece } from "@/auxFunctions";
 import { Piece } from "@/classes/Piece";
-import { useCallback, useEffect, useState } from "react";
+import { useGameState } from "@/GameState";
+import { useCallback, useMemo } from "react";
 import { Board, Coordinates, FenPiecesSection, FenType, PieceLetter } from "../types";
 
 export function useGame() {
-  const [_, setFenHistory] = useState(gameState.fenHistory);
+  const { fenPieces, addToFenHistory, switchTurn, currentMovingPiece, ...state } = useGameState();
 
-  useEffect(() => {
-    const update = () => setFenHistory([...gameState.fenHistory]);
-
-    gameState.subscribe(update);
-
-    return () => {
-      gameState.unsubscribe(update);
-    };
-  }, []);
-  const getBoardAsMatrix = useCallback(() => {
+  const boardAsMatrix = useMemo(() => {
     function getFENRowAsArray(row: string) {
       const cells: Array<PieceLetter | null> = [];
       Array.from(row).forEach((char) => {
@@ -31,12 +22,11 @@ export function useGame() {
       return cells;
     }
 
-    const fenPieces = gameState.fenPieces;
     const rows = fenPieces.split("/");
 
     const boardMatrix = rows.map((row) => getFENRowAsArray(row));
     return boardMatrix;
-  }, []);
+  }, [fenPieces]);
 
   const transformMatrixInFEN = useCallback((matrix: Board): FenPiecesSection => {
     return matrix
@@ -67,26 +57,34 @@ export function useGame() {
       .join("/") as FenPiecesSection;
   }, []);
 
-  const setMovingPiece = useCallback((coordinates: Coordinates) => {
-    gameState.currentMovingPiece = coordinates;
-  }, []);
+  const setMovingPiece = useCallback(
+    (coordinates: Coordinates) => {
+      currentMovingPiece.current = coordinates;
+    },
+    [currentMovingPiece]
+  );
 
   const canPieceMove = useCallback(
     (from: Coordinates, to: Coordinates) => {
-      if (!Piece.isPieceWayOfMoving(getBoardAsMatrix(), from, to)) return false;
+      const piece = boardAsMatrix[from.row][from.col];
+      if (!piece) return false;
+      const pieceColor = getPieceColor(piece);
+
+      if (!isTurnOfPiece(state.turn, pieceColor)) return false;
+      if (isSamePosition(from, to)) return false;
+
+      if (!Piece.isPieceWayOfMoving(boardAsMatrix, from, to, state.enPassantTargetSquare)) return false;
 
       return true;
     },
-    [getBoardAsMatrix]
+    [boardAsMatrix, state]
   );
 
   const movePiece = useCallback(
     (from: Coordinates, to: Coordinates) => {
-      const tempBoard = getBoardAsMatrix();
+      const tempBoard = structuredClone(boardAsMatrix);
       const piece = tempBoard[from.row][from.col];
       if (!piece) return;
-
-      if (isSamePosition(from, to)) return;
 
       if (!canPieceMove(from, to)) return;
 
@@ -94,19 +92,19 @@ export function useGame() {
       tempBoard[to.row][to.col] = piece;
 
       const piecesSection = transformMatrixInFEN(tempBoard);
-      const newTurn = gameState.switchTurn(gameState.turn);
+      const newTurn = switchTurn(state.turn);
 
       // add logic of en passant, castling, halfMoveClock, turnsCount
-      const fen: FenType = `${piecesSection} ${newTurn} ${gameState.castleStatus} ${gameState.enPassantTargetSquare} ${gameState.halfMoveClock} ${gameState.turnsCount}`;
+      const fen: FenType = `${piecesSection} ${newTurn} ${state.castleStatus} ${state.enPassantTargetSquare} ${state.halfMoveClock} ${state.turnsCount}`;
 
-      gameState.addToFenHistory(fen);
-      gameState.currentMovingPiece = undefined;
+      addToFenHistory(fen);
+      currentMovingPiece.current = undefined;
     },
-    [getBoardAsMatrix, transformMatrixInFEN, canPieceMove]
+    [boardAsMatrix, transformMatrixInFEN, canPieceMove, currentMovingPiece, addToFenHistory, switchTurn, state]
   );
 
   return {
-    getBoardAsMatrix,
+    boardAsMatrix,
     movePiece,
     setMovingPiece,
   };
