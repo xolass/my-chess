@@ -1,20 +1,20 @@
 export type Coordinates = {
   row: number;
   col: number;
-}
+};
 
-export type Board = Array<Array<Piece | null>>
+export type Board = Array<Array<PieceLetter | null>>;
 
-export type FenColors = 'w' | 'b'
+export type FenColors = "w" | "b";
 
-export type Piece = 'p' | 'P' | 'r' | 'R' | 'n' | 'N' | 'b' | 'B' | 'q' | 'Q' | 'k' | 'K'
+export type PieceLetter = "p" | "P" | "r" | "R" | "n" | "N" | "b" | "B" | "q" | "Q" | "k" | "K";
 
-export type FenPieces = `${string}/${string}/${string}/${string}/${string}/${string}/${string}/${string}`
+export type FenPiecesSection = `${string}/${string}/${string}/${string}/${string}/${string}/${string}/${string}`;
 
-export type FenType = `${FenPieces} ${FenColors} ${string} ${string} ${string} ${string}`
+export type FenType = `${FenPiecesSection} ${FenColors} ${string} ${string} ${string} ${string}`;
 
 export interface GenericPiece {
-  color: FenColors
+  color: FenColors;
 }
 
 export interface GenericPieceAsset {
