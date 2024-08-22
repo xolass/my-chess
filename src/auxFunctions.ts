@@ -34,9 +34,36 @@ export const canCapture = (board: Board, from: Coordinates, to: Coordinates) => 
   return true;
 };
 
-export const getDirection = (from: Coordinates, to: Coordinates) => {
+export function getDirection(from: Coordinates, to: Coordinates) {
   if (from.row < to.row && from.col < to.col) return "downRight";
   if (from.row < to.row && from.col > to.col) return "downLeft";
   if (from.row > to.row && from.col < to.col) return "upRight";
-  return "upLeft";
-};
+  if (from.row > to.row && from.col > to.col) return "upLeft";
+  if (from.row > to.row && from.col === to.col) return "up";
+  if (from.row < to.row && from.col === to.col) return "down";
+  if (from.row === to.row && from.col > to.col) return "right";
+  if (from.row === to.row && from.col < to.col) return "left";
+  return "wtf";
+}
+
+export function isTherePieceBetween(board: Board, from: Coordinates, to: Coordinates) {
+  const lengthWalked = Math.abs(from.row - to.row);
+  const direction = getDirection(from, to);
+
+  const directionToCoordinates = {
+    downRight: (i: number) => ({ row: from.row + i, col: from.col + i }),
+    downLeft: (i: number) => ({ row: from.row + i, col: from.col - i }),
+    upRight: (i: number) => ({ row: from.row - i, col: from.col + i }),
+    upLeft: (i: number) => ({ row: from.row - i, col: from.col - i }),
+    up: (i: number) => ({ row: from.row - i, col: from.col }),
+    down: (i: number) => ({ row: from.row + i, col: from.col }),
+    right: (i: number) => ({ row: from.row, col: from.col + i }),
+    left: (i: number) => ({ row: from.row, col: from.col - i }),
+    wtf: (_i: number) => ({ row: from.row, col: from.col }),
+  };
+
+  for (let i = 1; i < lengthWalked; i++) {
+    const { row, col } = directionToCoordinates[direction](i);
+    if (board[row][col]) return true;
+  }
+}
