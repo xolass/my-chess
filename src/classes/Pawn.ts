@@ -1,9 +1,25 @@
-import { canCapture, getBoardCoordinate, getPieceColor, isSamePosition, isTherePieceBetween } from "@/auxFunctions";
+import {
+  getBoardCoordinate,
+  getPieceColor,
+  isSamePosition,
+  isTherePieceBetween,
+  isTryingToCaptureAlly,
+} from "@/auxFunctions";
 import { Board, Cell, Coordinates, FenColors } from "@/types";
 
 export class Pawn {
   private static isEnPassant(to: Coordinates, enPassantTargetSquare: Cell) {
     return getBoardCoordinate(to) === enPassantTargetSquare;
+  }
+
+  private static isTryingToGoBackwards(pieceColor: FenColors, from: Coordinates, to: Coordinates) {
+    if (pieceColor === "w" && from.row - to.row > 0) return true;
+    if (pieceColor === "b" && from.row - to.row < 0) return true;
+
+    return false;
+  }
+  private static isTryingToCapture(from: Coordinates, to: Coordinates) {
+    return from.col !== to.col && from.row !== to.row;
   }
 
   private static isFirstMove(pieceColor: FenColors, from: Coordinates) {
@@ -13,41 +29,50 @@ export class Pawn {
     return false;
   }
 
-  private static canCapture(pieceColor: FenColors, from: Coordinates, to: Coordinates) {
-    if (pieceColor === "w") {
-      if (Math.abs(from.col - to.col) !== 1 || from.row - to.row !== 1) return false;
-    } else if (pieceColor === "b") {
-      if (Math.abs(from.col - to.col) !== 1 || from.row - to.row !== -1) return false;
+  private static validCapture(board: Board, from: Coordinates, to: Coordinates) {
+    const piece = board[from.row][from.col];
+    const target = board[to.row][to.col];
+
+    if (!piece) return false;
+    if (!target) return false;
+
+    if (Math.abs(from.col - to.col) !== 1) return false;
+
+    if (getPieceColor(piece) === "w" && from.row - to.row === 1) {
+      // is moving up the board
+      return true;
+    }
+    if (getPieceColor(piece) === "b" && from.row - to.row === -1) {
+      // is moving down the board
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   static isPawnWayOfMoving(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
     const piece = board[from.row][from.col];
     if (!piece) return false;
+
     const pieceColor = getPieceColor(piece);
-    const target = board[to.row][to.col];
 
-    if (target) {
-      if (this.canCapture(pieceColor, from, to)) return true;
+    if (this.isTryingToGoBackwards(pieceColor, from, to)) return false;
+
+    if (this.isTryingToCapture(from, to)) {
+      if (this.validCapture(board, from, to) || this.isEnPassant(to, enPassantTargetSquare)) {
+        return true;
+      }
+
       return false;
+    } else {
+      if (from.col !== to.col) return false;
+
+      if (this.isFirstMove(pieceColor, from)) {
+        if (Math.abs(from.row - to.row) > 2) return false;
+      }
+
+      return true;
     }
-    if (this.isEnPassant(to, enPassantTargetSquare)) return true;
-
-    if (from.col !== to.col) return false;
-
-    if (this.isFirstMove(pieceColor, from)) {
-      if (Math.abs(from.row - to.row) === 2) return true;
-    }
-
-    if (pieceColor === "w") {
-      if (from.row - to.row > 1) return false;
-    } else if (pieceColor === "b") {
-      if (from.row - to.row < -1) return false;
-    }
-
-    return true;
   }
   static canPawnMove(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
     const piece = board[from.row][from.col];
@@ -56,9 +81,9 @@ export class Pawn {
 
     if (isSamePosition(from, to)) return false;
 
-    if (isTherePieceBetween(board, from, to)) return false;
+    if (isTryingToCaptureAlly(board, from, to)) return false;
 
-    if (!canCapture(board, from, to)) return false;
+    if (isTherePieceBetween(board, from, to)) return false;
 
     if (!this.isPawnWayOfMoving(board, from, to, enPassantTargetSquare)) return false;
 
