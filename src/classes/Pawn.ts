@@ -1,4 +1,4 @@
-import { canCapture, getBoardCoordinate, getPieceColor, isSamePosition } from "@/auxFunctions";
+import { canCapture, getBoardCoordinate, getPieceColor, isSamePosition, isTherePieceBetween } from "@/auxFunctions";
 import { Board, Cell, Coordinates, FenColors } from "@/types";
 
 export class Pawn {
@@ -56,20 +56,12 @@ export class Pawn {
 
     if (isSamePosition(from, to)) return false;
 
-    if (this.isTherePieceBetween(board, from, to)) return false;
+    if (isTherePieceBetween(board, from, to)) return false;
 
     if (!canCapture(board, from, to)) return false;
 
     if (!this.isPawnWayOfMoving(board, from, to, enPassantTargetSquare)) return false;
 
     return true;
-  }
-
-  static isTherePieceBetween(board: Board, from: Coordinates, to: Coordinates) {
-    for (let i = from.row + 1; i < to.row; i++) {
-      if (board[i][from.col]) return true;
-    }
-
-    return false;
   }
 }

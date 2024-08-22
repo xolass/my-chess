@@ -1,4 +1,4 @@
-import { canCapture, getDirection, isSamePosition } from "@/auxFunctions";
+import { canCapture, isSamePosition, isTherePieceBetween } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export class Bishop {
@@ -14,38 +14,10 @@ export class Bishop {
 
     if (!canCapture(board, from, to)) return false;
 
-    if (this.isTherePieceBetween(board, from, to)) return false;
+    if (isTherePieceBetween(board, from, to)) return false;
 
     if (!this.isBishopWayOfMoving(from, to)) return false;
 
     return true;
-  }
-
-  static isTherePieceBetween(board: Board, from: Coordinates, to: Coordinates) {
-    const lengthWalked = Math.abs(from.row - to.row);
-
-    const direction = getDirection(from, to);
-
-    const directionFunction = {
-      downRight(i: number) {
-        return { row: from.row + i, col: from.col + i };
-      },
-      downLeft(i: number) {
-        return { row: from.row + i, col: from.col - i };
-      },
-      upRight(i: number) {
-        return { row: from.row - i, col: from.col + i };
-      },
-      upLeft(i: number) {
-        return { row: from.row - i, col: from.col - i };
-      },
-    };
-
-    for (let i = 1; i < lengthWalked; i++) {
-      const { row, col } = directionFunction[direction](i);
-      if (board[row][col]) return true;
-    }
-
-    return false;
   }
 }

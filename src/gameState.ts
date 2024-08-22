@@ -1,8 +1,6 @@
 import { Cell, Coordinates, FenCastle, FenColors, FenPiecesSection, FenType } from "@/types";
 import { useMemo, useRef, useState } from "react";
 
-export type GameState = ReturnType<typeof useGameState>;
-
 export function useGameState() {
   const [fenHistory, setFenHistory] = useState<FenType[]>(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]);
 
