@@ -4,6 +4,10 @@ export function isSamePosition(from: Coordinates, to: Coordinates) {
   return from.col === to.col && from.row === to.row;
 }
 
+export function isTurnOfPiece(turn: FenColors, pieceColor: FenColors) {
+  return turn === pieceColor;
+}
+
 export function getPieceColor(piece: PieceLetter): FenColors {
   return piece === piece.toUpperCase() ? "w" : "b";
 }

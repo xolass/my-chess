@@ -1,5 +1,5 @@
 import { canCapture, isSamePosition } from "../auxFunctions";
-import { Board, Coordinates } from "../types";
+import { Board, Cell, Coordinates } from "../types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
@@ -8,7 +8,7 @@ import { Queen } from "./Queen";
 import { Rook } from "./Rook";
 
 export class Piece {
-  static canPieceMove(board: Board, from: Coordinates, to: Coordinates) {
+  static canPieceMove(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
     const piece = board[from.row][from.col];
 
     if (!piece) return false;
@@ -17,12 +17,12 @@ export class Piece {
 
     if (!canCapture(board, from, to)) return false;
 
-    if (!this.isPieceWayOfMoving(board, from, to)) return false;
+    if (!this.isPieceWayOfMoving(board, from, to, enPassantTargetSquare)) return false;
 
     return true;
   }
 
-  static isPieceWayOfMoving(board: Board, from: Coordinates, to: Coordinates) {
+  static isPieceWayOfMoving(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
     const piece = board[from.row][from.col];
     if (piece === "R" || piece === "r") {
       return Rook.canRookMove(board, from, to);
@@ -40,7 +40,7 @@ export class Piece {
       return King.canKingMove(board, from, to);
     }
     if (piece === "P" || piece === "p") {
-      return Pawn.canPawnMove(board, from, to);
+      return Pawn.canPawnMove(board, from, to, enPassantTargetSquare);
     }
   }
 }
