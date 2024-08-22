@@ -1,10 +1,9 @@
 import { canCapture, getBoardCoordinate, getPieceColor, isSamePosition } from "@/auxFunctions";
-import { gameState } from "@/classes/GameState";
-import { Board, Coordinates, FenColors } from "@/types";
+import { Board, Cell, Coordinates, FenColors } from "@/types";
 
 export class Pawn {
-  private static isEnPeasant(to: Coordinates, enPeasentTargetSquare: string) {
-    return getBoardCoordinate(to) === enPeasentTargetSquare;
+  private static isEnPassant(to: Coordinates, enPassantTargetSquare: Cell) {
+    return getBoardCoordinate(to) === enPassantTargetSquare;
   }
 
   private static isFirstMove(pieceColor: FenColors, from: Coordinates) {
@@ -24,7 +23,7 @@ export class Pawn {
     return true;
   }
 
-  static isPawnWayOfMoving(board: Board, from: Coordinates, to: Coordinates, enPeasentTargetSquare: string) {
+  static isPawnWayOfMoving(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
     const piece = board[from.row][from.col];
     if (!piece) return false;
     const pieceColor = getPieceColor(piece);
@@ -34,7 +33,7 @@ export class Pawn {
       if (this.canCapture(pieceColor, from, to)) return true;
       return false;
     }
-    if (this.isEnPeasant(to, enPeasentTargetSquare)) return true;
+    if (this.isEnPassant(to, enPassantTargetSquare)) return true;
 
     if (from.col !== to.col) return false;
 
@@ -50,9 +49,8 @@ export class Pawn {
 
     return true;
   }
-  static canPawnMove(board: Board, from: Coordinates, to: Coordinates) {
+  static canPawnMove(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
     const piece = board[from.row][from.col];
-    const enPeasentTargetSquare = gameState.enPassantTargetSquare;
 
     if (!piece) return false;
 
@@ -62,7 +60,7 @@ export class Pawn {
 
     if (!canCapture(board, from, to)) return false;
 
-    if (!this.isPawnWayOfMoving(board, from, to, enPeasentTargetSquare)) return false;
+    if (!this.isPawnWayOfMoving(board, from, to, enPassantTargetSquare)) return false;
 
     return true;
   }

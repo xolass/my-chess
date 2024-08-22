@@ -1,6 +1,6 @@
 import { getPieceColor, isSamePosition, isTurnOfPiece } from "@/auxFunctions";
 import { Piece } from "@/classes/Piece";
-import { useGameState } from "@/GameState";
+import { useGameState } from "@/gameState";
 import { useCallback, useMemo } from "react";
 import { Board, Coordinates, FenPiecesSection, FenType, PieceLetter } from "../types";
 
