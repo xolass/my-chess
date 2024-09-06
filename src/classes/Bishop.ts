@@ -1,4 +1,4 @@
-import { canCapture, isSamePosition, isTherePieceBetween } from "@/auxFunctions";
+import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export class Bishop {
@@ -11,8 +11,7 @@ export class Bishop {
     if (!piece) return false;
 
     if (isSamePosition(from, to)) return false;
-
-    if (!canCapture(board, from, to)) return false;
+    if (isTryingToCaptureAlly(board, from, to)) return false;
 
     if (isTherePieceBetween(board, from, to)) return false;
 

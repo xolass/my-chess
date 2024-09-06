@@ -1,4 +1,4 @@
-import { canCapture, isSamePosition } from "@/auxFunctions";
+import { isSamePosition, isTryingToCaptureAlly } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export class King {
@@ -17,7 +17,7 @@ export class King {
 
     if (isSamePosition(from, to)) return false;
 
-    if (!canCapture(board, from, to)) return false;
+    if (isTryingToCaptureAlly(board, from, to)) return false;
 
     if (!this.isKingWayOfMoving(from, to)) return false;
 

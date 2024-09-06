@@ -1,4 +1,4 @@
-import { canCapture, isSamePosition, isTherePieceBetween } from "@/auxFunctions";
+import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/auxFunctions";
 import { Board, Coordinates } from "@/types";
 
 export class Queen {
@@ -15,7 +15,7 @@ export class Queen {
 
     if (isSamePosition(from, to)) return false;
 
-    if (!canCapture(board, from, to)) return false;
+    if (isTryingToCaptureAlly(board, from, to)) return false;
 
     if (isTherePieceBetween(board, from, to)) return false;
 

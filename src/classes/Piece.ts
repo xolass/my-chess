@@ -1,4 +1,4 @@
-import { canCapture, isSamePosition } from "../auxFunctions";
+import { isSamePosition, isTryingToCaptureAlly } from "../auxFunctions";
 import { Board, Cell, Coordinates } from "../types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
@@ -15,7 +15,7 @@ export class Piece {
 
     if (isSamePosition(from, to)) return false;
 
-    if (!canCapture(board, from, to)) return false;
+    if (isTryingToCaptureAlly(board, from, to)) return false;
 
     if (!this.isPieceWayOfMoving(board, from, to, enPassantTargetSquare)) return false;
 

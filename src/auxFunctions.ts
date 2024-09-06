@@ -19,7 +19,7 @@ export function getBoardCoordinate({ col, row }: Coordinates) {
   return `${boardCol}${boardRow}`;
 }
 
-export const canCapture = (board: Board, from: Coordinates, to: Coordinates) => {
+export const isTryingToCaptureAlly = (board: Board, from: Coordinates, to: Coordinates) => {
   const piece = board[from.row][from.col];
   const target = board[to.row][to.col];
 
@@ -29,9 +29,9 @@ export const canCapture = (board: Board, from: Coordinates, to: Coordinates) => 
   const pieceColor = piece === piece.toUpperCase() ? "white" : "black";
   const tartgetColor = target === target.toUpperCase() ? "white" : "black";
 
-  if (pieceColor === tartgetColor) return false;
+  if (pieceColor === tartgetColor) return true;
 
-  return true;
+  return false;
 };
 
 export function getDirection(from: Coordinates, to: Coordinates) {
