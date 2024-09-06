@@ -5,18 +5,18 @@ import {
   isTherePieceBetween,
   isTryingToCaptureAlly,
 } from "@/auxFunctions";
-import { Board, Cell, Coordinates, FenColors } from "@/types";
+import { Board, Coordinates, EnPassantTargetSquare, FenColors, PieceLetter } from "@/types";
 
 export class Pawn {
-  private static isEnPassant(to: Coordinates, enPassantTargetSquare: Cell) {
+  private static isEnPassant(to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) {
     return getBoardCoordinate(to) === enPassantTargetSquare;
   }
 
   private static isTryingToGoBackwards(pieceColor: FenColors, from: Coordinates, to: Coordinates) {
-    if (pieceColor === "w" && from.row - to.row > 0) return true;
-    if (pieceColor === "b" && from.row - to.row < 0) return true;
+    if (pieceColor === "w" && from.row - to.row > 0) return false;
+    if (pieceColor === "b" && from.row - to.row < 0) return false;
 
-    return false;
+    return true;
   }
   private static isTryingToCapture(from: Coordinates, to: Coordinates) {
     return from.col !== to.col && from.row !== to.row;
@@ -27,6 +27,18 @@ export class Pawn {
     if (pieceColor === "b" && from.row === 1) return true;
 
     return false;
+  }
+
+  static isDoubleMoving(piece: PieceLetter, from: Coordinates, to: Coordinates): EnPassantTargetSquare {
+    if (piece !== "p" && piece !== "P") return "-";
+
+    const colorModifier = piece === "P" ? 1 : -1;
+
+    if (Math.abs(from.row - to.row) === 2) {
+      return getBoardCoordinate({ row: to.row + colorModifier, col: from.col });
+    }
+
+    return "-";
   }
 
   private static validCapture(board: Board, from: Coordinates, to: Coordinates) {
@@ -50,7 +62,12 @@ export class Pawn {
     return false;
   }
 
-  static isPawnWayOfMoving(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
+  static isPawnWayOfMoving(
+    board: Board,
+    from: Coordinates,
+    to: Coordinates,
+    enPassantTargetSquare: EnPassantTargetSquare
+  ) {
     const piece = board[from.row][from.col];
     if (!piece) return false;
 
@@ -74,7 +91,7 @@ export class Pawn {
       return true;
     }
   }
-  static canPawnMove(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: Cell) {
+  static canPawnMove(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) {
     const piece = board[from.row][from.col];
 
     if (!piece) return false;
