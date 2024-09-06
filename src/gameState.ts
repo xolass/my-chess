@@ -1,10 +1,14 @@
 import { Cell, Coordinates, FenCastle, FenColors, FenPiecesSection, FenType } from "@/types";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export function useGameState() {
   const [fenHistory, setFenHistory] = useState<FenType[]>(["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]);
 
   const currentMovingPiece = useRef<Coordinates>();
+
+  useEffect(() => {
+    console.log("FEN HISTORY", fenHistory);
+  }, [fenHistory]);
 
   function addToFenHistory(fen: FenType) {
     setFenHistory((prev: FenType[]) => [...prev, fen]);
