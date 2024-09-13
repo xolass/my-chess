@@ -139,7 +139,7 @@ export const canCapture = (board: Board, to: Coordinates, movingPiece: Coordinat
 
 export const capture = (board: Board, movingPiece: Coordinates, capturedPiece: Coordinates) => {
   const piece = board[movingPiece.row][movingPiece.col];
-  if (!piece) return;
+  if (!piece) return board;
 
   const tempBoard = structuredClone(board);
   tempBoard[movingPiece.row][movingPiece.col] = null;
@@ -149,17 +149,48 @@ export const capture = (board: Board, movingPiece: Coordinates, capturedPiece: C
   return tempBoard;
 };
 
-export const isEnPassant = (board: Board, to: Coordinates) => {
+export const isEnPassant = (board: Board, from: Coordinates, to: Coordinates) => {
+  const fromPiece = board[from.row][from.col];
   const target = board[to.row][to.col];
-  return target === "p";
+  if (!fromPiece) return false;
+  if (target) return false;
+
+  const direction = getDirection(from, to);
+
+  if (fromPiece === "p") {
+    if (direction === "downRight" || direction === "downLeft") return true;
+  } else if (fromPiece === "P") {
+    if (direction === "upRight" || direction === "upLeft") return true;
+  }
+
+  return false;
 };
 
-export const canEnPassant = () => {
-  return true;
+export const canEnPassant = (to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) => {
+  const isRightSquare = getBoardCoordinate(to) === enPassantTargetSquare;
+  const isRightRow = to.row === 2 || to.row === 5;
+
+  return isRightSquare && isRightRow;
 };
 
-export const enPassant = () => {
-  return true;
+export const enPassant = (board: Board, from: Coordinates, to: Coordinates) => {
+  const newBoard = structuredClone(board);
+  const piece = newBoard[from.row][from.col];
+  if (!piece) return board;
+
+  if (piece === "P" && to.col === 5) {
+    newBoard[to.row + 1][to.col] = null;
+    newBoard[from.row][from.col] = null;
+    newBoard[to.row][to.col] = piece;
+  }
+
+  if (piece === "p" && to.col === 2) {
+    newBoard[to.row - 1][to.col] = null;
+    newBoard[from.row][from.col] = null;
+    newBoard[to.row][to.col] = piece;
+  }
+
+  return newBoard;
 };
 
 export const isRegularMove = (board: Board, to: Coordinates) => {
@@ -183,7 +214,7 @@ export const canPieceMove = (board: Board, from: Coordinates, to: Coordinates) =
 export const movePiece = (board: Board, from: Coordinates, to: Coordinates) => {
   const tempBoard = structuredClone(board);
   const piece = tempBoard[from.row][from.col];
-  if (!piece) return;
+  if (!piece) return board;
 
   tempBoard[from.row][from.col] = null;
   tempBoard[to.row][to.col] = piece;

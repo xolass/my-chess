@@ -1,11 +1,10 @@
 "use client";
 import Board from "@/components/board/board";
-import { useGame } from "@/hooks/useGame";
+import { useGameActions } from "@/hooks/useGameActions";
 import { DndContext } from "@dnd-kit/core";
 import { useId } from "react";
-
 export default function Home() {
-  const { movePiece, boardAsMatrix, setMovingPiece } = useGame();
+  const { onPieceDragEnd, boardAsMatrix, onPieceDragStart } = useGameActions();
   const id = useId();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -14,21 +13,12 @@ export default function Home() {
         onDragStart={({ active }) => {
           const { current } = active.data;
           if (!current) return;
-          setMovingPiece(current.coordinates);
+          onPieceDragStart(current.coordinates);
         }}
         onDragEnd={({ active, over }) => {
           if (!active.data.current) return;
           if (!over?.data.current) return;
-          movePiece(
-            {
-              col: active.data.current?.coordinates.col,
-              row: active.data.current?.coordinates.row,
-            },
-            {
-              col: over?.data.current?.col,
-              row: over?.data.current?.row,
-            }
-          );
+          onPieceDragEnd(active.data.current.coordinates, over.data.current.coordinates);
         }}
       >
         <Board board={boardAsMatrix} />
