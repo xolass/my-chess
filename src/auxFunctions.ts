@@ -1,10 +1,12 @@
+import { Knight } from "@/classes/Knight";
 import { Board, Coordinates, EnPassantTargetSquare, FenColors, FenPiecesSection, PieceLetter } from "@/types";
 
 export function isSamePosition(from: Coordinates, to: Coordinates) {
   return from.col === to.col && from.row === to.row;
 }
 
-export function isTurnOfPiece(turn: FenColors, pieceColor: FenColors) {
+export function isTurnOfPiece(turn: FenColors, piece: PieceLetter) {
+  const pieceColor = getPieceColor(piece);
   return turn === pieceColor;
 }
 
@@ -201,12 +203,14 @@ export const isRegularMove = (board: Board, to: Coordinates) => {
 export const canPieceMove = (board: Board, from: Coordinates, to: Coordinates) => {
   const piece = board[from.row][from.col];
   if (!piece) return false;
-  const pieceColor = getPieceColor(piece);
 
-  if (!isTurnOfPiece(pieceColor, pieceColor)) return false;
   if (isSamePosition(from, to)) return false;
 
-  if (isTherePieceBetween(board, from, to)) return false;
+  if (isTherePieceBetween(board, from, to)) {
+    if (!Knight.isKnight(piece)) {
+      return false;
+    }
+  }
 
   return true;
 };

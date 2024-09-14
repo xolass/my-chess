@@ -1,7 +1,10 @@
 import { isSamePosition, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Board, Coordinates } from "@/types";
+import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class Knight {
+  static isKnight(piece: PieceLetter) {
+    return piece === "N" || piece === "n";
+  }
   static canKnightMove(board: Board, from: Coordinates, to: Coordinates) {
     const piece = board[from.row][from.col];
 
