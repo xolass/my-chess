@@ -37,32 +37,29 @@ describe("Knight piece actions", () => {
     expect(lMovement8).toBe(true);
   });
 
-  it("should not be able to move in vertical", () => {
+  it("should not be able to move in another directions", () => {
     const canMoveRight = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 4, col: 5 });
     const canMoveLeft = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 4, col: 3 });
-
-    expect(canMoveRight).toBe(false);
-    expect(canMoveLeft).toBe(false);
-  });
-
-  it("should not be able to move in horizontal", () => {
     const canMoveUp = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 3, col: 4 });
     const canMoveDown = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 5, col: 4 });
-
-    expect(canMoveUp).toBe(false);
-    expect(canMoveDown).toBe(false);
-  });
-
-  it("should not be able to move in diagonals", () => {
     const canMoveDiagRightDown = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 5, col: 5 });
     const canMoveDiagRightUp = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 3, col: 5 });
     const canMoveDiagLeftDown = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 5, col: 3 });
     const canMoveDiagLeftUp = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 3, col: 3 });
+    const canMoveRandomLocation1 = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 0, col: 7 });
+    const canMoveRandomLocation2 = Knight.canKnightMove(onlyKnightBoard, { row: 4, col: 4 }, { row: 7, col: 7 });
 
+    expect(canMoveRandomLocation1).toBe(false);
+    expect(canMoveRandomLocation2).toBe(false);
+    expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagRightUp).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);
     expect(canMoveDiagLeftUp).toBe(false);
+    expect(canMoveUp).toBe(false);
+    expect(canMoveDown).toBe(false);
+    expect(canMoveRight).toBe(false);
+    expect(canMoveLeft).toBe(false);
   });
 
   it("should be able to move through pieces", () => {

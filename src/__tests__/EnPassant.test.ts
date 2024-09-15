@@ -1,4 +1,4 @@
-import { canEnPassant, enPassant, isEnPassant } from "@/auxFunctions";
+import { Pawn } from "@/classes/Pawn";
 import { PieceLetter } from "@/types";
 
 describe("En passant mechanics", () => {
@@ -8,19 +8,26 @@ describe("En passant mechanics", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, "R", null, null, null, null],
       [null, null, null, null, "P", "p", null, null],
-      [null, null, null, null, null, null, "P", null],
+      ["P", "p", null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
     ];
-    const enPassantTargetCoordinates = { row: 2, col: 5 };
+    const enPassantTargetCoordinatesForWhite = { row: 2, col: 5 };
+    const enPassantTargetCoordinatesForBlack = { row: 5, col: 0 };
 
-    const is = isEnPassant(enPassantBoard, { row: 3, col: 4 }, enPassantTargetCoordinates);
-    const isRegularCapture = isEnPassant(enPassantBoard, { row: 4, col: 6 }, { row: 3, col: 5 });
-    const isRegularPawnMovement = isEnPassant(enPassantBoard, { row: 3, col: 4 }, { row: 2, col: 4 });
-    const isRegularPieceMovement = isEnPassant(enPassantBoard, { row: 3, col: 2 }, enPassantTargetCoordinates);
+    const isForWhite = Pawn.isEnPassant(enPassantBoard, { row: 3, col: 4 }, enPassantTargetCoordinatesForWhite);
+    const isForBlack = Pawn.isEnPassant(enPassantBoard, { row: 4, col: 1 }, enPassantTargetCoordinatesForBlack);
+    const isRegularCapture = Pawn.isEnPassant(enPassantBoard, { row: 4, col: 6 }, { row: 3, col: 5 });
+    const isRegularPawnMovement = Pawn.isEnPassant(enPassantBoard, { row: 3, col: 4 }, { row: 2, col: 4 });
+    const isRegularPieceMovement = Pawn.isEnPassant(
+      enPassantBoard,
+      { row: 3, col: 2 },
+      enPassantTargetCoordinatesForWhite
+    );
 
-    expect(is).toBe(true);
+    expect(isForWhite).toBe(true);
+    expect(isForBlack).toBe(true);
     expect(isRegularCapture).toBe(false);
     expect(isRegularPawnMovement).toBe(false);
     expect(isRegularPieceMovement).toBe(false);
@@ -30,8 +37,8 @@ describe("En passant mechanics", () => {
     const enPassantTargetSquare = "f6";
     const enPassantTargetCoordinates = { row: 2, col: 5 };
 
-    const can = canEnPassant(enPassantTargetCoordinates, enPassantTargetSquare);
-    const cant = canEnPassant({ row: 3, col: 5 }, enPassantTargetSquare);
+    const can = Pawn.canEnPassant(enPassantTargetCoordinates, enPassantTargetSquare);
+    const cant = Pawn.canEnPassant({ row: 3, col: 5 }, enPassantTargetSquare);
 
     expect(can).toBe(true);
     expect(cant).toBe(false);
@@ -43,24 +50,38 @@ describe("En passant mechanics", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, "R", null, null, null, null],
       [null, null, null, null, "P", "p", null, null],
-      [null, null, null, null, null, null, "P", null],
+      ["P", "p", null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
     ];
 
-    const from = { row: 3, col: 4 };
-    const to = { row: 2, col: 5 };
+    const from1 = { row: 3, col: 4 };
+    const to1 = { row: 2, col: 5 };
 
-    const newBoard = enPassant(enPassantBoard, from, to);
+    const from2 = { row: 4, col: 1 };
+    const to2 = { row: 5, col: 0 };
 
-    expect(newBoard).toEqual([
+    const newBoard1 = Pawn.enPassant(enPassantBoard, from1, to1);
+    const newBoard2 = Pawn.enPassant(enPassantBoard, from2, to2);
+
+    expect(newBoard1).toEqual([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, "R", null, "P", null, null],
       [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "P", null],
+      ["P", "p", null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+    expect(newBoard2).toEqual([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, "R", null, null, null, null],
+      [null, null, null, null, "P", "p", null, null],
+      [null, null, null, null, null, null, "P", null],
+      ["p", null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
     ]);
