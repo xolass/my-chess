@@ -1,5 +1,4 @@
-import { Knight } from "@/classes/Knight";
-import { Board, Coordinates, EnPassantTargetSquare, FenColors, FenPiecesSection, PieceLetter } from "@/types";
+import { Board, Cell, Coordinates, FenColors, FenPiecesSection, PieceLetter } from "@/types";
 
 export function isSamePosition(from: Coordinates, to: Coordinates) {
   return from.col === to.col && from.row === to.row;
@@ -63,11 +62,16 @@ export function getPieceColor(piece: PieceLetter): FenColors {
   return piece === piece.toUpperCase() ? "w" : "b";
 }
 
-export function getBoardCoordinate({ col, row }: Coordinates) {
+export function coordinateToMoveNotation({ col, row }: Coordinates) {
   const boardRow = 8 - row;
   const boardCol = String.fromCharCode(97 + col);
 
-  return `${boardCol}${boardRow}` as EnPassantTargetSquare;
+  return `${boardCol}${boardRow}` as Cell;
+}
+
+export function cellToCoordinate(cell: Cell) {
+  const [col, row] = cell.split("");
+  return { col: col.charCodeAt(0) - 97, row: 8 - Number(row) } as Coordinates;
 }
 
 export const isTryingToCaptureAlly = (board: Board, from: Coordinates, to: Coordinates) => {
@@ -122,98 +126,6 @@ export function isTherePieceBetween(board: Board, from: Coordinates, to: Coordin
     if (board[row][col]) return true;
   }
 }
-
-export const isCapture = (board: Board, to: Coordinates) => {
-  const target = board[to.row][to.col];
-  return !!target;
-};
-
-export const canCapture = (board: Board, to: Coordinates, movingPiece: Coordinates) => {
-  const target = board[to.row][to.col];
-  const piece = board[movingPiece.row][movingPiece.col];
-  if (!target) return false;
-  if (!piece) return false;
-
-  if (getPieceColor(piece) === getPieceColor(target)) return false;
-
-  return true;
-};
-
-export const capture = (board: Board, movingPiece: Coordinates, capturedPiece: Coordinates) => {
-  const piece = board[movingPiece.row][movingPiece.col];
-  if (!piece) return board;
-
-  const tempBoard = structuredClone(board);
-  tempBoard[movingPiece.row][movingPiece.col] = null;
-
-  tempBoard[capturedPiece.row][capturedPiece.col] = piece;
-
-  return tempBoard;
-};
-
-export const isEnPassant = (board: Board, from: Coordinates, to: Coordinates) => {
-  const fromPiece = board[from.row][from.col];
-  const target = board[to.row][to.col];
-  if (!fromPiece) return false;
-  if (target) return false;
-
-  const direction = getDirection(from, to);
-
-  if (fromPiece === "p") {
-    if (direction === "downRight" || direction === "downLeft") return true;
-  } else if (fromPiece === "P") {
-    if (direction === "upRight" || direction === "upLeft") return true;
-  }
-
-  return false;
-};
-
-export const canEnPassant = (to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) => {
-  const isRightSquare = getBoardCoordinate(to) === enPassantTargetSquare;
-  const isRightRow = to.row === 2 || to.row === 5;
-
-  return isRightSquare && isRightRow;
-};
-
-export const enPassant = (board: Board, from: Coordinates, to: Coordinates) => {
-  const newBoard = structuredClone(board);
-  const piece = newBoard[from.row][from.col];
-  if (!piece) return board;
-
-  if (piece === "P" && to.col === 5) {
-    newBoard[to.row + 1][to.col] = null;
-    newBoard[from.row][from.col] = null;
-    newBoard[to.row][to.col] = piece;
-  }
-
-  if (piece === "p" && to.col === 2) {
-    newBoard[to.row - 1][to.col] = null;
-    newBoard[from.row][from.col] = null;
-    newBoard[to.row][to.col] = piece;
-  }
-
-  return newBoard;
-};
-
-export const isRegularMove = (board: Board, to: Coordinates) => {
-  const target = board[to.row][to.col];
-  return !target;
-};
-
-export const canPieceMove = (board: Board, from: Coordinates, to: Coordinates) => {
-  const piece = board[from.row][from.col];
-  if (!piece) return false;
-
-  if (isSamePosition(from, to)) return false;
-
-  if (isTherePieceBetween(board, from, to)) {
-    if (!Knight.isKnight(piece)) {
-      return false;
-    }
-  }
-
-  return true;
-};
 
 export const movePiece = (board: Board, from: Coordinates, to: Coordinates) => {
   const tempBoard = structuredClone(board);

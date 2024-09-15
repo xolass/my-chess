@@ -1,5 +1,6 @@
 import {
-  getBoardCoordinate,
+  coordinateToMoveNotation,
+  getDirection,
   getPieceColor,
   isSamePosition,
   isTherePieceBetween,
@@ -8,8 +9,49 @@ import {
 import { Board, Coordinates, EnPassantTargetSquare, FenColors, PieceLetter } from "@/types";
 
 export class Pawn {
-  private static isEnPassant(to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) {
-    return getBoardCoordinate(to) === enPassantTargetSquare;
+  static isEnPassant(board: Board, from: Coordinates, to: Coordinates) {
+    const fromPiece = board[from.row][from.col];
+    const target = board[to.row][to.col];
+    if (!fromPiece) return false;
+    if (target) return false;
+
+    const direction = getDirection(from, to);
+
+    if (fromPiece === "p") {
+      if (direction === "downRight" || direction === "downLeft") return true;
+    } else if (fromPiece === "P") {
+      if (direction === "upRight" || direction === "upLeft") return true;
+    }
+
+    return false;
+  }
+
+  static canEnPassant(to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) {
+    const isRightSquare = coordinateToMoveNotation(to) === enPassantTargetSquare;
+    const isRightRow = to.row === 2 || to.row === 5;
+
+    return isRightSquare && isRightRow;
+  }
+
+  static enPassant(board: Board, from: Coordinates, to: Coordinates) {
+    const newBoard = structuredClone(board);
+    const piece = newBoard[from.row][from.col];
+    if (!piece) return board;
+    console.log(piece, from, to);
+
+    if (piece === "P" && to.row === 2) {
+      newBoard[to.row + 1][to.col] = null;
+      newBoard[from.row][from.col] = null;
+      newBoard[to.row][to.col] = piece;
+    }
+
+    if (piece === "p" && to.row === 5) {
+      newBoard[to.row - 1][to.col] = null;
+      newBoard[from.row][from.col] = null;
+      newBoard[to.row][to.col] = piece;
+    }
+
+    return newBoard;
   }
 
   private static isTryingToGoBackwards(pieceColor: FenColors, from: Coordinates, to: Coordinates) {
@@ -29,13 +71,13 @@ export class Pawn {
     return false;
   }
 
-  static isDoubleMoving(piece: PieceLetter, from: Coordinates, to: Coordinates): EnPassantTargetSquare {
+  static getEnPassantTargetSquare(piece: PieceLetter, from: Coordinates, to: Coordinates): EnPassantTargetSquare {
     if (piece !== "p" && piece !== "P") return "-";
 
     const colorModifier = piece === "P" ? 1 : -1;
 
     if (Math.abs(from.row - to.row) === 2) {
-      return getBoardCoordinate({ row: to.row + colorModifier, col: from.col });
+      return coordinateToMoveNotation({ row: to.row + colorModifier, col: from.col });
     }
 
     return "-";
@@ -62,12 +104,7 @@ export class Pawn {
     return false;
   }
 
-  static isPawnWayOfMoving(
-    board: Board,
-    from: Coordinates,
-    to: Coordinates,
-    enPassantTargetSquare: EnPassantTargetSquare
-  ) {
+  static isPawnWayOfMoving(board: Board, from: Coordinates, to: Coordinates) {
     const piece = board[from.row][from.col];
     if (!piece) return false;
 
@@ -76,7 +113,7 @@ export class Pawn {
     if (this.isTryingToGoBackwards(pieceColor, from, to)) return false;
 
     if (this.isTryingToCapture(from, to)) {
-      if (this.validCapture(board, from, to) || this.isEnPassant(to, enPassantTargetSquare)) {
+      if (this.validCapture(board, from, to)) {
         return true;
       }
 
@@ -91,7 +128,7 @@ export class Pawn {
       return true;
     }
   }
-  static canPawnMove(board: Board, from: Coordinates, to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) {
+  static canPawnMove(board: Board, from: Coordinates, to: Coordinates) {
     const piece = board[from.row][from.col];
 
     if (!piece) return false;
@@ -102,7 +139,7 @@ export class Pawn {
 
     if (isTherePieceBetween(board, from, to)) return false;
 
-    if (!this.isPawnWayOfMoving(board, from, to, enPassantTargetSquare)) return false;
+    if (!this.isPawnWayOfMoving(board, from, to)) return false;
 
     return true;
   }
