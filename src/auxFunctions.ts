@@ -9,26 +9,6 @@ export function isTurnOfPiece(turn: FenColors, piece: PieceLetter) {
   return turn === pieceColor;
 }
 
-export function transformFenInMatrix(fenPieces: FenPiecesSection): Board {
-  function getFENRowAsArray(row: string) {
-    const cells: Array<PieceLetter | null> = [];
-    Array.from(row).forEach((char) => {
-      if (Number.isNaN(Number(char))) {
-        return cells.push(char as PieceLetter);
-      }
-
-      const emptySpaces = Number(char);
-      cells.push(...Array.from<null>({ length: emptySpaces }).fill(null));
-    });
-
-    return cells;
-  }
-  const rows = fenPieces.split("/");
-
-  const boardMatrix = rows.map((row) => getFENRowAsArray(row));
-  return boardMatrix;
-}
-
 export const transformMatrixInFEN = (matrix: Board): FenPiecesSection => {
   return matrix
     .map((row) => {
@@ -69,6 +49,11 @@ export function coordinateToMoveNotation({ col, row }: Coordinates) {
   return `${boardCol}${boardRow}` as Cell;
 }
 
+export function moveNotationToCoordinate(cell: Cell) {
+  const [col, row] = cell.split("");
+  return { col: col.charCodeAt(0) - 97, row: 8 - Number(row) } as Coordinates;
+}
+
 export function cellToCoordinate(cell: Cell) {
   const [col, row] = cell.split("");
   return { col: col.charCodeAt(0) - 97, row: 8 - Number(row) } as Coordinates;
@@ -81,10 +66,7 @@ export const isTryingToCaptureAlly = (board: Board, from: Coordinates, to: Coord
   if (!target) return false; // is not capturing, is moving to an empty cell
   if (!piece) return false;
 
-  const pieceColor = piece === piece.toUpperCase() ? "w" : "b";
-  const tartgetColor = target === target.toUpperCase() ? "w" : "b";
-
-  if (pieceColor === tartgetColor) return true;
+  if (getPieceColor(piece) === getPieceColor(target)) return true;
 
   return false;
 };
@@ -127,7 +109,7 @@ export function isTherePieceBetween(board: Board, from: Coordinates, to: Coordin
   }
 }
 
-export const movePiece = (board: Board, from: Coordinates, to: Coordinates) => {
+export function movePiece(board: Board, from: Coordinates, to: Coordinates) {
   const tempBoard = structuredClone(board);
   const piece = tempBoard[from.row][from.col];
   if (!piece) return board;
@@ -136,4 +118,4 @@ export const movePiece = (board: Board, from: Coordinates, to: Coordinates) => {
   tempBoard[to.row][to.col] = piece;
 
   return tempBoard;
-};
+}
