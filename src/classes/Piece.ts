@@ -1,4 +1,4 @@
-import { getPieceColor, isSamePosition, isTryingToCaptureAlly } from "../auxFunctions";
+import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "../auxFunctions";
 import { Board, Coordinates } from "../types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
@@ -19,7 +19,9 @@ export class Piece {
     if (!target) return false;
     if (!piece) return false;
 
-    if (getPieceColor(piece) === getPieceColor(target)) return false;
+    if (isTryingToCaptureAlly(board, movingPiece, to)) return false;
+
+    if (!Knight.isKnight(piece) && isTherePieceBetween(board, movingPiece, to)) return false;
 
     if (!this.isPieceWayOfMoving(board, movingPiece, to)) return false;
 

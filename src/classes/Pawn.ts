@@ -9,6 +9,9 @@ import {
 import { Board, Coordinates, EnPassantTargetSquare, FenColors, PieceLetter } from "@/types";
 
 export class Pawn {
+  static isPawn(piece: PieceLetter) {
+    return piece === "p" || piece === "P";
+  }
   static isEnPassant(board: Board, from: Coordinates, to: Coordinates) {
     const fromPiece = board[from.row][from.col];
     const target = board[to.row][to.col];
@@ -33,7 +36,7 @@ export class Pawn {
     return isRightSquare && isRightRow;
   }
 
-  static enPassant(board: Board, from: Coordinates, to: Coordinates) {
+  static enPassant(board: Board, from: Coordinates, to: Coordinates): Board {
     const newBoard = structuredClone(board);
     const piece = newBoard[from.row][from.col];
     if (!piece) return board;
@@ -92,12 +95,13 @@ export class Pawn {
 
     if (Math.abs(from.col - to.col) !== 1) return false;
 
+    // is moving up the board
     if (getPieceColor(piece) === "w" && from.row - to.row === 1) {
-      // is moving up the board
       return true;
     }
+
+    // is moving down the board
     if (getPieceColor(piece) === "b" && from.row - to.row === -1) {
-      // is moving down the board
       return true;
     }
 
