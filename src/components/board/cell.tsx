@@ -1,3 +1,4 @@
+import { coordinateToMoveNotation } from "@/auxFunctions";
 import { useDroppable } from "@dnd-kit/core";
 import React from "react";
 import { twMerge } from "tailwind-merge";
@@ -22,7 +23,8 @@ function BoardCell(props: IBoardCell) {
   return (
     <div
       ref={setNodeRef}
-      className={twMerge("size-12 flex justify-center items-center", isCellWhite() ? "bg-yellow-100" : "bg-yellow-900")}
+      id={coordinateToMoveNotation({ row, col })}
+      className={twMerge("size-12 flex justify-center items-center", isCellWhite() ? "bg-yellow-900" : "bg-yellow-100")}
     >
       {props.children}
     </div>

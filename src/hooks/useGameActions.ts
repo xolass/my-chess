@@ -1,4 +1,5 @@
 import { isSamePosition, isTurnOfPiece, movePiece, transformMatrixInFEN } from "@/auxFunctions";
+import { Castle } from "@/classes/Castle";
 import { Fen } from "@/classes/Fen";
 import { Pawn } from "@/classes/Pawn";
 import { Piece } from "@/classes/Piece";
@@ -34,13 +35,13 @@ export function useGameActions() {
     if (isSamePosition(from, to)) return;
     if (!isTurnOfPiece(currentFen.turn, piece)) return;
 
-    // if (isCastle()) {
-    //   castle();
-    // } else
+    if (Castle.isCastleMove(from, to) && Castle.canCastle(board, from, to, currentFen.castleStatus)) {
+      Castle.castle(board, from, to);
+    }
     // if (isPromotion()) {
     //   promotion();
     // } else
-    if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
+    else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
       board = Pawn.enPassant(board, from, to);
     } else if (Piece.isCapture(board, to) && Piece.canCapture(board, to, currentMovingPiece.current)) {
       board = Piece.capture(board, from, to);
@@ -62,6 +63,8 @@ export function useGameActions() {
     const enPassantTargetSquare = Pawn.getEnPassantTargetSquare(piece, from, to);
 
     newFen.switchTurns();
+    newFen.setFenPieces(fenPieces);
+    newFen.setEnPassantTargetSquare(enPassantTargetSquare);
 
     currentMovingPiece.current = undefined;
     addToFenHistory(newFen);

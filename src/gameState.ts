@@ -11,6 +11,8 @@ export function useGameState() {
 
   useEffect(() => {
     console.log("FEN HISTORY", fenHistory);
+    // make the variable available in the window object for paywright
+    window.boardState = fenHistory[fenHistory.length - 1].getMatrix();
   }, [fenHistory]);
 
   function addToFenHistory(fen: Fen) {
