@@ -1,20 +1,27 @@
 import { Board, EnPassantTargetSquare, FenCastle, FenColors, FenPiecesSection, FenType, PieceLetter } from "@/types";
 
 export class Fen {
-  constructor(private _fen: FenType) {
+  constructor(previousFen: FenType) {
+    this._fen = previousFen;
     this.setEnPassantTargetSquare("-"); // always reset to base state
   }
-  private reseted = false;
+
+  private _fen: FenType;
+  private halfMoveClockJustReseted = false;
 
   public get fen() {
     return this._fen;
   }
 
   public switchTurns() {
+    if (this.halfMoveClockJustReseted) {
+      this.setHalfMoveClock(0);
+    } else {
+      this.setHalfMoveClock(this.halfMoveClock + 1);
+    }
+
     if (this.turn === "b") {
-      if (!this.reseted) {
-        this.setTurnsCount(this.turnsCount + 1);
-      }
+      this.setTurnsCount(this.turnsCount + 1);
       return this.setTurn("w");
     }
 
@@ -33,7 +40,7 @@ export class Fen {
   }
 
   public resetHalfMoveClock() {
-    this.reseted = true;
+    this.halfMoveClockJustReseted = true;
     this.setHalfMoveClock(0);
   }
 
