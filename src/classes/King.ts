@@ -1,7 +1,12 @@
 import { isSamePosition, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Board, Coordinates } from "@/types";
+import { Cell } from "@/classes/Cell";
+import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class King {
+  static isKing(piece: PieceLetter) {
+    return piece === "k" || piece === "K";
+  }
+
   static isKingWayOfMoving(from: Coordinates, to: Coordinates) {
     const isHorizontal = from.row === to.row;
     const isVertical = from.col === to.col;
@@ -22,5 +27,14 @@ export class King {
     if (!this.isKingWayOfMoving(from, to)) return false;
 
     return true;
+  }
+
+  static isKingInCheck(board: Board, kingPosition: Coordinates): boolean {
+    const king = board[kingPosition.row][kingPosition.col];
+
+    if (king === "K") return Cell.isBeingAttackedByBlackPieces(board, kingPosition);
+    if (king === "k") return Cell.isBeingAttackedByWhitePieces(board, kingPosition);
+
+    return false;
   }
 }

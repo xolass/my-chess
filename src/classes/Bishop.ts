@@ -1,7 +1,11 @@
 import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Board, Coordinates } from "@/types";
+import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class Bishop {
+  static isBishop(piece: PieceLetter) {
+    return piece === "b" || piece === "B";
+  }
+
   static isBishopWayOfMoving(from: Coordinates, to: Coordinates) {
     return Math.abs(from.col - to.col) === Math.abs(from.row - to.row);
   }

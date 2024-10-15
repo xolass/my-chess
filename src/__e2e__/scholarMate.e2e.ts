@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Scholars mate", async () => {
-  test("should be able to move a pawn", async ({ page }) => {
+test.describe("Famous games", async () => {
+  test("scholars mate", async ({ page }) => {
     await page.goto("http://localhost:3000");
 
     await page.locator("#e2").dragTo(page.locator("#e4"));

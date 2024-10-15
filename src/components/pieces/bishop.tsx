@@ -1,19 +1,13 @@
-import { BlackBishopAsset } from '@/assets/blackBishop';
-import { WhiteBishopAsset } from '@/assets/whiteBishop';
-import { GenericPiece } from '@/types';
-import React from 'react';
+import { BlackBishopAsset } from "@/assets/blackBishop";
+import { WhiteBishopAsset } from "@/assets/whiteBishop";
+import { Colors, GenericPiece } from "@/types";
 
 function BishopPiece({ color }: GenericPiece) {
-
-  if (color === 'w') {
-    return (
-      <WhiteBishopAsset size={45} />
-    );
+  if (color === Colors.WHITE) {
+    return <WhiteBishopAsset size={45} />;
   }
 
-  return (
-    <BlackBishopAsset size={45} />
-  )
+  return <BlackBishopAsset size={45} />;
 }
 
 export default BishopPiece;

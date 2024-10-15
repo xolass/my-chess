@@ -1,4 +1,4 @@
-import { Board, Cell, Coordinates, FenColors, FenPiecesSection, PieceLetter } from "@/types";
+import { Board, Cell, Colors, Coordinates, FenColors, FenPiecesSection, PieceLetter } from "@/types";
 
 export function isSamePosition(from: Coordinates, to: Coordinates) {
   return from.col === to.col && from.row === to.row;
@@ -39,7 +39,7 @@ export const transformMatrixInFEN = (matrix: Board): FenPiecesSection => {
 };
 
 export function getPieceColor(piece: PieceLetter): FenColors {
-  return piece === piece.toUpperCase() ? "w" : "b";
+  return piece === piece.toUpperCase() ? Colors.WHITE : Colors.BLACK;
 }
 
 export function coordinateToMoveNotation({ col, row }: Coordinates) {
@@ -80,8 +80,20 @@ export function getDirection(from: Coordinates, to: Coordinates) {
   if (from.row < to.row && from.col === to.col) return "down";
   if (from.row === to.row && from.col > to.col) return "left";
   if (from.row === to.row && from.col < to.col) return "right";
-  return "wtf";
+  return "same";
 }
+
+export const directionToCoordinates = {
+  up: { row: -1, col: 0, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  down: { row: 1, col: 0, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  right: { row: 0, col: 1, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  left: { row: 0, col: -1, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  downRight: { row: 1, col: 1, pieces: ["b", "q", "B", "Q", "P"] as PieceLetter[] },
+  downLeft: { row: 1, col: -1, pieces: ["b", "q", "B", "Q", "P"] as PieceLetter[] },
+  upRight: { row: -1, col: 1, pieces: ["b", "q", "B", "Q", "p"] as PieceLetter[] },
+  upLeft: { row: -1, col: -1, pieces: ["b", "q", "B", "Q", "p"] as PieceLetter[] },
+  same: { row: 0, col: 0, pieces: [] as PieceLetter[] },
+};
 
 export function isTherePieceBetween(board: Board, from: Coordinates, to: Coordinates) {
   const lengthWalkedVertically = Math.abs(from.row - to.row);
@@ -89,23 +101,11 @@ export function isTherePieceBetween(board: Board, from: Coordinates, to: Coordin
 
   const lengthWalked = Math.max(lengthWalkedVertically, lengthWalkedHorizontally);
 
-  const direction = getDirection(from, to);
-
-  const directionToCoordinates = {
-    downRight: (i: number) => ({ row: from.row + i, col: from.col + i }),
-    downLeft: (i: number) => ({ row: from.row + i, col: from.col - i }),
-    upRight: (i: number) => ({ row: from.row - i, col: from.col + i }),
-    upLeft: (i: number) => ({ row: from.row - i, col: from.col - i }),
-    up: (i: number) => ({ row: from.row - i, col: from.col }),
-    down: (i: number) => ({ row: from.row + i, col: from.col }),
-    right: (i: number) => ({ row: from.row, col: from.col + i }),
-    left: (i: number) => ({ row: from.row, col: from.col - i }),
-    wtf: (_i: number) => ({ row: from.row, col: from.col }),
-  };
-
   for (let i = 1; i < lengthWalked; i++) {
-    const { row, col } = directionToCoordinates[direction](i);
-    if (board[row][col]) return true;
+    const direction = getDirection(from, to);
+
+    const { row: rowModifier, col: colModifier } = directionToCoordinates[direction];
+    if (board[from.row + rowModifier * i][from.col + colModifier * i]) return true;
   }
 }
 

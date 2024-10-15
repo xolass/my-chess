@@ -1,19 +1,13 @@
-import React from 'react';
-import { WhiteRookAsset } from '@/assets/whiteRook';
-import { BlackRookAsset } from '@/assets/blackRook';
-import { GenericPiece } from '@/types';
+import { BlackRookAsset } from "@/assets/blackRook";
+import { WhiteRookAsset } from "@/assets/whiteRook";
+import { Colors, GenericPiece } from "@/types";
 
 function RookPiece({ color }: GenericPiece) {
-
-  if (color === 'w') {
-    return (
-      <WhiteRookAsset size={45} />
-    );
+  if (color === Colors.WHITE) {
+    return <WhiteRookAsset size={45} />;
   }
 
-  return (
-    <BlackRookAsset size={45} />
-  )
+  return <BlackRookAsset size={45} />;
 }
 
 export default RookPiece;
