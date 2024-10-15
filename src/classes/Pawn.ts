@@ -6,7 +6,7 @@ import {
   isTherePieceBetween,
   isTryingToCaptureAlly,
 } from "@/auxFunctions";
-import { Board, Coordinates, EnPassantTargetSquare, FenColors, PieceLetter } from "@/types";
+import { Board, Colors, Coordinates, EnPassantTargetSquare, FenColors, PieceLetter } from "@/types";
 
 export class Pawn {
   static isPawn(piece: PieceLetter) {
@@ -40,7 +40,6 @@ export class Pawn {
     const newBoard = structuredClone(board);
     const piece = newBoard[from.row][from.col];
     if (!piece) return board;
-    console.log(piece, from, to);
 
     if (piece === "P" && to.row === 2) {
       newBoard[to.row + 1][to.col] = null;
@@ -58,8 +57,8 @@ export class Pawn {
   }
 
   private static isTryingToGoBackwards(pieceColor: FenColors, from: Coordinates, to: Coordinates) {
-    if (pieceColor === "w" && from.row - to.row > 0) return false;
-    if (pieceColor === "b" && from.row - to.row < 0) return false;
+    if (pieceColor === Colors.WHITE && from.row - to.row > 0) return false;
+    if (pieceColor === Colors.BLACK && from.row - to.row < 0) return false;
 
     return true;
   }
@@ -68,8 +67,8 @@ export class Pawn {
   }
 
   private static isFirstMove(pieceColor: FenColors, from: Coordinates) {
-    if (pieceColor === "w" && from.row === 6) return true;
-    if (pieceColor === "b" && from.row === 1) return true;
+    if (pieceColor === Colors.WHITE && from.row === 6) return true;
+    if (pieceColor === Colors.BLACK && from.row === 1) return true;
 
     return false;
   }
@@ -96,12 +95,12 @@ export class Pawn {
     if (Math.abs(from.col - to.col) !== 1) return false;
 
     // is moving up the board
-    if (getPieceColor(piece) === "w" && from.row - to.row === 1) {
+    if (getPieceColor(piece) === Colors.WHITE && from.row - to.row === 1) {
       return true;
     }
 
     // is moving down the board
-    if (getPieceColor(piece) === "b" && from.row - to.row === -1) {
+    if (getPieceColor(piece) === Colors.BLACK && from.row - to.row === -1) {
       return true;
     }
 

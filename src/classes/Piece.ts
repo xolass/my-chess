@@ -1,5 +1,5 @@
 import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "../auxFunctions";
-import { Board, Coordinates } from "../types";
+import { Board, Coordinates, PieceLetter } from "../types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
@@ -59,23 +59,24 @@ export class Piece {
   }
 
   static isPieceWayOfMoving(board: Board, from: Coordinates, to: Coordinates) {
-    const piece = board[from.row][from.col];
-    if (piece === "R" || piece === "r") {
+    const piece = board[from.row][from.col] as PieceLetter;
+
+    if (Rook.isRook(piece)) {
       return Rook.canRookMove(board, from, to);
     }
-    if (piece === "B" || piece === "b") {
+    if (Bishop.isBishop(piece)) {
       return Bishop.canBishopMove(board, from, to);
     }
-    if (piece === "Q" || piece === "q") {
+    if (Queen.isQueen(piece)) {
       return Queen.canQueenMove(board, from, to);
     }
-    if (piece === "N" || piece === "n") {
+    if (Knight.isKnight(piece)) {
       return Knight.canKnightMove(board, from, to);
     }
-    if (piece === "K" || piece === "k") {
+    if (King.isKing(piece)) {
       return King.canKingMove(board, from, to);
     }
-    if (piece === "P" || piece === "p") {
+    if (Pawn.isPawn(piece)) {
       return Pawn.canPawnMove(board, from, to);
     }
   }

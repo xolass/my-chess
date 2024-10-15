@@ -1,7 +1,11 @@
 import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Board, Coordinates } from "@/types";
+import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class Queen {
+  static isQueen(piece: PieceLetter) {
+    return piece === "q" || piece === "Q";
+  }
+
   static isQueenWayOfMoving(from: Coordinates, to: Coordinates) {
     const isHorizontal = from.row === to.row;
     const isVertical = from.col === to.col;

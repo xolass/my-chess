@@ -1,7 +1,7 @@
 "use client";
 import { useDraggable } from "@dnd-kit/core";
 import React from "react";
-import { Coordinates, PieceLetter } from "../../types";
+import { Colors, Coordinates, PieceLetter } from "../../types";
 import BishopPiece from "../pieces/bishop";
 import KingPiece from "../pieces/king";
 import KnightPiece from "../pieces/knight";
@@ -23,29 +23,29 @@ function PieceComponent({ piece, coordinates }: Props) {
   function getPiece() {
     switch (piece) {
       case "P":
-        return <PawnPiece color={"w"} />;
+        return <PawnPiece color={Colors.WHITE} />;
       case "p":
-        return <PawnPiece color={"b"} />;
+        return <PawnPiece color={Colors.BLACK} />;
       case "R":
-        return <RookPiece color={"w"} />;
+        return <RookPiece color={Colors.WHITE} />;
       case "r":
-        return <RookPiece color={"b"} />;
+        return <RookPiece color={Colors.BLACK} />;
       case "N":
-        return <KnightPiece color={"w"} />;
+        return <KnightPiece color={Colors.WHITE} />;
       case "n":
-        return <KnightPiece color={"b"} />;
+        return <KnightPiece color={Colors.BLACK} />;
       case "B":
-        return <BishopPiece color={"w"} />;
+        return <BishopPiece color={Colors.WHITE} />;
       case "b":
-        return <BishopPiece color={"b"} />;
+        return <BishopPiece color={Colors.BLACK} />;
       case "Q":
-        return <QueenPiece color={"w"} />;
+        return <QueenPiece color={Colors.WHITE} />;
       case "q":
-        return <QueenPiece color={"b"} />;
+        return <QueenPiece color={Colors.BLACK} />;
       case "K":
-        return <KingPiece color={"w"} />;
+        return <KingPiece color={Colors.WHITE} />;
       case "k":
-        return <KingPiece color={"b"} />;
+        return <KingPiece color={Colors.BLACK} />;
       default:
         return null;
     }

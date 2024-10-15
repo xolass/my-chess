@@ -1,7 +1,10 @@
 import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Board, Coordinates } from "@/types";
+import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class Rook {
+  static isRook(piece: PieceLetter) {
+    return piece === "r" || piece === "R";
+  }
   static isRookWayOfMoving(from: Coordinates, to: Coordinates) {
     return from.col === to.col || from.row === to.row;
   }

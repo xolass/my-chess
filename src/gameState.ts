@@ -1,6 +1,6 @@
 import { Fen } from "@/classes/Fen";
 import { Coordinates, FenType } from "@/types";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 export function useGameState() {
   const [fenHistory, setFenHistory] = useState<Fen[]>([
@@ -8,12 +8,6 @@ export function useGameState() {
   ]);
 
   const currentMovingPiece = useRef<Coordinates>();
-
-  useEffect(() => {
-    console.log("FEN HISTORY", fenHistory);
-    // make the variable available in the window object for paywright
-    window.boardState = fenHistory[fenHistory.length - 1].getMatrix();
-  }, [fenHistory]);
 
   function addToFenHistory(fen: Fen) {
     setFenHistory((prev) => [...prev, fen]);

@@ -1,4 +1,13 @@
-import { Board, EnPassantTargetSquare, FenCastle, FenColors, FenPiecesSection, FenType, PieceLetter } from "@/types";
+import {
+  Board,
+  Colors,
+  EnPassantTargetSquare,
+  FenCastle,
+  FenColors,
+  FenPiecesSection,
+  FenType,
+  PieceLetter,
+} from "@/types";
 
 export class Fen {
   constructor(previousFen: FenType) {
@@ -20,16 +29,16 @@ export class Fen {
       this.setHalfMoveClock(this.halfMoveClock + 1);
     }
 
-    if (this.turn === "b") {
+    if (this.turn === Colors.BLACK) {
       this.setTurnsCount(this.turnsCount + 1);
-      return this.setTurn("w");
+      return this.setTurn(Colors.WHITE);
     }
 
-    return this.setTurn("b");
+    return this.setTurn(Colors.BLACK);
   }
 
   public removeCastleRights(color: FenColors, side: "k" | "q") {
-    const colorSide = color === "w" ? side.toUpperCase() : side;
+    const colorSide = color === Colors.WHITE ? side.toUpperCase() : side;
     const newCastleStatus = this.castleStatus.replace(colorSide, "");
 
     if (newCastleStatus === "") {
@@ -68,7 +77,7 @@ export class Fen {
     return this._fen.split(" ")[0] as FenPiecesSection;
   }
   public get turn(): FenColors {
-    return this._fen.split(" ")[1] as FenColors;
+    return this._fen.split(" ")[1] === "w" ? Colors.WHITE : Colors.BLACK;
   }
   public get castleStatus() {
     return this._fen.split(" ")[2] as FenCastle;
@@ -88,8 +97,9 @@ export class Fen {
       `${newValue} ${this.turn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
   }
   private setTurn(newValue: FenColors) {
+    const newTurn = newValue === Colors.WHITE ? "w" : "b";
     this._fen =
-      `${this.fenPieces} ${newValue} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
+      `${this.fenPieces} ${newTurn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
   }
   private setCastleStatus(newValue: FenCastle) {
     this._fen =
