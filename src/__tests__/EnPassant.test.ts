@@ -1,9 +1,9 @@
 import { Pawn } from "@/classes/Pawn";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
 describe("En passant mechanics", () => {
   it("Should detect if a movement is an en passant", () => {
-    const enPassantBoard: Array<Array<PieceLetter | null>> = [
+    const enPassantBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, "R", null, null, null, null],
@@ -45,7 +45,7 @@ describe("En passant mechanics", () => {
   });
 
   it("Should capture the pawn behind the movement", () => {
-    const enPassantBoard: Array<Array<PieceLetter | null>> = [
+    const enPassantBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, "R", null, null, null, null],

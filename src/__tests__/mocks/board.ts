@@ -1,8 +1,8 @@
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
 export const baseFenBoard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-export const getBaseBoardAsMatrix = (): Array<Array<PieceLetter | null>> => [
+export const getBaseBoardAsMatrix = (): Board => [
   ["r", "n", "b", "q", "k", "b", "n", "r"],
   ["p", "p", "p", "p", "p", "p", "p", "p"],
   [null, null, null, null, null, null, null, null],

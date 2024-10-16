@@ -1,4 +1,4 @@
-import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "../auxFunctions";
+import { isTherePieceBetween, isTryingToCaptureAlly } from "../auxFunctions";
 import { Board, Coordinates, PieceLetter } from "../types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
@@ -48,8 +48,6 @@ export class Piece {
     const piece = board[from.row][from.col];
 
     if (!piece) return false;
-
-    if (isSamePosition(from, to)) return false;
 
     if (isTryingToCaptureAlly(board, from, to)) return false;
 

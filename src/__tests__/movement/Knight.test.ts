@@ -1,7 +1,7 @@
 import { Knight } from "@/classes/Knight";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
-let onlyKnightBoard: Array<Array<PieceLetter | null>>;
+let onlyKnightBoard: Board;
 
 beforeEach(() => {
   onlyKnightBoard = [
@@ -63,7 +63,7 @@ describe("Knight piece actions", () => {
   });
 
   it("should be able to move through pieces", () => {
-    const knightWithPiecesAround: Array<Array<PieceLetter | null>> = [
+    const knightWithPiecesAround: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

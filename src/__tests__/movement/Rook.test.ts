@@ -1,7 +1,7 @@
 import { Rook } from "@/classes/Rook";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
-let onlyRookBoard: Array<Array<PieceLetter | null>>;
+let onlyRookBoard: Board;
 
 beforeEach(() => {
   onlyRookBoard = [
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("Rook piece actions", () => {
   it("should be able to move UP in a straight line", () => {
-    const rookWithOnlyUpFree: Array<Array<PieceLetter | null>> = [
+    const rookWithOnlyUpFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -39,7 +39,7 @@ describe("Rook piece actions", () => {
     expect(canMoveUp).toBe(true);
   });
   it("should be able to move DOWN in a straight line", () => {
-    const rookWithOnlyDownFree: Array<Array<PieceLetter | null>> = [
+    const rookWithOnlyDownFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -55,7 +55,7 @@ describe("Rook piece actions", () => {
   });
 
   it("should be able to move LEFT in a straight line", () => {
-    const rookWithOnlyLeftFree: Array<Array<PieceLetter | null>> = [
+    const rookWithOnlyLeftFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -71,7 +71,7 @@ describe("Rook piece actions", () => {
   });
 
   it("should be able to move RIGHT in a straight line", () => {
-    const rookWithOnlyUpFree: Array<Array<PieceLetter | null>> = [
+    const rookWithOnlyUpFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -99,7 +99,7 @@ describe("Rook piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const rookWithPiecesAround: Array<Array<PieceLetter | null>> = [
+    const rookWithPiecesAround: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

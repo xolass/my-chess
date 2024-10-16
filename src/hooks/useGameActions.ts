@@ -4,6 +4,7 @@ import { Fen } from "@/classes/Fen";
 import { King } from "@/classes/King";
 import { Pawn } from "@/classes/Pawn";
 import { Piece } from "@/classes/Piece";
+import { Promotion } from "@/classes/Promotion";
 import { useGameState } from "@/gameState";
 import { useCallback, useEffect, useMemo } from "react";
 import { Coordinates } from "../types";
@@ -43,11 +44,9 @@ export function useGameActions() {
 
     if (Castle.isCastleMove(from, to) && Castle.canCastle(board, from, to, currentFen.castleStatus)) {
       Castle.castle(board, from, to);
-    }
-    // if (isPromotion()) {
-    //   promotion();
-    // } else
-    else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
+    } else if (Promotion.isPromotion(board, from, to)) {
+      board = Promotion.promote(board, from, to, "q");
+    } else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
       board = Pawn.enPassant(board, from, to);
     } else if (Piece.isCapture(board, to) && Piece.canCapture(board, to, currentMovingPiece.current)) {
       board = Piece.capture(board, from, to);

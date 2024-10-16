@@ -1,7 +1,7 @@
 import { Queen } from "@/classes/Queen";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
-let onlyQueenBoard: Array<Array<PieceLetter | null>>;
+let onlyQueenBoard: Board;
 
 beforeEach(() => {
   onlyQueenBoard = [
@@ -58,7 +58,7 @@ describe("Queen movement actions", () => {
   });
 
   it("should not move above ally piece", () => {
-    const queenWithAllyBoard: Array<Array<PieceLetter | null>> = [
+    const queenWithAllyBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

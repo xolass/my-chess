@@ -123,9 +123,9 @@ export class Pawn {
       return false;
     } else {
       if (from.col !== to.col) return false;
-
-      if (this.isFirstMove(pieceColor, from)) {
-        if (Math.abs(from.row - to.row) > 2) return false;
+      if (Math.abs(from.row - to.row) > 2) return false;
+      if (Math.abs(from.row - to.row) === 2) {
+        if (!this.isFirstMove(pieceColor, from)) return false;
       }
 
       return true;

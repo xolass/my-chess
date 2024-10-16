@@ -16,6 +16,8 @@ export type FenColors = Colors.WHITE | Colors.BLACK;
 
 export type PieceLetter = "p" | "P" | "r" | "R" | "n" | "N" | "b" | "B" | "q" | "Q" | "k" | "K";
 
+export type PromotionOptions = "r" | "n" | "b" | "q";
+
 export type EnPassantTargetSquare = Cell | "-";
 
 export type FenCastle =
