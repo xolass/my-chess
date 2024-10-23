@@ -8,14 +8,16 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --config jest.config.ts",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "e2e-ui": "playwright test --ui"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "tailwind-merge": "^2.4.0"
+    "tailwind-merge": "^2.4.0",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
@@ -30,6 +32,7 @@
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "tw-merge": "^0.0.1-alpha.3",
     "typescript": "^5"
   }
 }

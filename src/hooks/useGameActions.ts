@@ -5,16 +5,16 @@ import { King } from "@/classes/King";
 import { Pawn } from "@/classes/Pawn";
 import { Piece } from "@/classes/Piece";
 import { Promotion } from "@/classes/Promotion";
-import { GameContext } from "@/context/GameContext";
 import { useGameState } from "@/gameState";
-import { useCallback, useContext, useEffect, useMemo } from "react";
+import { useGameStore } from "@/stores/GameContext";
+import { useCallback, useEffect, useMemo } from "react";
 import { Coordinates, PromotionOptions } from "../types";
 
 export function useGameActions() {
   const { addToFenHistory, currentMovingPiece, currentFen, fenHistory } = useGameState();
-  const gameContext = useContext(GameContext);
-
-  if (!gameContext) throw new Error("useGameActions must be used within a GameContext");
+  const setPromotionModalOpen = useGameStore((state) => state.setPromotionModalOpen);
+  const setHandlePromotingPiece = useGameStore((state) => state.setHandlePromotingPiece);
+  const setPositionToSpawnModal = useGameStore((state) => state.setPositionToSpawnModal);
 
   useEffect(() => {
     console.log(fenHistory[fenHistory.length - 1]);
@@ -29,16 +29,16 @@ export function useGameActions() {
     [currentMovingPiece]
   );
 
-  async function getPromotionPiece(): Promise<PromotionOptions> {
-    return new Promise((resolve, reject) => {
-      function setPromotionPiece(piece: PromotionOptions | null) {
-        if (!piece) return;
-        gameContext?.setModalOpen(false);
-        return resolve(piece);
-      }
+  async function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions> {
+    return new Promise((resolve) => {
+      setPromotionModalOpen(true);
+      setPositionToSpawnModal(coordinatesToRenderModalOn);
 
-      gameContext?.setHandlePromotingPiece(() => setPromotionPiece);
-      gameContext?.setModalOpen(true);
+      setHandlePromotingPiece((piece: PromotionOptions | null) => {
+        if (!piece) return;
+        setPromotionModalOpen(false);
+        return resolve(piece);
+      });
     });
   }
 
@@ -61,7 +61,7 @@ export function useGameActions() {
     if (Castle.isCastleMove(from, to) && Castle.canCastle(board, from, to, currentFen.castleStatus)) {
       Castle.castle(board, from, to);
     } else if (Promotion.isPromotion(board, from, to)) {
-      const pieceToPromoteTo = await getPromotionPiece();
+      const pieceToPromoteTo = await getPromotionPiece(to);
       board = Promotion.promote(board, from, to, pieceToPromoteTo);
     } else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
       board = Pawn.enPassant(board, from, to);

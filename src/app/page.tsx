@@ -1,16 +1,14 @@
 "use client";
 import Board from "@/components/board/board";
-import { PromotionModal } from "@/components/promotion-modal/promotionModal";
-import { GameContext } from "@/context/GameContext";
 import { useGameActions } from "@/hooks/useGameActions";
+import { useGameStore } from "@/stores/GameContext";
 import { DndContext } from "@dnd-kit/core";
-import { useContext, useId } from "react";
+import { useId } from "react";
 
 export default function Home() {
-  const gameContext = useContext(GameContext);
-  if (!gameContext) throw new Error("useGameActions must be used within a GameContext");
-
   const { onPieceDragEnd, boardAsMatrix, onPieceDragStart } = useGameActions();
+  const isPromotionModalOpen = useGameStore((state) => state.isPromotionModalOpen);
+
   const id = useId();
 
   return (
@@ -28,7 +26,6 @@ export default function Home() {
           onPieceDragEnd(active.data.current.coordinates, over.data.current.coordinates);
         }}
       >
-        {gameContext?.isModalOpen && <PromotionModal />}
         <Board board={boardAsMatrix} />
       </DndContext>
     </main>
