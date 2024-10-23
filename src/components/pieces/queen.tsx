@@ -4,10 +4,10 @@ import { Colors, GenericPiece } from "../../types";
 
 function QueenPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {
-    return <WhiteQueenAsset size={45} />;
+    return <WhiteQueenAsset />;
   }
 
-  return <BlackQueenAsset size={45} />;
+  return <BlackQueenAsset />;
 }
 
 export default QueenPiece;

@@ -1,17 +1,14 @@
-import { GenericPieceAsset } from "@/types"
-import * as React from "react"
-
-export function WhiteKingAsset({ size }: GenericPieceAsset) {
+export function WhiteKingAsset() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
-      <g
-        fill="none"
-        fillRule="evenodd"
-        stroke="#000"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-      >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 72 96"
+      transform="scale(2) translate(13.5 25)"
+      height="100%"
+      width="100%"
+    >
+      {" "}
+      <g fill="none" fillRule="evenodd" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}>
         <path strokeLinejoin="miter" d="M22.5 11.63V6M20 8h5" />
         <path
           fill="#fff"
@@ -26,6 +23,5 @@ export function WhiteKingAsset({ size }: GenericPieceAsset) {
         <path d="M12.5 30c5.5-3 14.5-3 20 0m-20 3.5c5.5-3 14.5-3 20 0m-20 3.5c5.5-3 14.5-3 20 0" />
       </g>
     </svg>
-  )
+  );
 }
-

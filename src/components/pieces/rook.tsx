@@ -4,10 +4,10 @@ import { WhiteRookAsset } from "assets/whiteRook";
 
 function RookPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {
-    return <WhiteRookAsset size={45} />;
+    return <WhiteRookAsset />;
   }
 
-  return <BlackRookAsset size={45} />;
+  return <BlackRookAsset />;
 }
 
 export default RookPiece;

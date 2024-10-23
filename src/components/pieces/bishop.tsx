@@ -4,10 +4,10 @@ import { WhiteBishopAsset } from "assets/whiteBishop";
 
 function BishopPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {
-    return <WhiteBishopAsset size={45} />;
+    return <WhiteBishopAsset />;
   }
 
-  return <BlackBishopAsset size={45} />;
+  return <BlackBishopAsset />;
 }
 
 export default BishopPiece;

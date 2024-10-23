@@ -4,10 +4,10 @@ import { WhiteKingAsset } from "assets/whiteKing";
 
 function KingPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {
-    return <WhiteKingAsset size={45} />;
+    return <WhiteKingAsset />;
   }
 
-  return <BlackKingAsset size={45} />;
+  return <BlackKingAsset />;
 }
 
 export default KingPiece;

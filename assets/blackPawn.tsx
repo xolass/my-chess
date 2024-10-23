@@ -1,8 +1,13 @@
-import { GenericPieceAsset } from "../src/types";
 
-export function BlackPawnAsset({ size }: GenericPieceAsset) {
+export function BlackPawnAsset() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 72 96"
+      transform="scale(2) translate(13.5 25)"
+      height="100%"
+      width="100%"
+    >
       <path
         stroke="#000"
         strokeLinecap="round"

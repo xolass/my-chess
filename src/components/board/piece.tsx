@@ -52,7 +52,7 @@ function PieceComponent({ piece, coordinates }: Props) {
   }
 
   return (
-    <div ref={setNodeRef} className="cursor-pointer" {...listeners} {...attributes}>
+    <div ref={setNodeRef} className="cursor-pointer size-full" {...listeners} {...attributes}>
       {getPiece()}
     </div>
   );

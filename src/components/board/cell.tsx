@@ -37,7 +37,7 @@ function BoardCell(props: IBoardCell) {
       ref={setNodeRef}
       id={coordinateToMoveNotation({ row, col })}
       className={twMerge(
-        "relative size-16 flex justify-center items-center",
+        "relative size-24 flex justify-center items-center",
         isCellWhite() ? "bg-yellow-900" : "bg-yellow-100"
       )}
     >

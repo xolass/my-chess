@@ -4,10 +4,10 @@ import { WhiteKnightAsset } from "assets/whiteKnight";
 
 function KnightPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {
-    return <WhiteKnightAsset size={45} />;
+    return <WhiteKnightAsset />;
   }
 
-  return <BlackKnightAsset size={45} />;
+  return <BlackKnightAsset />;
 }
 
 export default KnightPiece;

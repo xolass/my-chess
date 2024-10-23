@@ -1,15 +1,13 @@
-import { GenericPieceAsset } from "@/types"
-import * as React from "react"
-
-export function BlackQueenAsset({ size }: GenericPieceAsset) {
+export function BlackQueenAsset() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
-      <g
-        stroke="#000"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 72 96"
+      transform="scale(2) translate(13.5 25)"
+      height="100%"
+      width="100%"
+    >
+      <g stroke="#000" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
         <path
           d="M9 26c8.5-1.5 21-1.5 27 0l2.5-12.5L31 25l-.3-14.1-5.2 13.6-3-14.5-3 14.5-5.2-13.6L14 25 6.5 13.5 9 26z"
           strokeLinecap="butt"
@@ -26,6 +24,5 @@ export function BlackQueenAsset({ size }: GenericPieceAsset) {
         </g>
       </g>
     </svg>
-  )
+  );
 }
-

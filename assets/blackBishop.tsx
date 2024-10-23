@@ -1,7 +1,12 @@
-import { GenericPieceAsset } from "../src/types";
-export function BlackBishopAsset({ size }: GenericPieceAsset) {
+export function BlackBishopAsset() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 72 96"
+      transform="scale(2) translate(13.5 25)"
+      height="100%"
+      width="100%"
+    >
       <g
         style={{
           opacity: 1,
