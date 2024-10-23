@@ -1,9 +1,9 @@
 import { Piece } from "@/classes/Piece";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
 describe("Capture mechanic", () => {
   it("Should not be able to capture allied pieces", () => {
-    const board: Array<Array<PieceLetter | null>> = [
+    const board: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -26,7 +26,7 @@ describe("Capture mechanic", () => {
 
   // en passant has its own test suite
   it("Should be able to capture enemy pieces, taking it's place on the board", () => {
-    const board: Array<Array<PieceLetter | null>> = [
+    const board: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
@@ -45,7 +45,7 @@ describe("Capture mechanic", () => {
   });
 
   it("Should not be able to capture enemy pieces if there is an allied piece in the way", () => {
-    const board: Array<Array<PieceLetter | null>> = [
+    const board: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
@@ -64,7 +64,7 @@ describe("Capture mechanic", () => {
   });
 
   it("Should not be able to capture enemy pieces if there is an enemy piece in the way", () => {
-    const board: Array<Array<PieceLetter | null>> = [
+    const board: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],

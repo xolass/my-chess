@@ -4,16 +4,21 @@ import { Fen } from "@/classes/Fen";
 import { King } from "@/classes/King";
 import { Pawn } from "@/classes/Pawn";
 import { Piece } from "@/classes/Piece";
+import { Promotion } from "@/classes/Promotion";
 import { useGameState } from "@/gameState";
+import { useGameStore } from "@/stores/GameContext";
 import { useCallback, useEffect, useMemo } from "react";
-import { Coordinates } from "../types";
+import { Coordinates, PromotionOptions } from "../types";
 
 export function useGameActions() {
-  const { addToFenHistory, currentMovingPiece, currentFen, ...state } = useGameState();
+  const { addToFenHistory, currentMovingPiece, currentFen, fenHistory } = useGameState();
+  const setPromotionModalOpen = useGameStore((state) => state.setPromotionModalOpen);
+  const setHandlePromotingPiece = useGameStore((state) => state.setHandlePromotingPiece);
+  const setPositionToSpawnModal = useGameStore((state) => state.setPositionToSpawnModal);
 
   useEffect(() => {
-    console.log(state.fenHistory[state.fenHistory.length - 1]);
-  }, [state.fenHistory]);
+    console.log(fenHistory[fenHistory.length - 1]);
+  }, [fenHistory]);
 
   const boardAsMatrix = useMemo(() => currentFen.getMatrix(), [currentFen]);
 
@@ -24,7 +29,20 @@ export function useGameActions() {
     [currentMovingPiece]
   );
 
-  const onPieceDragEnd = (from: Coordinates, to: Coordinates) => {
+  async function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions> {
+    return new Promise((resolve) => {
+      setPromotionModalOpen(true);
+      setPositionToSpawnModal(coordinatesToRenderModalOn);
+
+      setHandlePromotingPiece((piece: PromotionOptions | null) => {
+        if (!piece) return;
+        setPromotionModalOpen(false);
+        return resolve(piece);
+      });
+    });
+  }
+
+  const onPieceDragEnd = async (from: Coordinates, to: Coordinates) => {
     if (!currentMovingPiece.current) return;
     const piece = boardAsMatrix[from.row][from.col];
     if (!piece) return;
@@ -36,18 +54,16 @@ export function useGameActions() {
     if (isSamePosition(from, to)) return;
     if (!isTurnOfPiece(currentFen.turn, piece)) return;
 
-    // TODO: The king that cant be in check after the move, is the king from the player that is moving
     if (King.isKingInCheck(board, to)) {
       return;
     }
 
     if (Castle.isCastleMove(from, to) && Castle.canCastle(board, from, to, currentFen.castleStatus)) {
       Castle.castle(board, from, to);
-    }
-    // if (isPromotion()) {
-    //   promotion();
-    // } else
-    else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
+    } else if (Promotion.isPromotion(board, from, to)) {
+      const pieceToPromoteTo = await getPromotionPiece(to);
+      board = Promotion.promote(board, from, to, pieceToPromoteTo);
+    } else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
       board = Pawn.enPassant(board, from, to);
     } else if (Piece.isCapture(board, to) && Piece.canCapture(board, to, currentMovingPiece.current)) {
       board = Piece.capture(board, from, to);

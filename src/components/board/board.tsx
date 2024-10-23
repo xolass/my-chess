@@ -1,10 +1,10 @@
 "use client";
-import { PieceLetter } from "@/types";
+import { Board as BoardType } from "@/types";
 import BoardCell from "./cell";
 import PieceComponent from "./piece";
 
 interface BoardProps {
-  board: Array<Array<PieceLetter | null>>;
+  board: BoardType;
 }
 
 function Board({ board }: BoardProps) {

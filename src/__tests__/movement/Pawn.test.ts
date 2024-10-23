@@ -1,9 +1,9 @@
 import { Pawn } from "@/classes/Pawn";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
 describe("Pawn movement actions", () => {
   it("should be able for white pawns to move only up", () => {
-    const onlyPawnBoard: Array<Array<PieceLetter | null>> = [
+    const onlyPawnBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -26,7 +26,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for black pawns to move only down", () => {
-    const onlyPawnBoard: Array<Array<PieceLetter | null>> = [
+    const onlyPawnBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -49,7 +49,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for white pawns to move two squares on first move", () => {
-    const onlyPawnBoard: Array<Array<PieceLetter | null>> = [
+    const onlyPawnBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -72,7 +72,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for white pawns to move two squares on first move", () => {
-    const onlyPawnBoard: Array<Array<PieceLetter | null>> = [
+    const onlyPawnBoard: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -92,5 +92,43 @@ describe("Pawn movement actions", () => {
     expect(canMoveUp).toBe(false);
     expect(canMoveLeft).toBe(false);
     expect(canMoveRight).toBe(false);
+  });
+
+  it("should NOT be able for white pawns to move two or more squares not being on first move", () => {
+    const onlyPawnBoard: Board = [
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "P", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    const canMove2Up = Pawn.canPawnMove(onlyPawnBoard, { row: 5, col: 4 }, { row: 3, col: 4 });
+    const canMove3Up = Pawn.canPawnMove(onlyPawnBoard, { row: 5, col: 4 }, { row: 2, col: 4 });
+
+    expect(canMove2Up).toBe(false);
+    expect(canMove3Up).toBe(false);
+  });
+
+  it("should NOT be able for black pawns to move two or more squares not being on first move", () => {
+    const onlyPawnBoard: Board = [
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "p", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    const canMove2Up = Pawn.canPawnMove(onlyPawnBoard, { row: 2, col: 4 }, { row: 4, col: 4 });
+    const canMove3Up = Pawn.canPawnMove(onlyPawnBoard, { row: 2, col: 4 }, { row: 5, col: 4 });
+
+    expect(canMove2Up).toBe(false);
+    expect(canMove3Up).toBe(false);
   });
 });

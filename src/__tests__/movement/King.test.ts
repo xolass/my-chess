@@ -1,8 +1,8 @@
 import { King } from "@/classes/King";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
-let onlyKingBoard: Array<Array<PieceLetter | null>>;
-let kingWithAllyBoard: Array<Array<PieceLetter | null>>;
+let onlyKingBoard: Board;
+let kingWithAllyBoard: Board;
 
 beforeEach(() => {
   onlyKingBoard = [

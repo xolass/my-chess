@@ -1,11 +1,16 @@
 "use client";
 import Board from "@/components/board/board";
 import { useGameActions } from "@/hooks/useGameActions";
+import { useGameStore } from "@/stores/GameContext";
 import { DndContext } from "@dnd-kit/core";
 import { useId } from "react";
+
 export default function Home() {
   const { onPieceDragEnd, boardAsMatrix, onPieceDragStart } = useGameActions();
+  const isPromotionModalOpen = useGameStore((state) => state.isPromotionModalOpen);
+
   const id = useId();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <DndContext

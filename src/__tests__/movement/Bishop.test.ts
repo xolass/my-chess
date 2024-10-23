@@ -1,7 +1,7 @@
 import { Bishop } from "@/classes/Bishop";
-import { PieceLetter } from "@/types";
+import { Board } from "@/types";
 
-let onlyBishopBoard: Array<Array<PieceLetter | null>>;
+let onlyBishopBoard: Board;
 
 beforeEach(() => {
   onlyBishopBoard = [
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("Bishop piece actions", () => {
   it("should be able to move upRight multiple squares", () => {
-    const bishopWithOnlyUpRightFree: Array<Array<PieceLetter | null>> = [
+    const bishopWithOnlyUpRightFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -34,7 +34,7 @@ describe("Bishop piece actions", () => {
   });
 
   it("should be able to move downRight multiple squares", () => {
-    const bishopWithOnlyDownRightFree: Array<Array<PieceLetter | null>> = [
+    const bishopWithOnlyDownRightFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -53,7 +53,7 @@ describe("Bishop piece actions", () => {
     expect(canMoveDiagDownRight).toBe(true);
   });
   it("should be able to move upLeft multiple squares", () => {
-    const bishopWithOnlyUpLeftFree: Array<Array<PieceLetter | null>> = [
+    const bishopWithOnlyUpLeftFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -68,7 +68,7 @@ describe("Bishop piece actions", () => {
     expect(canMoveDiagUpLeft).toBe(true);
   });
   it("should be able to move downLeft multiple squares", () => {
-    const bishopWithOnlyDownLeftFree: Array<Array<PieceLetter | null>> = [
+    const bishopWithOnlyDownLeftFree: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -100,7 +100,7 @@ describe("Bishop piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const bishopWithPiecesAround: Array<Array<PieceLetter | null>> = [
+    const bishopWithPiecesAround: Board = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
