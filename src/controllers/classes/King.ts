@@ -1,5 +1,5 @@
-import { isSamePosition, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Cell } from "@/classes/Cell";
+import { isSamePosition, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
+import { Cell } from "@/controllers/classes/Cell";
 import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class King {

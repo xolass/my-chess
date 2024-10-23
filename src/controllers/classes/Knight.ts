@@ -1,4 +1,4 @@
-import { isSamePosition, isTryingToCaptureAlly } from "@/auxFunctions";
+import { isSamePosition, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
 import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class Knight {

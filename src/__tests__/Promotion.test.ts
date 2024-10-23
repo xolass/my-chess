@@ -1,4 +1,4 @@
-import { Promotion } from "@/classes/Promotion";
+import { Promotion } from "@/controllers/classes/Promotion";
 import { Board } from "@/types";
 
 describe("Promotion test suite", () => {

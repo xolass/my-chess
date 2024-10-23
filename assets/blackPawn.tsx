@@ -1,5 +1,4 @@
-import React from "react";
-import { GenericPieceAsset } from "../types";
+import { GenericPieceAsset } from "../src/types";
 
 export function BlackPawnAsset({ size }: GenericPieceAsset) {
   return (

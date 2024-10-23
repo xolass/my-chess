@@ -1,5 +1,5 @@
 import { getCastleBoard } from "@/__tests__/castle/mocks/castleBoard";
-import { Castle } from "@/classes/Castle";
+import { Castle } from "@/controllers/classes/Castle";
 
 describe("Castle test suite", () => {
   it("should be able to castle white king side", () => {

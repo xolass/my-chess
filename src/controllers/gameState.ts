@@ -1,4 +1,4 @@
-import { Fen } from "@/classes/Fen";
+import { Fen } from "@/controllers/classes/Fen";
 import { Coordinates, FenType } from "@/types";
 import { useMemo, useRef, useState } from "react";
 

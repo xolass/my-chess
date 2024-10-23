@@ -1,5 +1,5 @@
 import { baseFenBoard } from "@/__tests__/mocks/board";
-import { Fen } from "@/classes/Fen";
+import { Fen } from "@/controllers/classes/Fen";
 
 describe("Half Move Clock test suite", () => {
   it("Should count half clock moves", () => {

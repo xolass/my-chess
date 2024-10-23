@@ -1,4 +1,4 @@
-import { isTherePieceBetween, movePiece } from "@/auxFunctions";
+import { isTherePieceBetween, movePiece } from "@/controllers/auxFunctions";
 import { Board, Coordinates, FenCastle, PieceLetter } from "@/types";
 
 export class Castle {

@@ -1,7 +1,8 @@
-import { coordinateToMoveNotation } from "@/auxFunctions";
 import { PromotionPopup } from "@/components/promotion-popup/promotionPopup";
 
+import { coordinateToMoveNotation } from "@/controllers/auxFunctions";
 import { useGameStore } from "@/stores/GameContext";
+
 import { useDroppable } from "@dnd-kit/core";
 import React from "react";
 import { twMerge } from "tailwind-merge";
@@ -36,7 +37,7 @@ function BoardCell(props: IBoardCell) {
       ref={setNodeRef}
       id={coordinateToMoveNotation({ row, col })}
       className={twMerge(
-        "relative size-12 flex justify-center items-center",
+        "relative size-16 flex justify-center items-center",
         isCellWhite() ? "bg-yellow-900" : "bg-yellow-100"
       )}
     >

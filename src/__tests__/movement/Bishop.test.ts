@@ -1,4 +1,4 @@
-import { Bishop } from "@/classes/Bishop";
+import { Bishop } from "@/controllers/classes/Bishop";
 import { Board } from "@/types";
 
 let onlyBishopBoard: Board;

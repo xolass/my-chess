@@ -1,4 +1,4 @@
-import { Rook } from "@/classes/Rook";
+import { Rook } from "@/controllers/classes/Rook";
 import { Board } from "@/types";
 
 let onlyRookBoard: Board;

@@ -5,7 +5,7 @@ import {
   isSamePosition,
   isTherePieceBetween,
   isTryingToCaptureAlly,
-} from "@/auxFunctions";
+} from "@/controllers/auxFunctions";
 import { Board, Colors, Coordinates, EnPassantTargetSquare, FenColors, PieceLetter } from "@/types";
 
 export class Pawn {

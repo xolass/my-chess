@@ -1,4 +1,4 @@
-import { Queen } from "@/classes/Queen";
+import { Queen } from "@/controllers/classes/Queen";
 import { Board } from "@/types";
 
 let onlyQueenBoard: Board;

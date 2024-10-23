@@ -1,5 +1,5 @@
-import { getPieceColor } from "@/auxFunctions";
-import { Pawn } from "@/classes/Pawn";
+import { getPieceColor } from "@/controllers/auxFunctions";
+import { Pawn } from "@/controllers/classes/Pawn";
 import { Board, Colors, Coordinates, PieceLetter, PromotionOptions } from "@/types";
 
 export class Promotion {

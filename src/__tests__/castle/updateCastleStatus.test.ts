@@ -1,4 +1,4 @@
-import { Castle } from "@/classes/Castle";
+import { Castle } from "@/controllers/classes/Castle";
 import { Board } from "@/types";
 
 describe("Update castle status test suite", () => {

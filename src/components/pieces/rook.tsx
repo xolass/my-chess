@@ -1,6 +1,6 @@
-import { BlackRookAsset } from "@/assets/blackRook";
-import { WhiteRookAsset } from "@/assets/whiteRook";
 import { Colors, GenericPiece } from "@/types";
+import { BlackRookAsset } from "assets/blackRook";
+import { WhiteRookAsset } from "assets/whiteRook";
 
 function RookPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {

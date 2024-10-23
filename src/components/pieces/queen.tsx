@@ -1,5 +1,5 @@
-import { BlackQueenAsset } from "@/assets/blackQueen";
-import { WhiteQueenAsset } from "@/assets/whiteQueen";
+import { BlackQueenAsset } from "assets/blackQueen";
+import { WhiteQueenAsset } from "assets/whiteQueen";
 import { Colors, GenericPiece } from "../../types";
 
 function QueenPiece({ color }: GenericPiece) {
