@@ -1,4 +1,4 @@
-import { King } from "@/classes/King";
+import { King } from "@/controllers/classes/King";
 import { Board } from "@/types";
 
 describe("Test suite do detect if a king is in check", () => {

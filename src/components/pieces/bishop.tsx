@@ -1,6 +1,6 @@
-import { BlackBishopAsset } from "@/assets/blackBishop";
-import { WhiteBishopAsset } from "@/assets/whiteBishop";
 import { Colors, GenericPiece } from "@/types";
+import { BlackBishopAsset } from "assets/blackBishop";
+import { WhiteBishopAsset } from "assets/whiteBishop";
 
 function BishopPiece({ color }: GenericPiece) {
   if (color === Colors.WHITE) {

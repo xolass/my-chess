@@ -4,7 +4,7 @@ import {
   getBoardWithPieceNextToRook,
   getCastleBoard,
 } from "@/__tests__/castle/mocks/castleBoard";
-import { Castle } from "@/classes/Castle";
+import { Castle } from "@/controllers/classes/Castle";
 
 // TODO: add tests to check if the king is in check or will be in check after the castle
 describe("Can castle test suite", () => {

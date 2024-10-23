@@ -1,6 +1,6 @@
 import { getBaseBoardAsMatrix } from "@/__tests__/mocks/board";
-import { transformMatrixInFEN } from "@/auxFunctions";
-import { Fen } from "@/classes/Fen";
+import { transformMatrixInFEN } from "@/controllers/auxFunctions";
+import { Fen } from "@/controllers/classes/Fen";
 import { FenType } from "@/types";
 
 describe("State conversions test suite", () => {

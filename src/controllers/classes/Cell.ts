@@ -1,5 +1,5 @@
-import { directionToCoordinates, getPieceColor, isTryingToCaptureAlly } from "@/auxFunctions";
-import { Knight } from "@/classes/Knight";
+import { directionToCoordinates, getPieceColor, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
+import { Knight } from "@/controllers/classes/Knight";
 import { Board, Colors, Coordinates, PieceLetter } from "@/types";
 
 export class Cell {

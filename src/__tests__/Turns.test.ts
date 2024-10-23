@@ -1,5 +1,5 @@
 import { baseFenBoard } from "@/__tests__/mocks/board";
-import { Fen } from "@/classes/Fen";
+import { Fen } from "@/controllers/classes/Fen";
 import { Colors } from "@/types";
 
 describe("Turns test suite", () => {

@@ -1,4 +1,4 @@
-import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/auxFunctions";
+import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
 import { Board, Coordinates, PieceLetter } from "@/types";
 
 export class Rook {

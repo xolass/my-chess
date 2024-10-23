@@ -1,4 +1,4 @@
-import { Piece } from "@/classes/Piece";
+import { Piece } from "@/controllers/classes/Piece";
 import { Board } from "@/types";
 
 describe("Capture mechanic", () => {

@@ -1,8 +1,8 @@
-import { GenericPieceAsset } from "../types"
+import { GenericPieceAsset } from "../src/types";
 
 export function BlackKingAsset({ size }: GenericPieceAsset) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} >
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
       <g
         style={{
           fill: "none",
@@ -65,5 +65,5 @@ export function BlackKingAsset({ size }: GenericPieceAsset) {
         />
       </g>
     </svg>
-  )
-} 
+  );
+}

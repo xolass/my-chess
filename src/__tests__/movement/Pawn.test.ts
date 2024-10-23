@@ -1,4 +1,4 @@
-import { Pawn } from "@/classes/Pawn";
+import { Pawn } from "@/controllers/classes/Pawn";
 import { Board } from "@/types";
 
 describe("Pawn movement actions", () => {

@@ -1,5 +1,5 @@
+import { Board, Coordinates, PieceLetter } from "../../types";
 import { isTherePieceBetween, isTryingToCaptureAlly } from "../auxFunctions";
-import { Board, Coordinates, PieceLetter } from "../types";
 import { Bishop } from "./Bishop";
 import { King } from "./King";
 import { Knight } from "./Knight";
