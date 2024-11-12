@@ -1,13 +1,17 @@
+import { useGameStore } from "@/stores/GameContext";
 import { Colors, GenericPiece } from "@/types";
 import { BlackKnightAsset } from "assets/blackKnight";
 import { WhiteKnightAsset } from "assets/whiteKnight";
 
-function KnightPiece({ color }: GenericPiece) {
-  if (color === Colors.WHITE) {
-    return <WhiteKnightAsset />;
-  }
+import { twMerge } from "tailwind-merge";
 
-  return <BlackKnightAsset />;
+function KnightPiece({ color }: GenericPiece) {
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
+  return (
+    <div className={twMerge("size-full absolute bg-contain bg-black-queen", isBlackPlayer && "rotate-180")}>
+      {color === Colors.WHITE ? <WhiteKnightAsset /> : <BlackKnightAsset />}
+    </div>
+  );
 }
 
 export default KnightPiece;

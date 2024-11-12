@@ -1,4 +1,5 @@
 "use client";
+import { useGameStore } from "@/stores/GameContext";
 import { useDraggable } from "@dnd-kit/core";
 import React from "react";
 import { Colors, Coordinates, PieceLetter } from "../../types";
@@ -15,6 +16,7 @@ interface Props {
 }
 
 function PieceComponent({ piece, coordinates }: Props) {
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: `${piece} ${coordinates.col}-${coordinates.row}`,
     data: { piece, coordinates },
@@ -52,7 +54,12 @@ function PieceComponent({ piece, coordinates }: Props) {
   }
 
   return (
-    <div ref={setNodeRef} className="cursor-pointer size-full" {...listeners} {...attributes}>
+    <div
+      ref={setNodeRef}
+      className="cursor-pointer size-2/3 flex items-center justify-center"
+      {...listeners}
+      {...attributes}
+    >
       {getPiece()}
     </div>
   );

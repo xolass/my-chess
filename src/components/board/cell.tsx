@@ -30,15 +30,13 @@ function BoardCell(props: IBoardCell) {
   const isPromotingInThisCell =
     isPromotionModalOpen && positionToSpawnModal?.col === col && positionToSpawnModal?.row === row;
 
-  console.log({ isPromotingInThisCell, col, row, positionToSpawnModal });
-
   return (
     <div
       ref={setNodeRef}
       id={coordinateToMoveNotation({ row, col })}
       className={twMerge(
         "relative size-24 flex justify-center items-center",
-        isCellWhite() ? "bg-yellow-900" : "bg-yellow-100"
+        isCellWhite() ? "bg-black-cell" : "bg-white-cell"
       )}
     >
       {isPromotingInThisCell && <PromotionPopup />}

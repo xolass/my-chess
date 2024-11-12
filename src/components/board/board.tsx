@@ -1,5 +1,7 @@
 "use client";
+import { useGameStore } from "@/stores/GameContext";
 import { Board as BoardType } from "@/types";
+import { twMerge } from "tailwind-merge";
 import BoardCell from "./cell";
 import PieceComponent from "./piece";
 
@@ -8,8 +10,10 @@ interface BoardProps {
 }
 
 function Board({ board }: BoardProps) {
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
+
   return (
-    <div className="flex flex-col">
+    <div className={twMerge("flex flex-col rounded-md", "rotate-180")}>
       {board.map((row, rowIndex) => {
         return (
           <div key={"row" + rowIndex} className="flex flex-row">

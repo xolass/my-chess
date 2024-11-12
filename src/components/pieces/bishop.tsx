@@ -1,13 +1,18 @@
 import { Colors, GenericPiece } from "@/types";
+
+import { useGameStore } from "@/stores/GameContext";
+
 import { BlackBishopAsset } from "assets/blackBishop";
 import { WhiteBishopAsset } from "assets/whiteBishop";
+import { twMerge } from "tailwind-merge";
 
 function BishopPiece({ color }: GenericPiece) {
-  if (color === Colors.WHITE) {
-    return <WhiteBishopAsset />;
-  }
-
-  return <BlackBishopAsset />;
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
+  return (
+    <div className={twMerge("size-full absolute bg-contain bg-black-queen", isBlackPlayer && "rotate-180")}>
+      {color === Colors.WHITE ? <WhiteBishopAsset /> : <BlackBishopAsset />}
+    </div>
+  );
 }
 
 export default BishopPiece;
