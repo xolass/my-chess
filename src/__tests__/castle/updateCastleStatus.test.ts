@@ -1,8 +1,8 @@
 import { Castle } from "@/controllers/classes/Castle";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
 describe("Update castle status test suite", () => {
-  let castleBoard: Board;
+  let castleBoard: Grid;
   const initialCastleStatus = "KQkq";
 
   beforeEach(() => {

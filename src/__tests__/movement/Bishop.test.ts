@@ -1,7 +1,7 @@
 import { Bishop } from "@/controllers/classes/Bishop";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
-let onlyBishopBoard: Board;
+let onlyBishopBoard: Grid;
 
 beforeEach(() => {
   onlyBishopBoard = [
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("Bishop piece actions", () => {
   it("should be able to move upRight multiple squares", () => {
-    const bishopWithOnlyUpRightFree: Board = [
+    const bishopWithOnlyUpRightFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -34,7 +34,7 @@ describe("Bishop piece actions", () => {
   });
 
   it("should be able to move downRight multiple squares", () => {
-    const bishopWithOnlyDownRightFree: Board = [
+    const bishopWithOnlyDownRightFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -53,7 +53,7 @@ describe("Bishop piece actions", () => {
     expect(canMoveDiagDownRight).toBe(true);
   });
   it("should be able to move upLeft multiple squares", () => {
-    const bishopWithOnlyUpLeftFree: Board = [
+    const bishopWithOnlyUpLeftFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -68,7 +68,7 @@ describe("Bishop piece actions", () => {
     expect(canMoveDiagUpLeft).toBe(true);
   });
   it("should be able to move downLeft multiple squares", () => {
-    const bishopWithOnlyDownLeftFree: Board = [
+    const bishopWithOnlyDownLeftFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -100,7 +100,7 @@ describe("Bishop piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const bishopWithPiecesAround: Board = [
+    const bishopWithPiecesAround: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

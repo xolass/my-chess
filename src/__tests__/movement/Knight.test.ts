@@ -1,7 +1,7 @@
 import { Knight } from "@/controllers/classes/Knight";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
-let onlyKnightBoard: Board;
+let onlyKnightBoard: Grid;
 
 beforeEach(() => {
   onlyKnightBoard = [
@@ -63,7 +63,7 @@ describe("Knight piece actions", () => {
   });
 
   it("should be able to move through pieces", () => {
-    const knightWithPiecesAround: Board = [
+    const knightWithPiecesAround: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

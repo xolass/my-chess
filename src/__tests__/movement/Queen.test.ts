@@ -1,7 +1,7 @@
 import { Queen } from "@/controllers/classes/Queen";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
-let onlyQueenBoard: Board;
+let onlyQueenBoard: Grid;
 
 beforeEach(() => {
   onlyQueenBoard = [
@@ -58,7 +58,7 @@ describe("Queen movement actions", () => {
   });
 
   it("should not move above ally piece", () => {
-    const queenWithAllyBoard: Board = [
+    const queenWithAllyBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

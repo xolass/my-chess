@@ -1,9 +1,9 @@
 import { Promotion } from "@/controllers/classes/Promotion";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
 describe("Promotion test suite", () => {
   it("should tell when a move is a promotion", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
@@ -22,7 +22,7 @@ describe("Promotion test suite", () => {
   });
 
   it("should tell when a move is not a promotion", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, "R", null],
       [null, null, null, null, null, null, null, "P"],
@@ -47,7 +47,7 @@ describe("Promotion test suite", () => {
   });
 
   it("should be able to transform a pawn into a queen when reaching the other side of the board", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
@@ -85,7 +85,7 @@ describe("Promotion test suite", () => {
 });
 
 it("should be able to transform a pawn into a rook when reaching the other side of the board", () => {
-  const board: Board = [
+  const board: Grid = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
@@ -123,7 +123,7 @@ it("should be able to transform a pawn into a rook when reaching the other side 
 });
 
 it("should be able to transform a pawn into a knight when reaching the other side of the board", () => {
-  const board: Board = [
+  const board: Grid = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
@@ -160,7 +160,7 @@ it("should be able to transform a pawn into a knight when reaching the other sid
 });
 
 it("should be able to transform a pawn into a bishop when reaching the other side of the board", () => {
-  const board: Board = [
+  const board: Grid = [
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],

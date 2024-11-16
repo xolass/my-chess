@@ -1,18 +1,11 @@
+import { Board } from "@/controllers/classes/Board";
 import { Pawn } from "@/controllers/classes/Pawn";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
 describe("En passant mechanics", () => {
   it("Should detect if a movement is an en passant", () => {
-    const enPassantBoard: Board = [
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "R", null, null, null, null],
-      [null, null, null, null, "P", "p", null, null],
-      ["P", "p", null, null, null, null, "P", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-    ];
+    const enPassantBoard: Board = new Board();
+
     const enPassantTargetCoordinatesForWhite = { row: 2, col: 5 };
     const enPassantTargetCoordinatesForBlack = { row: 5, col: 0 };
 
@@ -45,7 +38,7 @@ describe("En passant mechanics", () => {
   });
 
   it("Should capture the pawn behind the movement", () => {
-    const enPassantBoard: Board = [
+    const enPassantBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, "R", null, null, null, null],

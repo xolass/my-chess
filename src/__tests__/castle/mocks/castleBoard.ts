@@ -1,6 +1,6 @@
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
-export const getCastleBoard = (): Board => [
+export const getCastleBoard = (): Grid => [
   ["r", null, null, null, "k", null, null, "r"],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
@@ -11,7 +11,7 @@ export const getCastleBoard = (): Board => [
   ["R", null, null, null, "K", null, null, "R"],
 ];
 
-export const getBoardWithPieceNextToKing = (): Board => [
+export const getBoardWithPieceNextToKing = (): Grid => [
   ["r", null, null, "q", "k", "b", null, "r"],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
@@ -22,7 +22,7 @@ export const getBoardWithPieceNextToKing = (): Board => [
   ["R", null, null, "Q", "K", "B", null, "R"],
 ];
 
-export const getBoardWithPieceNextToRook = (): Board => [
+export const getBoardWithPieceNextToRook = (): Grid => [
   ["r", "n", null, null, "k", null, "n", "r"],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
@@ -33,7 +33,7 @@ export const getBoardWithPieceNextToRook = (): Board => [
   ["R", "N", null, null, "K", null, "N", "R"],
 ];
 
-export const getBoardWithPieceInTheMiddleOfKingAndRook = (): Board => [
+export const getBoardWithPieceInTheMiddleOfKingAndRook = (): Grid => [
   ["r", null, "b", null, "k", null, null, "r"],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],

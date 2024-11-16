@@ -1,6 +1,6 @@
 "use client";
 import { useGameStore } from "@/stores/GameContext";
-import { Board as BoardType } from "@/types";
+import { Grid as BoardType } from "@/types";
 import { twMerge } from "tailwind-merge";
 import BoardCell from "./cell";
 import PieceComponent from "./piece";

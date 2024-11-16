@@ -1,25 +1,35 @@
-import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
-import { Board, Coordinates, PieceLetter } from "@/types";
+import { isSamePosition, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
+import { Colors, Coordinates } from "@/types";
 
-export class Rook {
-  static isRook(piece: PieceLetter) {
-    return piece === "r" || piece === "R";
+import { Board } from "@/controllers/classes/Board";
+import MoveNotation from "@/controllers/classes/MoveNotation";
+import { Piece } from "@/controllers/classes/Piece";
+
+export class Rook extends Piece {
+  constructor(public override color: Colors, public override coordinates: Coordinates) {
+    super(color, coordinates, "r");
   }
-  static isRookWayOfMoving(from: Coordinates, to: Coordinates) {
-    return from.col === to.col || from.row === to.row;
+
+  public isMovingRightDirection(_to: Coordinates): boolean {
+    return true;
   }
-  static canRookMove(board: Board, from: Coordinates, to: Coordinates) {
-    const piece = board[from.row][from.col];
-    if (!piece) return false;
+
+  override isValidMove(board: Board, move: MoveNotation): boolean {
+    const from = this.coordinates;
+    const { to } = move;
 
     if (isSamePosition(from, to)) return false;
 
     if (isTryingToCaptureAlly(board, from, to)) return false;
 
-    if (isTherePieceBetween(board, from, to)) return false;
+    if (board.isTherePieceBetween(from, to)) return false;
 
     if (!this.isRookWayOfMoving(from, to)) return false;
 
     return true;
+  }
+
+  private isRookWayOfMoving(from: Coordinates, to: Coordinates) {
+    return from.col === to.col || from.row === to.row;
   }
 }

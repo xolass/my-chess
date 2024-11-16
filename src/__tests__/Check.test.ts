@@ -1,9 +1,9 @@
 import { King } from "@/controllers/classes/King";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
 describe("Test suite do detect if a king is in check", () => {
   it("should detect if a king is in check by a queen", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -19,7 +19,7 @@ describe("Test suite do detect if a king is in check", () => {
     expect(isKingInCheck).toBe(true);
   });
   it("should detect if a king is in check by a rook", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "r", null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -35,7 +35,7 @@ describe("Test suite do detect if a king is in check", () => {
     expect(isKingInCheck).toBe(true);
   });
   it("should detect if a king is in check by a bishop", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, "b", null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -51,7 +51,7 @@ describe("Test suite do detect if a king is in check", () => {
     expect(isKingInCheck).toBe(true);
   });
   it("should detect if a king is in check by a knight", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -67,7 +67,7 @@ describe("Test suite do detect if a king is in check", () => {
     expect(isKingInCheck).toBe(true);
   });
   it("should detect if a king is in check by a pawn", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -83,7 +83,7 @@ describe("Test suite do detect if a king is in check", () => {
     expect(isKingInCheck).toBe(true);
   });
   it("should not be checked for allied pieces", () => {
-    const board: Board = [
+    const board: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, "B", null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

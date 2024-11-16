@@ -1,7 +1,7 @@
 import { Rook } from "@/controllers/classes/Rook";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
-let onlyRookBoard: Board;
+let onlyRookBoard: Grid;
 
 beforeEach(() => {
   onlyRookBoard = [
@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe("Rook piece actions", () => {
   it("should be able to move UP in a straight line", () => {
-    const rookWithOnlyUpFree: Board = [
+    const rookWithOnlyUpFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -39,7 +39,7 @@ describe("Rook piece actions", () => {
     expect(canMoveUp).toBe(true);
   });
   it("should be able to move DOWN in a straight line", () => {
-    const rookWithOnlyDownFree: Board = [
+    const rookWithOnlyDownFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -55,7 +55,7 @@ describe("Rook piece actions", () => {
   });
 
   it("should be able to move LEFT in a straight line", () => {
-    const rookWithOnlyLeftFree: Board = [
+    const rookWithOnlyLeftFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -71,7 +71,7 @@ describe("Rook piece actions", () => {
   });
 
   it("should be able to move RIGHT in a straight line", () => {
-    const rookWithOnlyUpFree: Board = [
+    const rookWithOnlyUpFree: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -99,7 +99,7 @@ describe("Rook piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const rookWithPiecesAround: Board = [
+    const rookWithPiecesAround: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

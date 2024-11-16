@@ -1,8 +1,8 @@
 import { King } from "@/controllers/classes/King";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
-let onlyKingBoard: Board;
-let kingWithAllyBoard: Board;
+let onlyKingBoard: Grid;
+let kingWithAllyBoard: Grid;
 
 beforeEach(() => {
   onlyKingBoard = [

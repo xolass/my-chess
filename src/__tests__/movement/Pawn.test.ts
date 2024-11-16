@@ -1,9 +1,9 @@
 import { Pawn } from "@/controllers/classes/Pawn";
-import { Board } from "@/types";
+import { Grid } from "@/types";
 
 describe("Pawn movement actions", () => {
   it("should be able for white pawns to move only up", () => {
-    const onlyPawnBoard: Board = [
+    const onlyPawnBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -26,7 +26,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for black pawns to move only down", () => {
-    const onlyPawnBoard: Board = [
+    const onlyPawnBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -49,7 +49,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for white pawns to move two squares on first move", () => {
-    const onlyPawnBoard: Board = [
+    const onlyPawnBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -72,7 +72,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for white pawns to move two squares on first move", () => {
-    const onlyPawnBoard: Board = [
+    const onlyPawnBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -95,7 +95,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should NOT be able for white pawns to move two or more squares not being on first move", () => {
-    const onlyPawnBoard: Board = [
+    const onlyPawnBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -114,7 +114,7 @@ describe("Pawn movement actions", () => {
   });
 
   it("should NOT be able for black pawns to move two or more squares not being on first move", () => {
-    const onlyPawnBoard: Board = [
+    const onlyPawnBoard: Grid = [
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
