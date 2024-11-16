@@ -1,0 +1,16 @@
+{
+  "scriptId": "315",
+  "url": "file:///C:/Users/nicol/Documents/Projetos/automations/base64-to-tsx/src/main_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 755, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 158, "endOffset": 703, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}
