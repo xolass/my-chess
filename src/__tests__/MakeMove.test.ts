@@ -23,13 +23,11 @@ describe("Make game moves", () => {
       from: { row: 4, col: 1 },
       to: { row: 5, col: 2 },
       flags: {
-        enPassant: {
-          enPassantTargetSquare: { row: 4, col: 2 },
-        },
+        enPassant: true,
       },
     });
 
-    expect(board.getGrid()).toStrictEqual([
+    expect(board.getLettersGrid()).toStrictEqual([
       ["r", "n", "b", "q", "k", "b", "n", "r"],
       ["p", null, "p", null, null, null, "p", "p"],
       [null, null, null, null, null, null, null, null],

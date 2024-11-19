@@ -1,13 +1,41 @@
-import { Board } from "@/controllers/classes/Board";
-import { Coordinates } from "@/types";
+import { Coordinates, PieceLetter } from "@/types";
 
-export const isTryingToCaptureAlly = (board: Board, from: Coordinates, to: Coordinates) => {
-  const piece = board.getSquare({ row: from.row, col: from.col }).piece;
-  const target = board.getSquare({ row: to.row, col: to.col }).piece;
+export function getDirection(from: Coordinates, to: Coordinates) {
+  if (from.row < to.row && from.col < to.col) return "downRight";
+  if (from.row < to.row && from.col > to.col) return "downLeft";
+  if (from.row > to.row && from.col < to.col) return "upRight";
+  if (from.row > to.row && from.col > to.col) return "upLeft";
+  if (from.row > to.row && from.col === to.col) return "up";
+  if (from.row < to.row && from.col === to.col) return "down";
+  if (from.row === to.row && from.col > to.col) return "left";
+  if (from.row === to.row && from.col < to.col) return "right";
+  return "same";
+}
 
-  if (!target) return false; // is not capturing, is moving to an empty cell
-  if (!piece) return false;
-  if (piece.color === target.color) return true;
-
-  return false;
-};
+export const directionToCoordinates = {
+  up: { row: -1, col: 0, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  down: { row: 1, col: 0, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  right: { row: 0, col: 1, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  left: { row: 0, col: -1, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
+  downRight: {
+    row: 1,
+    col: 1,
+    pieces: ["b", "q", "B", "Q", "P"] as PieceLetter[],
+  },
+  downLeft: {
+    row: 1,
+    col: -1,
+    pieces: ["b", "q", "B", "Q", "P"] as PieceLetter[],
+  },
+  upRight: {
+    row: -1,
+    col: 1,
+    pieces: ["b", "q", "B", "Q", "p"] as PieceLetter[],
+  },
+  upLeft: {
+    row: -1,
+    col: -1,
+    pieces: ["b", "q", "B", "Q", "p"] as PieceLetter[],
+  },
+  same: { row: 0, col: 0, pieces: [] as PieceLetter[] },
+} as const;

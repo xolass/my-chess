@@ -1,42 +1,26 @@
-import { King } from "@/controllers/classes/King";
-import { Grid } from "@/types";
-
-let onlyKingBoard: Grid;
-let kingWithAllyBoard: Grid;
-
-beforeEach(() => {
-  onlyKingBoard = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, "K", null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-  ];
-  kingWithAllyBoard = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, "P", "P", "P", null, null],
-    [null, null, null, "P", "K", "P", null, null],
-    [null, null, null, "P", "P", "P", null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-  ];
-});
+import { setupGame } from "@/main";
 
 describe("King movement actions", () => {
   it("should be move one square in any direction", () => {
-    const canMoveDiagRightDown = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 5, col: 5 });
-    const canMoveDiagLeftDown = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 5, col: 3 });
-    const canMoveDiagRightUp = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 3, col: 5 });
-    const canMoveDiagLeftUp = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 3, col: 3 });
-    const canMoveUp = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 3, col: 4 });
-    const canMoveDown = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 5, col: 4 });
-    const canMoveLeft = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 4, col: 3 });
-    const canMoveRight = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 4, col: 5 });
+    const { game, board } = setupGame();
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "K", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 5 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 3 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
 
     expect(canMoveDiagRightDown).toBe(true);
     expect(canMoveDiagLeftDown).toBe(true);
@@ -49,14 +33,25 @@ describe("King movement actions", () => {
   });
 
   it("should not be able to move more than one square in any direction", () => {
-    const canMoveDiagRightDown = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 6, col: 6 });
-    const canMoveDiagLeftDown = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 6, col: 2 });
-    const canMoveDiagRightUp = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 2, col: 6 });
-    const canMoveDiagLeftUp = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 2, col: 2 });
-    const canMoveUp = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 2, col: 4 });
-    const canMoveDown = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 6, col: 4 });
-    const canMoveLeft = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 4, col: 2 });
-    const canMoveRight = King.canKingMove(onlyKingBoard, { row: 4, col: 4 }, { row: 4, col: 6 });
+    const { game, board } = setupGame();
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "K", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);
@@ -69,14 +64,25 @@ describe("King movement actions", () => {
   });
 
   it("should not move above ally piece", () => {
-    const canMoveDiagRightDown = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 5, col: 5 });
-    const canMoveDiagLeftDown = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 5, col: 3 });
-    const canMoveDiagRightUp = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 3, col: 5 });
-    const canMoveDiagLeftUp = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 3, col: 3 });
-    const canMoveUp = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 3, col: 4 });
-    const canMoveDown = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 5, col: 4 });
-    const canMoveLeft = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 4, col: 3 });
-    const canMoveRight = King.canKingMove(kingWithAllyBoard, { row: 4, col: 4 }, { row: 4, col: 5 });
+    const { game, board } = setupGame();
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, "P", "P", "P", null, null],
+      [null, null, null, "P", "K", "P", null, null],
+      [null, null, null, "P", "P", "P", null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 5 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 3 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);

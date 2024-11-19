@@ -1,47 +1,8 @@
-import { Colors, Coordinates, Grid, PieceIdentifier, PieceLetter } from "@/types";
+import { directionToCoordinates, getDirection } from "@/controllers/auxFunctions";
+import { Colors, Coordinates, Grid, LettersGrid, PieceIdentifier } from "@/types";
 import { nameClassRelation } from "@/utils";
 import { Piece } from "./Piece";
 import { Square } from "./Square";
-
-function getDirection(from: Coordinates, to: Coordinates) {
-  if (from.row < to.row && from.col < to.col) return "downRight";
-  if (from.row < to.row && from.col > to.col) return "downLeft";
-  if (from.row > to.row && from.col < to.col) return "upRight";
-  if (from.row > to.row && from.col > to.col) return "upLeft";
-  if (from.row > to.row && from.col === to.col) return "up";
-  if (from.row < to.row && from.col === to.col) return "down";
-  if (from.row === to.row && from.col > to.col) return "left";
-  if (from.row === to.row && from.col < to.col) return "right";
-  return "same";
-}
-
-const directionToCoordinates = {
-  up: { row: -1, col: 0, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
-  down: { row: 1, col: 0, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
-  right: { row: 0, col: 1, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
-  left: { row: 0, col: -1, pieces: ["r", "q", "R", "Q"] as PieceLetter[] },
-  downRight: {
-    row: 1,
-    col: 1,
-    pieces: ["b", "q", "B", "Q", "P"] as PieceLetter[],
-  },
-  downLeft: {
-    row: 1,
-    col: -1,
-    pieces: ["b", "q", "B", "Q", "P"] as PieceLetter[],
-  },
-  upRight: {
-    row: -1,
-    col: 1,
-    pieces: ["b", "q", "B", "Q", "p"] as PieceLetter[],
-  },
-  upLeft: {
-    row: -1,
-    col: -1,
-    pieces: ["b", "q", "B", "Q", "p"] as PieceLetter[],
-  },
-  same: { row: 0, col: 0, pieces: [] as PieceLetter[] },
-};
 
 const initialPiecePositions: Record<Colors, Record<PieceIdentifier, Array<Coordinates>>> = {
   [Colors.WHITE]: {
@@ -94,6 +55,27 @@ export class Board {
     this.setupBoard();
   }
 
+  public from(matrix: LettersGrid) {
+    matrix.forEach((row, rowIndex) =>
+      row.forEach((pieceLetter, colIndex) => {
+        const square = new Square({ row: rowIndex, col: colIndex });
+        if (!pieceLetter) {
+          square.piece = null;
+          this.#grid[rowIndex][colIndex] = square;
+        } else {
+          const piece = pieceLetter.toLowerCase() as PieceIdentifier;
+          const color = pieceLetter === pieceLetter.toUpperCase() ? Colors.WHITE : Colors.BLACK;
+
+          const PieceClass = nameClassRelation[piece];
+          const position = { row: rowIndex, col: colIndex };
+
+          this.placePiece(new PieceClass(color as Colors, position, piece), position);
+        }
+      })
+    );
+    return this;
+  }
+
   public getSquare(coordinates: Coordinates) {
     return this.#grid[coordinates.row][coordinates.col];
   }
@@ -110,7 +92,7 @@ export class Board {
     }, []);
   }
 
-  public getGrid() {
+  public getLettersGrid() {
     return this.#grid.map((row) => row.map((square) => square.piece?.pieceLetter || null));
   }
 
@@ -154,5 +136,9 @@ export class Board {
         });
       });
     });
+  }
+
+  public get grid() {
+    return this.#grid;
   }
 }

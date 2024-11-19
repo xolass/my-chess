@@ -1,31 +1,27 @@
-import { Queen } from "@/controllers/classes/Queen";
-import { Grid } from "@/types";
-
-let onlyQueenBoard: Grid;
-
-beforeEach(() => {
-  onlyQueenBoard = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, "Q", null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-  ];
-});
+import { setupGame } from "@/main";
 
 describe("Queen movement actions", () => {
   it("should be able to move in any straight line direction", () => {
-    const canMoveDiagRightDown = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 6, col: 6 });
-    const canMoveDiagLeftDown = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 6, col: 2 });
-    const canMoveDiagRightUp = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 6 });
-    const canMoveDiagLeftUp = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 2 });
-    const canMoveUp = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 4 });
-    const canMoveDown = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 6, col: 4 });
-    const canMoveLeft = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 4, col: 2 });
-    const canMoveRight = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 4, col: 6 });
+    const { game, board } = setupGame();
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "Q", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(true);
     expect(canMoveDiagLeftDown).toBe(true);
@@ -38,14 +34,25 @@ describe("Queen movement actions", () => {
   });
 
   it("should not be able to move to positions that are not straight lines", () => {
-    const canMoveDiagRightDown = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 6, col: 5 });
-    const canMoveDiagLeftDown = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 6, col: 7 });
-    const canMoveDiagRightUp = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 0 });
-    const canMoveDiagLeftUp = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 1 });
-    const canMoveUp = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 7 });
-    const canMoveDown = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 6, col: 0 });
-    const canMoveLeft = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 2, col: 7 });
-    const canMoveRight = Queen.canQueenMove(onlyQueenBoard, { row: 4, col: 4 }, { row: 0, col: 6 });
+    const { game, board } = setupGame();
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "Q", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 7 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 0 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 1 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 7 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 0 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 7 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 0, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);
@@ -58,7 +65,8 @@ describe("Queen movement actions", () => {
   });
 
   it("should not move above ally piece", () => {
-    const queenWithAllyBoard: Grid = [
+    const { game, board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -67,15 +75,15 @@ describe("Queen movement actions", () => {
       [null, null, null, "P", "P", "P", null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
-    const canMoveDiagRightDown = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 6, col: 6 });
-    const canMoveDiagLeftDown = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 6, col: 2 });
-    const canMoveDiagRightUp = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 2, col: 6 });
-    const canMoveDiagLeftUp = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 2, col: 2 });
-    const canMoveUp = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 2, col: 4 });
-    const canMoveDown = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 6, col: 4 });
-    const canMoveLeft = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 4, col: 2 });
-    const canMoveRight = Queen.canQueenMove(queenWithAllyBoard, { row: 4, col: 4 }, { row: 4, col: 6 });
+    ]);
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);

@@ -1,3 +1,5 @@
+import { Square } from "@/controllers/classes/Square";
+
 export type Coordinates = {
   row: number;
   col: number;
@@ -8,16 +10,17 @@ export enum Colors {
   BLACK = "b",
 }
 
+export type LettersGrid = Array<Array<PieceLetter | null>>;
+
 export type PieceIdentifier = "p" | "r" | "n" | "b" | "q" | "k";
 
 export type Promotion = {
-  isPromotion: boolean;
   promotionPiece: PieceIdentifier;
 };
 
 export type Cell = `${"a" | "b" | "c" | "d" | "e" | "f" | "g" | "h"}${"1" | "2" | "3" | "4" | "5" | "6" | "7" | "8"}`;
 
-export type Grid = Array<Array<PieceLetter>>;
+export type Grid = Array<Array<Square>>;
 
 export type FenColors = Colors.WHITE | Colors.BLACK;
 
@@ -46,12 +49,12 @@ export type FenCastle =
   | "-";
 
 export type Move = {
-  from?: Coordinates;
-  to?: Coordinates;
+  from: Coordinates;
+  to: Coordinates;
   flags?: MoveFlags;
 };
 export type ReturnFromGetMovesFromPGN = {
-  moves: Array<Move>;
+  moves: Array<Move | "castle">;
 };
 
 export type FenPiecesSection = `${string}/${string}/${string}/${string}/${string}/${string}/${string}/${string}`;
@@ -72,12 +75,7 @@ export type Castle = {
   color: Colors;
 };
 
-export type EnPassant = {
-  enPassantTargetSquare: Coordinates;
-};
-
 export type MoveFlags = {
-  enPassant?: EnPassant;
+  enPassant?: boolean;
   promotion?: Promotion;
-  castle?: Castle;
 };

@@ -1,13 +1,7 @@
-import {
-  coordinateToMoveNotation,
-  getDirection,
-  isSamePosition,
-  isTryingToCaptureAlly,
-} from "@/controllers/auxFunctions";
-import { Colors, Coordinates, EnPassantTargetSquare } from "@/types";
+import { Colors, Coordinates, MoveFlags } from "@/types";
 
 import { Board } from "@/controllers/classes/Board";
-import MoveNotation from "@/controllers/classes/MoveNotation";
+import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Piece } from "@/controllers/classes/Piece";
 
 export class Pawn extends Piece {
@@ -19,28 +13,26 @@ export class Pawn extends Piece {
     return true;
   }
 
-  override isValidMove(board: Board, move: MoveNotation): boolean {
-    const { to } = move;
+  override isValidMove(board: Board, to: Coordinates, flags?: MoveFlags): boolean {
     const from = this.coordinates;
 
-    if (isSamePosition(from, to)) return false;
+    if (this.isSamePosition(to)) return false;
 
-    if (isTryingToCaptureAlly(board, from, to)) return false;
+    if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (board.isTherePieceBetween(from, to)) return false;
 
-    if (!this.isPawnWayOfMoving(board, move)) return false;
+    if (!this.isPawnWayOfMoving(board, to, flags?.enPassant)) return false;
 
     return true;
   }
 
-  isPawnWayOfMoving(board: Board, move: MoveNotation): boolean {
-    const { to } = move;
+  private isPawnWayOfMoving(board: Board, to: Coordinates, enPassant?: boolean): boolean {
     const from = this.coordinates;
 
     if (this.isTryingToGoBackwards(to)) return false;
 
-    if (this.isEnPassant(board, move)) return true;
+    if (enPassant && EnPassant.isEnPassant(board, from, to)) return true;
 
     if (this.validCapture(board, to)) {
       return true;
@@ -79,15 +71,6 @@ export class Pawn extends Piece {
     return false;
   }
 
-  private isEnPassant(board: Board, move: MoveNotation) {
-    const { to } = move;
-
-    if (!move.isCapture) return false;
-    if (board.getSquare(to).piece) return false;
-
-    return true;
-  }
-
   private isTryingToGoBackwards(to: Coordinates) {
     const from = this.coordinates;
 
@@ -102,29 +85,5 @@ export class Pawn extends Piece {
     if (this.color === Colors.BLACK && this.coordinates.row === 1) return true;
 
     return false;
-  }
-
-  static isEnPassant(board: Board, from: Coordinates, to: Coordinates) {
-    const fromPiece = board.getSquare({ row: from.row, col: from.col }).piece;
-    const target = board.getSquare({ row: to.row, col: to.col }).piece;
-    if (!fromPiece) return false;
-    if (target) return false;
-
-    const direction = getDirection(from, to);
-
-    if (fromPiece.color === Colors.WHITE) {
-      if (direction === "upRight" || direction === "upLeft") return true;
-    } else if (fromPiece.color === Colors.BLACK) {
-      if (direction === "downRight" || direction === "downLeft") return true;
-    }
-
-    return false;
-  }
-
-  static canEnPassant(to: Coordinates, enPassantTargetSquare: EnPassantTargetSquare) {
-    const isRightSquare = coordinateToMoveNotation(to) === enPassantTargetSquare;
-    const isRightRow = to.row === 2 || to.row === 5;
-
-    return isRightSquare && isRightRow;
   }
 }

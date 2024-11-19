@@ -6,7 +6,7 @@ import {
   FenColors,
   FenPiecesSection,
   FenType,
-  Grid,
+  LettersGrid,
   PieceLetter,
 } from "@/types";
 
@@ -54,7 +54,7 @@ export class Fen {
     this.setHalfMoveClock(0);
   }
 
-  public getMatrix(): Grid {
+  public getMatrix(): LettersGrid {
     function getFENRowAsArray(row: string) {
       const cells: Array<PieceLetter | null> = [];
       Array.from(row).forEach((char) => {
@@ -119,8 +119,8 @@ export class Fen {
       `${this.fenPieces} ${this.turn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${newValue}` as FenType;
   }
 
-  static getPiecesfromMatrix(board: Board) {
-    const matrix = board.getGrid();
+  static fromBoard(board: Board) {
+    const matrix = board.getLettersGrid();
 
     return matrix
       .map((row) => {

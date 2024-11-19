@@ -1,30 +1,25 @@
-import { isSamePosition, isTurnOfPiece, transformMatrixInFEN } from "@/controllers/auxFunctions";
 import { Castle } from "@/controllers/classes/Castle";
+import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Fen } from "@/controllers/classes/Fen";
-import { King } from "@/controllers/classes/King";
-import MoveNotation from "@/controllers/classes/MoveNotation";
-import { Pawn } from "@/controllers/classes/Pawn";
-import { Piece } from "@/controllers/classes/Piece";
 import { Promotion } from "@/controllers/classes/Promotion";
-import { useGameState } from "@/controllers/gameState";
-import { initGame } from "@/main";
+import { useGameState } from "@/controllers/fenGameState";
+import { setupGame } from "@/main";
 import { useGameStore } from "@/stores/GameContext";
-import { useCallback, useEffect, useMemo } from "react";
-import { Cell, Coordinates, MoveFlags, PromotionOptions } from "../types";
+import { useCallback, useEffect } from "react";
+import { Coordinates, MoveFlags, PromotionOptions } from "../types";
+
+const { board, game } = setupGame();
 
 export function useGameActions() {
   const { addToFenHistory, currentMovingPiece, currentFen, fenHistory } = useGameState();
   const setPromotionModalOpen = useGameStore((state) => state.setPromotionModalOpen);
   const setHandlePromotingPiece = useGameStore((state) => state.setHandlePromotingPiece);
   const setPositionToSpawnModal = useGameStore((state) => state.setPositionToSpawnModal);
-
-  const { board, game } = initGame();
+  const setBoard = useGameStore((state) => state.setBoard);
 
   useEffect(() => {
     console.log(fenHistory[fenHistory.length - 1]);
   }, [fenHistory]);
-
-  const boardAsMatrix = useMemo(() => currentFen.getMatrix(), [currentFen]);
 
   const onPieceDragStart = useCallback(
     (coordinates: Coordinates) => {
@@ -50,79 +45,59 @@ export function useGameActions() {
     const newFen = new Fen(currentFen.fen);
     const flags: MoveFlags = {};
 
-    const isEnPassant = Pawn.isEnPassant(board, from, to);
+    const isEnPassant = EnPassant.isEnPassant(board, from, to);
     const isPromotion = Promotion.isPromotion(board, from, to);
     const isCastle = Castle.isCastleMove(from, to);
 
-    if (isEnPassant) {
-      const enPassantTargetSquare = MoveNotation.toCoordinate(newFen.enPassantTargetSquare as Cell);
+    const piece = board.getSquare(from)?.piece;
+    if (!piece) return;
 
-      flags.enPassant = {
-        enPassantTargetSquare,
-      };
+    if (isEnPassant) {
+      flags.enPassant = true;
     }
 
     if (isPromotion) {
       const promotionPiece = await getPromotionPiece(to);
 
       flags.promotion = {
-        isPromotion: true,
         promotionPiece,
       };
     }
 
     if (isCastle) {
-      if (Castle.canCastle(board, from, to, currentFen.castleStatus)) {
-      flags.castle = {
-        isShortCastle: Castle.isShortCastle(from, to),
-        isLongCastle: Castle.isLongCastle(from, to),
-        color: currentFen.turn,
-      };
-    }
+      const isCastleValid = Castle.canCastle(board, from, to, currentFen.castleStatus);
 
-    game.makeMove({from, to, flags});
-    if (!currentMovingPiece.current) return;
-    const piece = boardAsMatrix[from.row][from.col];
-    if (!piece) return;
+      if (!isCastleValid) return;
 
-    if (isSamePosition(from, to)) return;
-    if (!isTurnOfPiece(currentFen.turn, piece)) return;
+      const isShortCastle = Castle.isShortCastle(from, to);
 
-    if (King.isKingInCheck(board, to)) {
-      return;
-    }
-
-    if (Castle.isCastleMove(from, to) && Castle.canCastle(board, from, to, currentFen.castleStatus)) {
-      Castle.castle(board, from, to);
-    } else if (Promotion.isPromotion(board, from, to)) {
-    } else if (Pawn.isEnPassant(board, from, to) && Pawn.canEnPassant(to, currentFen.enPassantTargetSquare)) {
-      board = Pawn.enPassant(board, from, to);
-    } else if (Piece.isCapture(board, to) && Piece.canCapture(board, to, currentMovingPiece.current)) {
-      board = Piece.capture(board, from, to);
-      newFen.resetHalfMoveClock();
-    } else if (Piece.isRegularMove(board, to) && Piece.canPieceMove(board, from, to)) {
-      board = movePiece(board, from, to);
+      game.castleMove(isShortCastle);
     } else {
-      return;
+      const isMoveValid = game.validateMove({ from, to, flags });
+
+      if (!isMoveValid) return;
+
+      game.makeMove({ from, to, flags });
     }
 
-    if (Pawn.isPawn(piece)) {
+    if (piece.name === "p") {
       newFen.resetHalfMoveClock();
     }
 
-    const fenPieces = transformMatrixInFEN(board);
+    window.boardState = board.getLettersGrid();
+
+    const fenPieces = Fen.fromBoard(board);
 
     newFen.switchTurns();
     newFen.setFenPieces(fenPieces);
-    newFen.setEnPassantTargetSquare(enPassantTargetSquare);
+    newFen.setEnPassantTargetSquare(newFen.enPassantTargetSquare);
 
     currentMovingPiece.current = undefined;
-    window.boardState = newFen.getMatrix();
     addToFenHistory(newFen);
+    setBoard(board);
   };
 
   return {
-    boardAsMatrix,
     onPieceDragStart,
     onPieceDragEnd,
   };

@@ -1,8 +1,6 @@
-import { isSamePosition, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
 import { Colors, Coordinates } from "@/types";
 
 import { Board } from "@/controllers/classes/Board";
-import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Piece } from "@/controllers/classes/Piece";
 
 export class Rook extends Piece {
@@ -14,13 +12,12 @@ export class Rook extends Piece {
     return true;
   }
 
-  override isValidMove(board: Board, move: MoveNotation): boolean {
+  override isValidMove(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
-    const { to } = move;
 
-    if (isSamePosition(from, to)) return false;
+    if (this.isSamePosition(to)) return false;
 
-    if (isTryingToCaptureAlly(board, from, to)) return false;
+    if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (board.isTherePieceBetween(from, to)) return false;
 

@@ -1,9 +1,6 @@
-import { isSamePosition, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
-import { Cell } from "@/controllers/classes/Cell";
-
 import { Board } from "@/controllers/classes/Board";
-import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Piece } from "@/controllers/classes/Piece";
+import { Square } from "@/controllers/classes/Square";
 import { Colors, Coordinates } from "@/types";
 
 export class King extends Piece {
@@ -15,13 +12,12 @@ export class King extends Piece {
     return true;
   }
 
-  override isValidMove(board: Board, move: MoveNotation): boolean {
+  override isValidMove(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
-    const { to } = move;
 
-    if (isSamePosition(from, to)) return false;
+    if (this.isSamePosition(to)) return false;
 
-    if (isTryingToCaptureAlly(board, from, to)) return false;
+    if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (!this.isKingWayOfMoving(from, to)) return false;
 
@@ -43,8 +39,8 @@ export class King extends Piece {
     if (!king)
       throw new Error("King not found", { cause: { coordinates: this.coordinates, board: board.formatedGrid } });
 
-    if (this.color === Colors.WHITE) return Cell.isBeingAttackedByBlackPieces(board, this.coordinates);
-    if (this.color === Colors.BLACK) return Cell.isBeingAttackedByWhitePieces(board, this.coordinates);
+    if (this.color === Colors.WHITE) return Square.isBeingAttackedByBlackPieces(board, this.coordinates);
+    if (this.color === Colors.BLACK) return Square.isBeingAttackedByWhitePieces(board, this.coordinates);
 
     return false;
   }

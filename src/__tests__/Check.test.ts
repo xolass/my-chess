@@ -1,9 +1,10 @@
 import { King } from "@/controllers/classes/King";
-import { Grid } from "@/types";
+import { setupGame } from "@/main";
 
 describe("Test suite do detect if a king is in check", () => {
   it("should detect if a king is in check by a queen", () => {
-    const board: Grid = [
+    const { board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -12,14 +13,21 @@ describe("Test suite do detect if a king is in check", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const isKingInCheck = King.isKingInCheck(board, { row: 3, col: 4 });
+    const piece = board.getSquare({ row: 3, col: 4 }).piece;
 
-    expect(isKingInCheck).toBe(true);
+    if (piece instanceof King) {
+      const isKingInCheck = piece.isInCheck(board);
+
+      expect(isKingInCheck).toBe(true);
+    } else {
+      throw new Error("Piece is not a king");
+    }
   });
   it("should detect if a king is in check by a rook", () => {
-    const board: Grid = [
+    const { board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "r", null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -28,14 +36,21 @@ describe("Test suite do detect if a king is in check", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const isKingInCheck = King.isKingInCheck(board, { row: 3, col: 4 });
+    const piece = board.getSquare({ row: 3, col: 4 }).piece;
 
-    expect(isKingInCheck).toBe(true);
+    if (piece instanceof King) {
+      const isKingInCheck = piece.isInCheck(board);
+
+      expect(isKingInCheck).toBe(true);
+    } else {
+      throw new Error("Piece is not a king");
+    }
   });
   it("should detect if a king is in check by a bishop", () => {
-    const board: Grid = [
+    const { board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, "b", null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -44,14 +59,21 @@ describe("Test suite do detect if a king is in check", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const isKingInCheck = King.isKingInCheck(board, { row: 3, col: 4 });
+    const piece = board.getSquare({ row: 3, col: 4 }).piece;
 
-    expect(isKingInCheck).toBe(true);
+    if (piece instanceof King) {
+      const isKingInCheck = piece.isInCheck(board);
+
+      expect(isKingInCheck).toBe(true);
+    } else {
+      throw new Error("Piece is not a king");
+    }
   });
   it("should detect if a king is in check by a knight", () => {
-    const board: Grid = [
+    const { board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -60,14 +82,21 @@ describe("Test suite do detect if a king is in check", () => {
       [null, null, null, "n", null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const isKingInCheck = King.isKingInCheck(board, { row: 3, col: 4 });
+    const piece = board.getSquare({ row: 3, col: 4 }).piece;
 
-    expect(isKingInCheck).toBe(true);
+    if (piece instanceof King) {
+      const isKingInCheck = piece.isInCheck(board);
+
+      expect(isKingInCheck).toBe(true);
+    } else {
+      throw new Error("Piece is not a king");
+    }
   });
   it("should detect if a king is in check by a pawn", () => {
-    const board: Grid = [
+    const { board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -76,14 +105,21 @@ describe("Test suite do detect if a king is in check", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const isKingInCheck = King.isKingInCheck(board, { row: 3, col: 4 });
+    const piece = board.getSquare({ row: 3, col: 4 }).piece;
 
-    expect(isKingInCheck).toBe(true);
+    if (piece instanceof King) {
+      const isKingInCheck = piece.isInCheck(board);
+
+      expect(isKingInCheck).toBe(true);
+    } else {
+      throw new Error("Piece is not a king");
+    }
   });
   it("should not be checked for allied pieces", () => {
-    const board: Grid = [
+    const { board } = setupGame();
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, "B", null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -92,10 +128,16 @@ describe("Test suite do detect if a king is in check", () => {
       [null, null, null, null, null, "N", null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const isKingInCheck = King.isKingInCheck(board, { row: 3, col: 4 });
+    const piece = board.getSquare({ row: 3, col: 4 }).piece;
 
-    expect(isKingInCheck).toBe(false);
+    if (piece instanceof King) {
+      const isKingInCheck = piece.isInCheck(board);
+
+      expect(isKingInCheck).toBe(false);
+    } else {
+      throw new Error("Piece is not a king");
+    }
   });
 });

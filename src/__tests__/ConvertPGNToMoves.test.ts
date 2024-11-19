@@ -1,14 +1,13 @@
-import { initGame } from "@/main";
+import { PgnGamePlayer } from "@/controllers/classes/PgnGamePlayer";
+import { setupGame } from "@/main";
 
 describe("Convert PGN to moves", () => {
   it("should get move from game notation for pawn moves", () => {
-    const { game, board } = initGame();
+    const { game } = setupGame();
 
-    const conversion = game.getMoveFromGameNotation(
-      "1. e4 e5 2. d3 d5 3. f3 f5 4. g3 dxe4 5. fxe4 b5 6. exf5 b4 7. c4 bxc3 8. "
+    const conversion = new PgnGamePlayer(game).getMoveFromGameNotation(
+      "1. e4 e5 2. d3 d5 3. f3 f5 4. g3 dxe4 5. fxe4 b5 6. exf5 b4 7. c4 bxc3 "
     );
-
-    console.log(board.formatedGrid);
 
     expect(conversion.moves).toStrictEqual([
       { from: { row: 6, col: 4 }, to: { row: 4, col: 4 } },
@@ -29,11 +28,11 @@ describe("Convert PGN to moves", () => {
   });
 
   it("should play the beggining of a vienna gambit", () => {
-    const { game, board } = initGame();
+    const { game } = setupGame();
 
-    const conversion = game.getMoveFromGameNotation("1. e4 e5 2. Nc3 Nf6 3. f4 exf4 4. e5 Ng8 5. d4 Nc6 6. Bxf4");
-
-    console.log(board.formatedGrid);
+    const conversion = new PgnGamePlayer(game).getMoveFromGameNotation(
+      "1. e4 e5 2. Nc3 Nf6 3. f4 exf4 4. e5 Ng8 5. d4 Nc6 6. Bxf4"
+    );
 
     expect(conversion.moves).toStrictEqual([
       { from: { row: 6, col: 4 }, to: { row: 4, col: 4 } },

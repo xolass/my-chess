@@ -1,11 +1,13 @@
 "use client";
 import Board from "@/components/board/board";
 import { useGameActions } from "@/hooks/useGameActions";
+import { useGameStore } from "@/stores/GameContext";
 import { DndContext } from "@dnd-kit/core";
 import { useId } from "react";
 
 export default function Home() {
-  const { onPieceDragEnd, boardAsMatrix, onPieceDragStart } = useGameActions();
+  const { onPieceDragEnd, onPieceDragStart } = useGameActions();
+  const board = useGameStore((state) => state.board);
 
   const id = useId();
 
@@ -24,7 +26,7 @@ export default function Home() {
           onPieceDragEnd(active.data.current.coordinates, over.data.current.coordinates);
         }}
       >
-        <Board board={boardAsMatrix} />
+        <Board board={board} />
       </DndContext>
     </main>
   );

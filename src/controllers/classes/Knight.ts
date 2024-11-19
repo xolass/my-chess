@@ -1,8 +1,6 @@
-import { isSamePosition, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
 import { Coordinates } from "@/types";
 
 import { Board } from "@/controllers/classes/Board";
-import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Piece } from "@/controllers/classes/Piece";
 import { Colors } from "@/types";
 
@@ -15,13 +13,12 @@ export class Knight extends Piece {
     return true;
   }
 
-  override isValidMove(board: Board, move: MoveNotation): boolean {
-    const { to } = move;
+  override isValidMove(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
 
-    if (isSamePosition(from, to)) return false;
+    if (this.isSamePosition(to)) return false;
 
-    if (isTryingToCaptureAlly(board, from, to)) return false;
+    if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (!this.isKnightWayOfMoving(from, to)) return false;
 

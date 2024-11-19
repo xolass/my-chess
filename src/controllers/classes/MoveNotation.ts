@@ -35,6 +35,13 @@ export default class MoveNotation {
     return 8 - Number(rank);
   }
 
+  static toCell(coordinate: Coordinates): Cell {
+    const file = String.fromCharCode(coordinate.col + 97);
+    const rank = (8 - coordinate.row).toString();
+
+    return (file + rank) as Cell;
+  }
+
   static toCoordinate(cell: Cell) {
     if (cell.length !== 2) throw new Error("Invalid cell notation", { cause: cell });
 
@@ -82,7 +89,7 @@ export default class MoveNotation {
     if (this.getIsCheck() || this.getIsCheckmate()) {
       return MoveNotation.toCoordinate(this.move.slice(-3, -1) as Cell);
     }
-    if (this.promotion?.isPromotion) {
+    if (this.promotion) {
       return MoveNotation.toCoordinate(this.move.slice(-4, -2) as Cell);
     }
 
@@ -108,7 +115,7 @@ export default class MoveNotation {
     // should be like this: "Nbxd7+" -> "Nbxd7"
     let moveCleaned = this.move.replace(/[+#]/g, "");
 
-    if (this.promotion?.isPromotion) {
+    if (this.promotion) {
       moveCleaned = moveCleaned.slice(0, -2);
     }
 
@@ -150,7 +157,6 @@ export default class MoveNotation {
       const promotionPiece = this.move.slice(-1).toLowerCase() as PieceIdentifier;
 
       return {
-        isPromotion: true,
         promotionPiece,
       };
     }

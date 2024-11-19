@@ -1,4 +1,4 @@
-import { directionToCoordinates, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
+import { directionToCoordinates } from "@/controllers/auxFunctions";
 import { Board } from "@/controllers/classes/Board";
 import { Colors, Coordinates } from "@/types";
 import { Piece } from "./Piece";
@@ -34,12 +34,11 @@ export class Square {
     const attackingPieces = this.getAttackingPiece(board, cell);
     const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board, cell);
 
-    const blackAttackingPieces = attackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.BLACK);
-    const blackAttackingKnights = attackingPieceFromLPositions.filter(
-      (attackingKnights) => attackingKnights.color === Colors.BLACK
-    );
+    const allAttackingPieces = [...attackingPieces, ...attackingPieceFromLPositions];
 
-    if (blackAttackingPieces.length || blackAttackingKnights.length) {
+    const blackAttackingPieces = allAttackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.BLACK);
+
+    if (blackAttackingPieces.length) {
       return true;
     }
 
@@ -53,14 +52,11 @@ export class Square {
         do {
           tempCell.row = tempCell.row + value.row;
           tempCell.col = tempCell.col + value.col;
+          const possiblePiece = board.getSquare({ row: tempCell.row, col: tempCell.col });
 
-          const piece = board.getSquare({ row: tempCell.row, col: tempCell.col }).piece;
-          if (!piece) continue;
+          if (!possiblePiece.piece) continue;
 
-          if (isTryingToCaptureAlly(board, cell, tempCell)) return null;
-          if (value.pieces.includes(piece.name)) return piece;
-
-          continue;
+          return possiblePiece.piece;
         } while (tempCell.row > 0 && tempCell.col > 0 && tempCell.row < 7 && tempCell.col < 7);
       })
       .filter((piece) => piece) as Piece[];
@@ -86,8 +82,6 @@ export class Square {
         const piece = board.getSquare({ row: cellInLPositiion.row, col: cellInLPositiion.col }).piece;
 
         if (!piece) return null;
-
-        if (isTryingToCaptureAlly(board, cell, cellInLPositiion)) return null;
 
         if (piece.name === "n") return piece;
 
