@@ -2,7 +2,8 @@ import { setupGame } from "@/main";
 
 describe("Capture mechanic", () => {
   it("Should not be able to capture allied pieces", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -26,7 +27,8 @@ describe("Capture mechanic", () => {
 
   // en passant has its own test suite
   it("Should be able to capture enemy pieces, taking it's place on the board", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -46,7 +48,8 @@ describe("Capture mechanic", () => {
   });
 
   it("Should not be able to capture enemy pieces if there is an allied piece in the way", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -66,7 +69,8 @@ describe("Capture mechanic", () => {
   });
 
   it("Should not be able to capture enemy pieces if there is an enemy piece in the way", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

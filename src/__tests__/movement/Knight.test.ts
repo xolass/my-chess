@@ -2,7 +2,8 @@ import { setupGame } from "@/main";
 
 describe("Knight piece actions", () => {
   it("should be able to move in L shape", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -33,7 +34,8 @@ describe("Knight piece actions", () => {
   });
 
   it("should not be able to move in another directions", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -69,7 +71,8 @@ describe("Knight piece actions", () => {
   });
 
   it("should be able to move through pieces", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

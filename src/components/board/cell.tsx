@@ -31,17 +31,19 @@ function BoardCell(props: IBoardCell) {
     isPromotionModalOpen && positionToSpawnModal?.col === col && positionToSpawnModal?.row === row;
 
   return (
-    <div
-      ref={setNodeRef}
-      id={MoveNotation.toCell({ row, col })}
-      className={twMerge(
-        "relative size-24 flex justify-center items-center",
-        isCellWhite() ? "bg-black-cell" : "bg-white-cell"
-      )}
-    >
-      {isPromotingInThisCell && <PromotionPopup />}
-      {props.children}
-    </div>
+    <>
+      <div
+        ref={setNodeRef}
+        id={MoveNotation.toCell({ row, col })}
+        className={twMerge(
+          "relative size-24 flex justify-center items-center",
+          isCellWhite() ? "bg-black-cell" : "bg-white-cell"
+        )}
+      >
+        {isPromotingInThisCell && <PromotionPopup />}
+        {props.children}
+      </div>
+    </>
   );
 }
 

@@ -7,7 +7,7 @@ import { useId } from "react";
 
 export default function Home() {
   const { onPieceDragEnd, onPieceDragStart } = useGameActions();
-  const board = useGameStore((state) => state.board);
+  const game = useGameStore((state) => state.game);
 
   const id = useId();
 
@@ -21,12 +21,13 @@ export default function Home() {
           onPieceDragStart(current.coordinates);
         }}
         onDragEnd={({ active, over }) => {
+          console.log(active, over);
           if (!active.data.current) return;
           if (!over?.data.current) return;
           onPieceDragEnd(active.data.current.coordinates, over.data.current.coordinates);
         }}
       >
-        <Board board={board} />
+        <Board board={game.board} />
       </DndContext>
     </main>
   );

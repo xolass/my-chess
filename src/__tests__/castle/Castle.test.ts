@@ -4,7 +4,8 @@ import { Colors } from "@/types";
 
 describe("Castle test suite", () => {
   it("should be able to castle white king side", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
 
     board.from(getCastleBoard());
 
@@ -22,7 +23,8 @@ describe("Castle test suite", () => {
     ]);
   });
   it("should be able to castle white queen side", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
 
     board.from(getCastleBoard());
 
@@ -41,7 +43,8 @@ describe("Castle test suite", () => {
   });
 
   it("should be able to castle black king side", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
 
     board.from(getCastleBoard());
     game.currentPlayer = Colors.BLACK;
@@ -61,7 +64,8 @@ describe("Castle test suite", () => {
   });
 
   it("should be able to castle black queen side", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
 
     board.from(getCastleBoard());
     game.currentPlayer = Colors.BLACK;

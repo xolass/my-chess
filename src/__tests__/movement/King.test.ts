@@ -2,7 +2,8 @@ import { setupGame } from "@/main";
 
 describe("King movement actions", () => {
   it("should be move one square in any direction", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -33,7 +34,8 @@ describe("King movement actions", () => {
   });
 
   it("should not be able to move more than one square in any direction", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -64,7 +66,8 @@ describe("King movement actions", () => {
   });
 
   it("should not move above ally piece", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

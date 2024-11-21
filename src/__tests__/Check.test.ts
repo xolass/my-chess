@@ -3,7 +3,8 @@ import { setupGame } from "@/main";
 
 describe("Test suite do detect if a king is in check", () => {
   it("should detect if a king is in check by a queen", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -26,7 +27,8 @@ describe("Test suite do detect if a king is in check", () => {
     }
   });
   it("should detect if a king is in check by a rook", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "r", null, null, null],
@@ -49,7 +51,8 @@ describe("Test suite do detect if a king is in check", () => {
     }
   });
   it("should detect if a king is in check by a bishop", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, "b", null, null, null, null, null],
@@ -72,7 +75,8 @@ describe("Test suite do detect if a king is in check", () => {
     }
   });
   it("should detect if a king is in check by a knight", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -95,7 +99,8 @@ describe("Test suite do detect if a king is in check", () => {
     }
   });
   it("should detect if a king is in check by a pawn", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -118,7 +123,8 @@ describe("Test suite do detect if a king is in check", () => {
     }
   });
   it("should not be checked for allied pieces", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, "B", null, null, null, null, null],

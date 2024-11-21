@@ -3,7 +3,8 @@ import { setupGame } from "@/main";
 
 describe("En passant mechanics", () => {
   it("Should detect if a movement is an en passant", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
 
     board.from([
       [null, null, null, null, null, null, null, null],
@@ -44,7 +45,8 @@ describe("En passant mechanics", () => {
   });
 
   it("Should capture the pawn behind the movement", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

@@ -8,7 +8,7 @@ import { twMerge } from "tailwind-merge";
 function RookPiece({ color }: GenericPiece) {
   const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
   return (
-    <div className={twMerge("size-full absolute bg-contain bg-black-queen", isBlackPlayer && "rotate-180")}>
+    <div className={twMerge("size-full absolute bg-contain ", isBlackPlayer && "rotate-180")}>
       {color === Colors.WHITE ? <WhiteRookAsset /> : <BlackRookAsset />}
     </div>
   );

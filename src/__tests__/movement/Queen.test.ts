@@ -2,7 +2,8 @@ import { setupGame } from "@/main";
 
 describe("Queen movement actions", () => {
   it("should be able to move in any straight line direction", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -34,7 +35,8 @@ describe("Queen movement actions", () => {
   });
 
   it("should not be able to move to positions that are not straight lines", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -65,7 +67,8 @@ describe("Queen movement actions", () => {
   });
 
   it("should not move above ally piece", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

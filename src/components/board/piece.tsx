@@ -1,9 +1,8 @@
 "use client";
-import { Piece } from "@/controllers/classes/Piece";
 import { useGameStore } from "@/stores/GameContext";
 import { useDraggable } from "@dnd-kit/core";
 import React from "react";
-import { Colors, Coordinates } from "../../types";
+import { Colors, Coordinates, PieceLetter } from "../../types";
 import BishopPiece from "../pieces/bishop";
 import KingPiece from "../pieces/king";
 import KnightPiece from "../pieces/knight";
@@ -12,7 +11,7 @@ import QueenPiece from "../pieces/queen";
 import RookPiece from "../pieces/rook";
 
 interface Props {
-  piece: Piece | null;
+  piece: PieceLetter | null;
   coordinates: Coordinates;
 }
 
@@ -24,7 +23,7 @@ function PieceComponent({ piece, coordinates }: Props) {
   });
 
   function getPiece() {
-    switch (piece?.pieceLetter) {
+    switch (piece) {
       case "P":
         return <PawnPiece color={Colors.WHITE} />;
       case "p":

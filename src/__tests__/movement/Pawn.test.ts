@@ -3,7 +3,8 @@ import { Colors } from "@/types";
 
 describe("Pawn movement actions", () => {
   it("should be able for white pawns to move only up", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -27,7 +28,8 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for black pawns to move only down", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -52,7 +54,8 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for white pawns to move two squares on first move", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -76,7 +79,8 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for black pawns to move two squares on first move", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
@@ -102,7 +106,8 @@ describe("Pawn movement actions", () => {
   });
 
   it("should NOT be able for white pawns to move two or more squares not being on first move", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -122,7 +127,8 @@ describe("Pawn movement actions", () => {
   });
 
   it("should NOT be able for black pawns to move two or more squares not being on first move", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
 
     board.from([
       [null, null, null, null, null, null, null, null],

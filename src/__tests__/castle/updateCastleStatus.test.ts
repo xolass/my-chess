@@ -16,7 +16,8 @@ describe("Update castle status test suite", () => {
   const initialCastleStatus = "KQkq";
 
   it("should cancel castle rights on black king move", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     const kingInitialPosition = { row: 0, col: 4 };
 
     const newCastleStatusAfterKingMove = Castle.updateCastleStatus(
@@ -29,7 +30,8 @@ describe("Update castle status test suite", () => {
   });
 
   it("should cancel castle rights on black king side on rook move", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     const rookInitialPosition = { row: 0, col: 7 };
 
     const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
@@ -41,7 +43,8 @@ describe("Update castle status test suite", () => {
     expect(newCastleStatusAfterRookMove).toEqual("KQq");
   });
   it("should cancel castle rights on black queen side on rook move", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     const rookInitialPosition = { row: 0, col: 0 };
 
     const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
@@ -54,7 +57,8 @@ describe("Update castle status test suite", () => {
   });
 
   it("should cancel castle rights on white king move", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     const kingInitialPosition = { row: 7, col: 4 };
     const newCastleStatusAfterKingMove = Castle.updateCastleStatus(
       board.from(castleBoard),
@@ -66,7 +70,8 @@ describe("Update castle status test suite", () => {
   });
 
   it("should cancel castle rights on white king side on rook move", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     const rookInitialPosition = { row: 7, col: 7 };
     const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
       board.from(castleBoard),
@@ -78,7 +83,8 @@ describe("Update castle status test suite", () => {
   });
 
   it("should cancel castle rights on white queen side on rook move", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     const rookInitialPosition = { row: 7, col: 0 };
     const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
       board.from(castleBoard),

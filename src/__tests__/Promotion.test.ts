@@ -3,7 +3,8 @@ import { setupGame } from "@/main";
 
 describe("Promotion test suite", () => {
   it("should tell when a move is a promotion", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "P", null],
@@ -23,7 +24,8 @@ describe("Promotion test suite", () => {
   });
 
   it("should tell when a move is not a promotion", () => {
-    const { board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, "R", null],
@@ -49,7 +51,8 @@ describe("Promotion test suite", () => {
   });
 
   it("should be able to transform a pawn into a queen when reaching the other side of the board", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "P", null],
@@ -98,7 +101,8 @@ describe("Promotion test suite", () => {
 });
 
 it("should be able to transform a pawn into a rook when reaching the other side of the board", () => {
-  const { game, board } = setupGame();
+  const { game } = setupGame();
+  const { board } = game;
   board.from([
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
@@ -146,7 +150,8 @@ it("should be able to transform a pawn into a rook when reaching the other side 
 });
 
 it("should be able to transform a pawn into a knight when reaching the other side of the board", () => {
-  const { game, board } = setupGame();
+  const { game } = setupGame();
+  const { board } = game;
   board.from([
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
@@ -194,7 +199,8 @@ it("should be able to transform a pawn into a knight when reaching the other sid
 });
 
 it("should be able to transform a pawn into a bishop when reaching the other side of the board", () => {
-  const { game, board } = setupGame();
+  const { game } = setupGame();
+  const { board } = game;
   board.from([
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],

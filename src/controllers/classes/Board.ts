@@ -4,55 +4,28 @@ import { nameClassRelation } from "@/utils";
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 
-const initialPiecePositions: Record<Colors, Record<PieceIdentifier, Array<Coordinates>>> = {
-  [Colors.WHITE]: {
-    p: Array.from({ length: 8 }, (_, col) => ({ row: 6, col })),
-    b: [
-      { row: 7, col: 2 },
-      { row: 7, col: 5 },
-    ],
-    n: [
-      { row: 7, col: 1 },
-      { row: 7, col: 6 },
-    ],
-    r: [
-      { row: 7, col: 0 },
-      { row: 7, col: 7 },
-    ],
-    k: [{ row: 7, col: 4 }],
-    q: [{ row: 7, col: 3 }],
-  },
-  [Colors.BLACK]: {
-    p: Array.from({ length: 8 }, (_, col) => ({ row: 1, col })),
-    b: [
-      { row: 0, col: 2 },
-      { row: 0, col: 5 },
-    ],
-    n: [
-      { row: 0, col: 1 },
-      { row: 0, col: 6 },
-    ],
-    r: [
-      { row: 0, col: 0 },
-      { row: 0, col: 7 },
-    ],
-    k: [{ row: 0, col: 4 }],
-    q: [{ row: 0, col: 3 }],
-  },
-};
+const initialPiecePositions: LettersGrid = [
+  ["r", "n", "b", "q", "k", "b", "n", "r"],
+  ["p", "p", "p", "p", "p", "p", "p", "p"],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  ["P", "P", "P", "P", "P", "P", "P", "P"],
+  ["R", "N", "B", "Q", "K", "B", "N", "R"],
+];
 
 export class Board {
-  #grid: Grid;
+  #grid: Grid = Array.from({ length: 8 }, (_, row) =>
+    Array.from({ length: 8 }, (_, col) => new Square({ row, col }, null))
+  );
 
-  constructor() {
-    this.#grid = Array.from({ length: 8 }, (_, row) =>
-      Array.from({ length: 8 }, (_, col) => {
-        const square = new Square({ row, col });
-        square.piece = null;
-        return square;
-      })
-    );
+  constructor(private initialBoard?: LettersGrid) {
     this.setupBoard();
+  }
+
+  public get grid() {
+    return this.#grid;
   }
 
   public from(matrix: LettersGrid) {
@@ -126,19 +99,6 @@ export class Board {
   }
 
   private setupBoard() {
-    Object.entries(initialPiecePositions).forEach(([color, pieces]) => {
-      Object.entries(pieces).forEach(([pieceType, positions]) => {
-        positions.forEach((position) => {
-          const piece = pieceType as PieceIdentifier;
-          const pieceClass = nameClassRelation[piece];
-
-          this.placePiece(new pieceClass(color as Colors, position, piece), position);
-        });
-      });
-    });
-  }
-
-  public get grid() {
-    return this.#grid;
+    this.from(this.initialBoard ?? initialPiecePositions);
   }
 }

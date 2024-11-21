@@ -2,7 +2,8 @@ import { setupGame } from "@/main";
 
 describe("Bishop piece actions", () => {
   it("should be able to move upRight multiple squares", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -19,7 +20,8 @@ describe("Bishop piece actions", () => {
   });
 
   it("should be able to move downRight multiple squares", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -35,7 +37,8 @@ describe("Bishop piece actions", () => {
     expect(canMoveDiagDownRight).toBe(true);
   });
   it("should be able to move upLeft multiple squares", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -51,7 +54,8 @@ describe("Bishop piece actions", () => {
     expect(canMoveDiagUpLeft).toBe(true);
   });
   it("should be able to move downLeft multiple squares", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -68,7 +72,8 @@ describe("Bishop piece actions", () => {
   });
 
   it("should not move in a straight line", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -91,7 +96,8 @@ describe("Bishop piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],

@@ -14,12 +14,12 @@ function Board({ board }: BoardProps) {
 
   return (
     <div className={twMerge("flex flex-col rounded-md", "rotate-180")}>
-      {board.grid.map((row, rowIndex) => {
+      {board.getLettersGrid().map((row, rowIndex) => {
         return (
           <div key={"row" + rowIndex} className="flex flex-row">
-            {row.map((square, colIndex) => (
+            {row.map((piece, colIndex) => (
               <BoardCell key={"col" + colIndex} row={rowIndex} col={colIndex}>
-                <PieceComponent piece={square.piece} coordinates={{ col: colIndex, row: rowIndex }} />
+                <PieceComponent piece={piece} coordinates={{ col: colIndex, row: rowIndex }} />
               </BoardCell>
             ))}
           </div>

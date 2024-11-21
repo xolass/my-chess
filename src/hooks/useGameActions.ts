@@ -8,14 +8,15 @@ import { useGameStore } from "@/stores/GameContext";
 import { useCallback, useEffect } from "react";
 import { Coordinates, MoveFlags, PromotionOptions } from "../types";
 
-const { board, game } = setupGame();
+const { game } = setupGame();
+const { board } = game;
 
 export function useGameActions() {
   const { addToFenHistory, currentMovingPiece, currentFen, fenHistory } = useGameState();
   const setPromotionModalOpen = useGameStore((state) => state.setPromotionModalOpen);
   const setHandlePromotingPiece = useGameStore((state) => state.setHandlePromotingPiece);
   const setPositionToSpawnModal = useGameStore((state) => state.setPositionToSpawnModal);
-  const setBoard = useGameStore((state) => state.setBoard);
+  const setGame = useGameStore((state) => state.setGame);
 
   useEffect(() => {
     console.log(fenHistory[fenHistory.length - 1]);
@@ -28,13 +29,12 @@ export function useGameActions() {
     [currentMovingPiece]
   );
 
-  async function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions> {
+  async function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions | null> {
     return new Promise((resolve) => {
       setPromotionModalOpen(true);
       setPositionToSpawnModal(coordinatesToRenderModalOn);
 
       setHandlePromotingPiece((piece: PromotionOptions | null) => {
-        if (!piece) return;
         setPromotionModalOpen(false);
         return resolve(piece);
       });
@@ -51,6 +51,7 @@ export function useGameActions() {
 
     const piece = board.getSquare(from)?.piece;
     if (!piece) return;
+    if (piece.color !== game.currentPlayer) return;
 
     if (isEnPassant) {
       flags.enPassant = true;
@@ -58,6 +59,8 @@ export function useGameActions() {
 
     if (isPromotion) {
       const promotionPiece = await getPromotionPiece(to);
+
+      if (!promotionPiece) return;
 
       flags.promotion = {
         promotionPiece,
@@ -94,7 +97,7 @@ export function useGameActions() {
 
     currentMovingPiece.current = undefined;
     addToFenHistory(newFen);
-    setBoard(board);
+    setGame(game);
   };
 
   return {

@@ -2,7 +2,8 @@ import { setupGame } from "@/main";
 
 describe("Rook piece actions", () => {
   it("should be able to move UP in a straight line", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -24,7 +25,8 @@ describe("Rook piece actions", () => {
     expect(canMoveUp).toBe(true);
   });
   it("should be able to move DOWN in a straight line", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -41,7 +43,8 @@ describe("Rook piece actions", () => {
   });
 
   it("should be able to move LEFT in a straight line", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -58,7 +61,8 @@ describe("Rook piece actions", () => {
   });
 
   it("should be able to move RIGHT in a straight line", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -75,7 +79,8 @@ describe("Rook piece actions", () => {
   });
 
   it("should not be able to move in diagonals", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -99,7 +104,8 @@ describe("Rook piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const { game, board } = setupGame();
+    const { game } = setupGame();
+    const { board } = game;
     board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
