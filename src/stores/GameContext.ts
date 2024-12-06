@@ -9,8 +9,8 @@ export type HandlePromotingPiece = (promotingPiece: PromotionOptions | null) => 
 export interface GameContextType {
   game: Game;
   setGame: (game: Game) => void;
-  isBlackPlayer: boolean;
-  setBlackPlayer: (isBlackPlayer: boolean) => void;
+  isBlackPlayerVision: boolean;
+  setIsBlackPlayerVision: (isBlackPlayer: boolean) => void;
   isPromotionModalOpen: boolean;
   setPromotionModalOpen: (newModalState: boolean) => void;
   positionToSpawnModal: Coordinates | null;
@@ -22,8 +22,8 @@ export interface GameContextType {
 export const useGameStore = create<GameContextType>((set) => ({
   game: new Game(new Board(initialBoard)),
   setGame: (game) => set({ game }),
-  isBlackPlayer: true,
-  setBlackPlayer: (isBlackPlayer) => set({ isBlackPlayer }),
+  isBlackPlayerVision: true,
+  setIsBlackPlayerVision: (isBlackPlayer) => set({ isBlackPlayerVision: isBlackPlayer }),
   isPromotionModalOpen: false,
   setPromotionModalOpen: (newModalState) => set({ isPromotionModalOpen: newModalState }),
   positionToSpawnModal: null,

@@ -21,7 +21,6 @@ export default function Home() {
           onPieceDragStart(current.coordinates);
         }}
         onDragEnd={({ active, over }) => {
-          console.log(active, over);
           if (!active.data.current) return;
           if (!over?.data.current) return;
           onPieceDragEnd(active.data.current.coordinates, over.data.current.coordinates);

@@ -14,9 +14,9 @@ export class Square {
     this.piece = null;
   }
 
-  static isBeingAttackedByWhitePieces(board: Board, cell: Coordinates): boolean {
-    const attackingPieces = this.getAttackingPiece(board, cell);
-    const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board, cell);
+  isBeingAttackedByWhitePieces(board: Board): boolean {
+    const attackingPieces = this.getAttackingPiece(board);
+    const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board);
 
     const whiteAttackingPieces = attackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.WHITE);
     const whiteAttackingKnights = attackingPieceFromLPositions.filter(
@@ -30,9 +30,9 @@ export class Square {
     return false;
   }
 
-  static isBeingAttackedByBlackPieces(board: Board, cell: Coordinates): boolean {
-    const attackingPieces = this.getAttackingPiece(board, cell);
-    const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board, cell);
+  isBeingAttackedByBlackPieces(board: Board): boolean {
+    const attackingPieces = this.getAttackingPiece(board);
+    const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board);
 
     const allAttackingPieces = [...attackingPieces, ...attackingPieceFromLPositions];
 
@@ -45,26 +45,35 @@ export class Square {
     return false;
   }
 
-  private static getAttackingPiece(board: Board, cell: Coordinates): Piece[] {
-    const attackingPieces = Object.values(directionToCoordinates)
-      .map((value) => {
-        const tempCell = { ...cell };
-        do {
+  getAttackingPiece(board: Board): Piece[] {
+    const attackingPieces = Object.entries(directionToCoordinates)
+      .map(([key, value]) => {
+        if (key === "same") return null;
+
+        const tempCell = { ...this.coordinates };
+
+        while (tempCell.row > 0 && tempCell.col > 0 && tempCell.row < 7 && tempCell.col < 7) {
+          // sum first to avoid checking the current square
           tempCell.row = tempCell.row + value.row;
           tempCell.col = tempCell.col + value.col;
+
           const possiblePiece = board.getSquare({ row: tempCell.row, col: tempCell.col });
 
           if (!possiblePiece.piece) continue;
 
+          if (!value.pieces.includes(possiblePiece.piece.pieceLetter)) {
+            return null;
+          }
+
           return possiblePiece.piece;
-        } while (tempCell.row > 0 && tempCell.col > 0 && tempCell.row < 7 && tempCell.col < 7);
+        }
       })
-      .filter((piece) => piece) as Piece[];
+      .filter((piece) => Boolean(piece)) as Piece[];
 
     return attackingPieces;
   }
 
-  private static getAttackingPieceFromLPositions(board: Board, cell: Coordinates): Piece[] {
+  getAttackingPieceFromLPositions(board: Board): Piece[] {
     const lPositions = [
       { row: -2, col: -1 },
       { row: -2, col: 1 },
@@ -78,7 +87,12 @@ export class Square {
 
     const attackingKnights = lPositions
       .map((modifier) => {
-        const cellInLPositiion = { row: cell.row + modifier.row, col: cell.col + modifier.col };
+        const rowModified = this.coordinates.row + modifier.row;
+        const colModified = this.coordinates.col + modifier.col;
+
+        if (rowModified < 0 || rowModified > 7 || colModified < 0 || colModified > 7) return null;
+
+        const cellInLPositiion = { row: rowModified, col: colModified };
         const piece = board.getSquare({ row: cellInLPositiion.row, col: cellInLPositiion.col }).piece;
 
         if (!piece) return null;

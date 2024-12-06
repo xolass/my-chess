@@ -16,16 +16,12 @@ const initialPiecePositions: LettersGrid = [
 ];
 
 export class Board {
-  #grid: Grid = Array.from({ length: 8 }, (_, row) =>
+  grid: Grid = Array.from({ length: 8 }, (_, row) =>
     Array.from({ length: 8 }, (_, col) => new Square({ row, col }, null))
   );
 
   constructor(private initialBoard?: LettersGrid) {
     this.setupBoard();
-  }
-
-  public get grid() {
-    return this.#grid;
   }
 
   public from(matrix: LettersGrid) {
@@ -34,7 +30,7 @@ export class Board {
         const square = new Square({ row: rowIndex, col: colIndex });
         if (!pieceLetter) {
           square.piece = null;
-          this.#grid[rowIndex][colIndex] = square;
+          this.grid[rowIndex][colIndex] = square;
         } else {
           const piece = pieceLetter.toLowerCase() as PieceIdentifier;
           const color = pieceLetter === pieceLetter.toUpperCase() ? Colors.WHITE : Colors.BLACK;
@@ -50,11 +46,11 @@ export class Board {
   }
 
   public getSquare(coordinates: Coordinates) {
-    return this.#grid[coordinates.row][coordinates.col];
+    return this.grid[coordinates.row][coordinates.col];
   }
 
   public getPiecesOfAKind(piece: PieceIdentifier, currentPlayer: Colors): Piece[] {
-    return this.#grid.flat().reduce<Piece[]>((acc, square) => {
+    return this.grid.flat().reduce<Piece[]>((acc, square) => {
       const squarePiece = square.piece;
       if (!squarePiece) return acc;
 
@@ -66,11 +62,11 @@ export class Board {
   }
 
   public getLettersGrid() {
-    return this.#grid.map((row) => row.map((square) => square.piece?.pieceLetter || null));
+    return this.grid.map((row) => row.map((square) => square.piece?.pieceLetter || null));
   }
 
   public get formatedGrid() {
-    return this.#grid.map((row) => row.map(({ piece }) => piece?.pieceLetter || "-").join(" ")).join("\n");
+    return this.grid.map((row) => row.map(({ piece }) => piece?.pieceLetter || "-").join(" ")).join("\n");
   }
 
   public isTherePieceBetween(from: Coordinates, to: Coordinates) {
@@ -94,7 +90,7 @@ export class Board {
   }
 
   private placePiece(piece: Piece, { row, col }: Coordinates) {
-    this.#grid[row][col].placePiece(piece);
+    this.grid[row][col].placePiece(piece);
     piece.setPosition({ row, col }); // Set the position in the piece as well
   }
 

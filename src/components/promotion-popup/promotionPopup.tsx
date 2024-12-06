@@ -14,7 +14,6 @@ export function PromotionPopup() {
   const clickOutsideRef = useOutsideClick(onClickOutside);
 
   function onClickOutside() {
-    console.log("ASKJDHG");
     choosePiece(null);
   }
 

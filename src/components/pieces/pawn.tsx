@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { Colors, GenericPiece } from "../../types";
 
 function PawnPiece({ color }: GenericPiece) {
-  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
   return (
     <div className={twMerge("size-full absolute bg-contain", isBlackPlayer && "rotate-180")}>
       {color === Colors.WHITE ? <WhitePawnAsset /> : <BlackPawnAsset />}
