@@ -9,10 +9,6 @@ export class Knight extends Piece {
     super(color, coordinates, "n");
   }
 
-  public isMovingRightDirection(_to: Coordinates): boolean {
-    return true;
-  }
-
   override isValidMove(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
 

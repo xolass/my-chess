@@ -8,9 +8,6 @@ export class Queen extends Piece {
     super(color, coordinates, "q");
   }
 
-  public isMovingRightDirection(_to: Coordinates): boolean {
-    return true;
-  }
   override isValidMove(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
 

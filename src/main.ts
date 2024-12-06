@@ -4,12 +4,12 @@ import { LettersGrid } from "@/types";
 
 export const initialBoard: LettersGrid = [
   [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, "P", null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, "K", null, null, null, null],
+  ["R", null, null, null, null, null, null, null],
+  [null, null, null, "q", null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, "p", null],
   [null, null, null, null, null, null, null, null],
 ];
 

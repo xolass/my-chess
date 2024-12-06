@@ -9,10 +9,6 @@ export class Pawn extends Piece {
     super(color, coordinates, "p");
   }
 
-  override isMovingRightDirection(_target: Coordinates): boolean {
-    return true;
-  }
-
   override isValidMove(board: Board, to: Coordinates, flags?: MoveFlags): boolean {
     const from = this.coordinates;
 

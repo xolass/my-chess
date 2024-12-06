@@ -10,7 +10,7 @@ interface BoardProps {
 }
 
 function Board({ board }: BoardProps) {
-  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
 
   return (
     <div className={twMerge("flex flex-col rounded-md", "rotate-180")}>

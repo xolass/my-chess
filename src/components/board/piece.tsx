@@ -1,7 +1,7 @@
 "use client";
 import { useGameStore } from "@/stores/GameContext";
 import { useDraggable } from "@dnd-kit/core";
-import React from "react";
+import React, { useMemo } from "react";
 import { Colors, Coordinates, PieceLetter } from "../../types";
 import BishopPiece from "../pieces/bishop";
 import KingPiece from "../pieces/king";
@@ -16,13 +16,13 @@ interface Props {
 }
 
 function PieceComponent({ piece, coordinates }: Props) {
-  const isBlackPlayer = useGameStore((state) => state.isBlackPlayer);
+  const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: `${piece} ${coordinates.col}-${coordinates.row}`,
     data: { piece, coordinates },
   });
 
-  function getPiece() {
+  const pieceToPlace = useMemo(() => {
     switch (piece) {
       case "P":
         return <PawnPiece color={Colors.WHITE} />;
@@ -51,7 +51,9 @@ function PieceComponent({ piece, coordinates }: Props) {
       default:
         return null;
     }
-  }
+  }, [piece]);
+
+  if (!pieceToPlace) return null;
 
   return (
     <div
@@ -60,7 +62,7 @@ function PieceComponent({ piece, coordinates }: Props) {
       {...listeners}
       {...attributes}
     >
-      {getPiece()}
+      {pieceToPlace}
     </div>
   );
 }
