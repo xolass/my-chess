@@ -1,12 +1,12 @@
 "use client";
+import { Board as BoardClass } from "@/controllers/classes/Board";
 import { useGameStore } from "@/stores/GameContext";
-import { Board as BoardType } from "@/types";
 import { twMerge } from "tailwind-merge";
 import BoardCell from "./cell";
 import PieceComponent from "./piece";
 
 interface BoardProps {
-  board: BoardType;
+  board: BoardClass;
 }
 
 function Board({ board }: BoardProps) {
@@ -14,7 +14,7 @@ function Board({ board }: BoardProps) {
 
   return (
     <div className={twMerge("flex flex-col rounded-md", "rotate-180")}>
-      {board.map((row, rowIndex) => {
+      {board.getLettersGrid().map((row, rowIndex) => {
         return (
           <div key={"row" + rowIndex} className="flex flex-row">
             {row.map((piece, colIndex) => (

@@ -1,30 +1,35 @@
-import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
-import { Board, Coordinates, PieceLetter } from "@/types";
+import { Colors, Coordinates } from "@/types";
 
-export class Queen {
-  static isQueen(piece: PieceLetter) {
-    return piece === "q" || piece === "Q";
+import { Board } from "@/controllers/classes/Board";
+import { Piece } from "@/controllers/classes/Piece";
+
+export class Queen extends Piece {
+  constructor(public override color: Colors, public override coordinates: Coordinates) {
+    super(color, coordinates, "q");
   }
 
-  static isQueenWayOfMoving(from: Coordinates, to: Coordinates) {
+  public isMovingRightDirection(_to: Coordinates): boolean {
+    return true;
+  }
+  override isValidMove(board: Board, to: Coordinates): boolean {
+    const from = this.coordinates;
+
+    if (this.isSamePosition(to)) return false;
+
+    if (this.isTryingToCaptureAlly(board, to)) return false;
+
+    if (board.isTherePieceBetween(from, to)) return false;
+
+    if (!this.isQueenWayOfMoving(from, to)) return false;
+
+    return true;
+  }
+
+  private isQueenWayOfMoving(from: Coordinates, to: Coordinates) {
     const isHorizontal = from.row === to.row;
     const isVertical = from.col === to.col;
     const isDiagonal = Math.abs(from.row - to.row) === Math.abs(from.col - to.col);
 
     return isHorizontal || isVertical || isDiagonal;
-  }
-  static canQueenMove(board: Board, from: Coordinates, to: Coordinates) {
-    const piece = board[from.row][from.col];
-    if (!piece) return false;
-
-    if (isSamePosition(from, to)) return false;
-
-    if (isTryingToCaptureAlly(board, from, to)) return false;
-
-    if (isTherePieceBetween(board, from, to)) return false;
-
-    if (!this.isQueenWayOfMoving(from, to)) return false;
-
-    return true;
   }
 }

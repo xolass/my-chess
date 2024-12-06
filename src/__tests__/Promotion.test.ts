@@ -1,9 +1,11 @@
 import { Promotion } from "@/controllers/classes/Promotion";
-import { Board } from "@/types";
+import { setupGame } from "@/main";
 
 describe("Promotion test suite", () => {
   it("should tell when a move is a promotion", () => {
-    const board: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
@@ -12,7 +14,7 @@ describe("Promotion test suite", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, "p", null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
     const isWhitePromoting = Promotion.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
     const isBlackPromoting = Promotion.isPromotion(board, { row: 6, col: 5 }, { row: 7, col: 5 });
@@ -22,7 +24,9 @@ describe("Promotion test suite", () => {
   });
 
   it("should tell when a move is not a promotion", () => {
-    const board: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, "R", null],
       [null, null, null, null, null, null, null, "P"],
@@ -31,7 +35,7 @@ describe("Promotion test suite", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, "q", null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
     const pawnNotReachingOtherSide = Promotion.isPromotion(board, { row: 5, col: 7 }, { row: 6, col: 7 });
     const rookGettingToLastRank = Promotion.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
@@ -47,7 +51,9 @@ describe("Promotion test suite", () => {
   });
 
   it("should be able to transform a pawn into a queen when reaching the other side of the board", () => {
-    const board: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
@@ -56,12 +62,15 @@ describe("Promotion test suite", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, "p", null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const whitePromoteToQueen = Promotion.promote(board, { row: 1, col: 6 }, { row: 0, col: 6 }, "q");
-    const blackPromoteToQueen = Promotion.promote(board, { row: 6, col: 6 }, { row: 7, col: 6 }, "q");
+    game.makeMove({
+      from: { row: 1, col: 6 },
+      to: { row: 0, col: 6 },
+      flags: { promotion: { promotionPiece: "q" } },
+    });
 
-    expect(whitePromoteToQueen).toStrictEqual([
+    expect(board.getLettersGrid()).toStrictEqual([
       [null, null, null, null, null, null, "Q", null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -71,9 +80,16 @@ describe("Promotion test suite", () => {
       [null, null, null, null, null, null, "p", null],
       [null, null, null, null, null, null, null, null],
     ]);
-    expect(blackPromoteToQueen).toStrictEqual([
+
+    game.makeMove({
+      from: { row: 6, col: 6 },
+      to: { row: 7, col: 6 },
+      flags: { promotion: { promotionPiece: "q" } },
+    });
+
+    expect(board.getLettersGrid()).toStrictEqual([
+      [null, null, null, null, null, null, "Q", null],
       [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "P", null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -85,7 +101,9 @@ describe("Promotion test suite", () => {
 });
 
 it("should be able to transform a pawn into a rook when reaching the other side of the board", () => {
-  const board: Board = [
+  const { game } = setupGame();
+  const { board } = game;
+  board.from([
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
@@ -94,12 +112,15 @@ it("should be able to transform a pawn into a rook when reaching the other side 
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "p", null],
     [null, null, null, null, null, null, null, null],
-  ];
+  ]);
 
-  const whitePromoteToRook = Promotion.promote(board, { row: 1, col: 6 }, { row: 0, col: 6 }, "r");
-  const blackPromoteToRook = Promotion.promote(board, { row: 6, col: 6 }, { row: 7, col: 6 }, "r");
+  game.makeMove({
+    from: { row: 1, col: 6 },
+    to: { row: 0, col: 6 },
+    flags: { promotion: { promotionPiece: "r" } },
+  });
 
-  expect(whitePromoteToRook).toStrictEqual([
+  expect(board.getLettersGrid()).toStrictEqual([
     [null, null, null, null, null, null, "R", null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -110,9 +131,15 @@ it("should be able to transform a pawn into a rook when reaching the other side 
     [null, null, null, null, null, null, null, null],
   ]);
 
-  expect(blackPromoteToRook).toStrictEqual([
+  game.makeMove({
+    from: { row: 6, col: 6 },
+    to: { row: 7, col: 6 },
+    flags: { promotion: { promotionPiece: "r" } },
+  });
+
+  expect(board.getLettersGrid()).toStrictEqual([
+    [null, null, null, null, null, null, "R", null],
     [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -123,7 +150,9 @@ it("should be able to transform a pawn into a rook when reaching the other side 
 });
 
 it("should be able to transform a pawn into a knight when reaching the other side of the board", () => {
-  const board: Board = [
+  const { game } = setupGame();
+  const { board } = game;
+  board.from([
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
@@ -132,12 +161,15 @@ it("should be able to transform a pawn into a knight when reaching the other sid
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "p", null],
     [null, null, null, null, null, null, null, null],
-  ];
+  ]);
 
-  const whitePromoteToKnight = Promotion.promote(board, { row: 1, col: 6 }, { row: 0, col: 6 }, "n");
-  const blackPromoteToKnight = Promotion.promote(board, { row: 6, col: 6 }, { row: 7, col: 6 }, "n");
+  game.makeMove({
+    from: { row: 1, col: 6 },
+    to: { row: 0, col: 6 },
+    flags: { promotion: { promotionPiece: "n" } },
+  });
 
-  expect(whitePromoteToKnight).toStrictEqual([
+  expect(board.getLettersGrid()).toStrictEqual([
     [null, null, null, null, null, null, "N", null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -147,9 +179,16 @@ it("should be able to transform a pawn into a knight when reaching the other sid
     [null, null, null, null, null, null, "p", null],
     [null, null, null, null, null, null, null, null],
   ]);
-  expect(blackPromoteToKnight).toStrictEqual([
+
+  game.makeMove({
+    from: { row: 6, col: 6 },
+    to: { row: 7, col: 6 },
+    flags: { promotion: { promotionPiece: "n" } },
+  });
+
+  expect(board.getLettersGrid()).toStrictEqual([
+    [null, null, null, null, null, null, "N", null],
     [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -160,7 +199,9 @@ it("should be able to transform a pawn into a knight when reaching the other sid
 });
 
 it("should be able to transform a pawn into a bishop when reaching the other side of the board", () => {
-  const board: Board = [
+  const { game } = setupGame();
+  const { board } = game;
+  board.from([
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
@@ -169,12 +210,15 @@ it("should be able to transform a pawn into a bishop when reaching the other sid
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, "p", null],
     [null, null, null, null, null, null, null, null],
-  ];
+  ]);
 
-  const whitePromoteToBishop = Promotion.promote(board, { row: 1, col: 6 }, { row: 0, col: 6 }, "b");
-  const blackPromoteToBishop = Promotion.promote(board, { row: 6, col: 6 }, { row: 7, col: 6 }, "b");
+  game.makeMove({
+    from: { row: 1, col: 6 },
+    to: { row: 0, col: 6 },
+    flags: { promotion: { promotionPiece: "b" } },
+  });
 
-  expect(whitePromoteToBishop).toStrictEqual([
+  expect(board.getLettersGrid()).toStrictEqual([
     [null, null, null, null, null, null, "B", null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
@@ -184,9 +228,16 @@ it("should be able to transform a pawn into a bishop when reaching the other sid
     [null, null, null, null, null, null, "p", null],
     [null, null, null, null, null, null, null, null],
   ]);
-  expect(blackPromoteToBishop).toStrictEqual([
+
+  game.makeMove({
+    from: { row: 6, col: 6 },
+    to: { row: 7, col: 6 },
+    flags: { promotion: { promotionPiece: "b" } },
+  });
+
+  expect(board.getLettersGrid()).toStrictEqual([
+    [null, null, null, null, null, null, "B", null],
     [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "P", null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],

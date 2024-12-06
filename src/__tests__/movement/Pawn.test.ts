@@ -1,9 +1,11 @@
-import { Pawn } from "@/controllers/classes/Pawn";
-import { Board } from "@/types";
+import { setupGame } from "@/main";
+import { Colors } from "@/types";
 
 describe("Pawn movement actions", () => {
   it("should be able for white pawns to move only up", () => {
-    const onlyPawnBoard: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -12,12 +14,12 @@ describe("Pawn movement actions", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const canMoveUp = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 3, col: 4 });
-    const canMoveDown = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 5, col: 4 });
-    const canMoveLeft = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 4, col: 3 });
-    const canMoveRight = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 4, col: 5 });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
 
     expect(canMoveUp).toBe(true);
     expect(canMoveDown).toBe(false);
@@ -26,7 +28,9 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for black pawns to move only down", () => {
-    const onlyPawnBoard: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -35,12 +39,13 @@ describe("Pawn movement actions", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
+    game.currentPlayer = Colors.BLACK;
 
-    const canMoveUp = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 3, col: 4 });
-    const canMoveDown = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 5, col: 4 });
-    const canMoveLeft = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 4, col: 3 });
-    const canMoveRight = Pawn.canPawnMove(onlyPawnBoard, { row: 4, col: 4 }, { row: 4, col: 5 });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
 
     expect(canMoveUp).toBe(false);
     expect(canMoveDown).toBe(true);
@@ -49,7 +54,9 @@ describe("Pawn movement actions", () => {
   });
 
   it("should be able for white pawns to move two squares on first move", () => {
-    const onlyPawnBoard: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -58,12 +65,12 @@ describe("Pawn movement actions", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "P", null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const canMoveUp = Pawn.canPawnMove(onlyPawnBoard, { row: 6, col: 4 }, { row: 4, col: 4 });
-    const canMoveDown = Pawn.canPawnMove(onlyPawnBoard, { row: 6, col: 4 }, { row: 7, col: 4 });
-    const canMoveLeft = Pawn.canPawnMove(onlyPawnBoard, { row: 6, col: 4 }, { row: 6, col: 3 });
-    const canMoveRight = Pawn.canPawnMove(onlyPawnBoard, { row: 6, col: 4 }, { row: 6, col: 5 });
+    const canMoveUp = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 7, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 6, col: 3 } });
+    const canMoveRight = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 6, col: 5 } });
 
     expect(canMoveUp).toBe(true);
     expect(canMoveDown).toBe(false);
@@ -71,8 +78,10 @@ describe("Pawn movement actions", () => {
     expect(canMoveRight).toBe(false);
   });
 
-  it("should be able for white pawns to move two squares on first move", () => {
-    const onlyPawnBoard: Board = [
+  it("should be able for black pawns to move two squares on first move", () => {
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -81,12 +90,14 @@ describe("Pawn movement actions", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const canMoveDown = Pawn.canPawnMove(onlyPawnBoard, { row: 1, col: 4 }, { row: 3, col: 4 });
-    const canMoveUp = Pawn.canPawnMove(onlyPawnBoard, { row: 1, col: 4 }, { row: 0, col: 4 });
-    const canMoveLeft = Pawn.canPawnMove(onlyPawnBoard, { row: 1, col: 4 }, { row: 1, col: 3 });
-    const canMoveRight = Pawn.canPawnMove(onlyPawnBoard, { row: 1, col: 4 }, { row: 1, col: 5 });
+    game.currentPlayer = Colors.BLACK;
+
+    const canMoveDown = game.validateMove({ from: { row: 1, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveUp = game.validateMove({ from: { row: 1, col: 4 }, to: { row: 0, col: 4 } });
+    const canMoveLeft = game.validateMove({ from: { row: 1, col: 4 }, to: { row: 1, col: 3 } });
+    const canMoveRight = game.validateMove({ from: { row: 1, col: 4 }, to: { row: 1, col: 5 } });
 
     expect(canMoveDown).toBe(true);
     expect(canMoveUp).toBe(false);
@@ -95,7 +106,9 @@ describe("Pawn movement actions", () => {
   });
 
   it("should NOT be able for white pawns to move two or more squares not being on first move", () => {
-    const onlyPawnBoard: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -104,17 +117,20 @@ describe("Pawn movement actions", () => {
       [null, null, null, null, "P", null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const canMove2Up = Pawn.canPawnMove(onlyPawnBoard, { row: 5, col: 4 }, { row: 3, col: 4 });
-    const canMove3Up = Pawn.canPawnMove(onlyPawnBoard, { row: 5, col: 4 }, { row: 2, col: 4 });
+    const canMove2Up = game.validateMove({ from: { row: 5, col: 4 }, to: { row: 3, col: 4 } });
+    const canMove3Up = game.validateMove({ from: { row: 5, col: 4 }, to: { row: 2, col: 4 } });
 
     expect(canMove2Up).toBe(false);
     expect(canMove3Up).toBe(false);
   });
 
   it("should NOT be able for black pawns to move two or more squares not being on first move", () => {
-    const onlyPawnBoard: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, "p", null, null, null],
@@ -123,10 +139,10 @@ describe("Pawn movement actions", () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const canMove2Up = Pawn.canPawnMove(onlyPawnBoard, { row: 2, col: 4 }, { row: 4, col: 4 });
-    const canMove3Up = Pawn.canPawnMove(onlyPawnBoard, { row: 2, col: 4 }, { row: 5, col: 4 });
+    const canMove2Up = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 4, col: 4 } });
+    const canMove3Up = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 5, col: 4 } });
 
     expect(canMove2Up).toBe(false);
     expect(canMove3Up).toBe(false);

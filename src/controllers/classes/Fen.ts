@@ -1,11 +1,12 @@
+import { Board } from "@/controllers/classes/Board";
 import {
-  Board,
   Colors,
   EnPassantTargetSquare,
   FenCastle,
   FenColors,
   FenPiecesSection,
   FenType,
+  LettersGrid,
   PieceLetter,
 } from "@/types";
 
@@ -53,7 +54,7 @@ export class Fen {
     this.setHalfMoveClock(0);
   }
 
-  public getMatrix(): Board {
+  public getMatrix(): LettersGrid {
     function getFENRowAsArray(row: string) {
       const cells: Array<PieceLetter | null> = [];
       Array.from(row).forEach((char) => {
@@ -116,5 +117,36 @@ export class Fen {
   private setTurnsCount(newValue: number) {
     this._fen =
       `${this.fenPieces} ${this.turn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${newValue}` as FenType;
+  }
+
+  static fromBoard(board: Board) {
+    const matrix = board.getLettersGrid();
+
+    return matrix
+      .map((row) => {
+        let result = "";
+        let emptySpaces = 0;
+
+        row.forEach((cell) => {
+          if (!cell) {
+            emptySpaces++;
+            return;
+          }
+
+          if (emptySpaces) {
+            result += emptySpaces;
+            emptySpaces = 0;
+          }
+
+          result += cell;
+        });
+
+        if (emptySpaces) {
+          result += emptySpaces;
+        }
+
+        return result;
+      })
+      .join("/") as FenPiecesSection;
   }
 }

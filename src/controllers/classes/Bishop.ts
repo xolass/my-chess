@@ -1,26 +1,29 @@
-import { isSamePosition, isTherePieceBetween, isTryingToCaptureAlly } from "@/controllers/auxFunctions";
-import { Board, Coordinates, PieceLetter } from "@/types";
+import { Board } from "@/controllers/classes/Board";
+import { Piece } from "@/controllers/classes/Piece";
+import { Colors, Coordinates } from "@/types";
 
-export class Bishop {
-  static isBishop(piece: PieceLetter) {
-    return piece === "b" || piece === "B";
+export class Bishop extends Piece {
+  constructor(public override color: Colors, public override coordinates: Coordinates) {
+    super(color, coordinates, "b");
   }
 
-  static isBishopWayOfMoving(from: Coordinates, to: Coordinates) {
-    return Math.abs(from.col - to.col) === Math.abs(from.row - to.row);
+  public isMovingRightDirection(_to: Coordinates): boolean {
+    return true;
   }
+  override isValidMove(board: Board, to: Coordinates): boolean {
+    const from = this.coordinates;
 
-  static canBishopMove(board: Board, from: Coordinates, to: Coordinates) {
-    const piece = board[from.row][from.col];
-    if (!piece) return false;
+    if (this.isSamePosition(to)) return false;
 
-    if (isSamePosition(from, to)) return false;
-    if (isTryingToCaptureAlly(board, from, to)) return false;
+    if (this.isTryingToCaptureAlly(board, to)) return false;
 
-    if (isTherePieceBetween(board, from, to)) return false;
+    if (board.isTherePieceBetween(from, to)) return false;
 
     if (!this.isBishopWayOfMoving(from, to)) return false;
-
     return true;
+  }
+
+  private isBishopWayOfMoving(from: Coordinates, to: Coordinates) {
+    return Math.abs(from.col - to.col) === Math.abs(from.row - to.row);
   }
 }

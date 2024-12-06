@@ -2,11 +2,23 @@ import BishopPiece from "@/components/pieces/bishop";
 import KnightPiece from "@/components/pieces/knight";
 import QueenPiece from "@/components/pieces/queen";
 import RookPiece from "@/components/pieces/rook";
+import { useOutsideClick } from "@/hooks/useClickOutside";
 import { useGameStore } from "@/stores/GameContext";
 import { Colors, PromotionOptions } from "@/types";
+import { twMerge } from "tailwind-merge";
+
 export function PromotionPopup() {
+  const game = useGameStore((state) => state.game);
   const handlePromotingPiece = useGameStore((state) => state.handlePromotingPiece);
-  function choosePiece(piece: PromotionOptions) {
+
+  const clickOutsideRef = useOutsideClick(onClickOutside);
+
+  function onClickOutside() {
+    console.log("ASKJDHG");
+    choosePiece(null);
+  }
+
+  function choosePiece(piece: PromotionOptions | null) {
     if (!handlePromotingPiece) return;
     handlePromotingPiece(piece);
   }
@@ -14,34 +26,49 @@ export function PromotionPopup() {
   return (
     <>
       <div id="modal-background" className="absolute inset-0 bg-black/25 z-10"></div>
-      <div className="flex flex-col gap-1 z-20 absolute top-0">
+      <div
+        ref={clickOutsideRef}
+        className={twMerge(
+          "flex z-20 absolute",
+          game.currentPlayer === Colors.WHITE && "flex-col top-0",
+          game.currentPlayer === Colors.BLACK && "flex-col-reverse bottom-0"
+        )}
+      >
         <button
           id="promotion-queen"
-          className="border-1 border-white p-1 rounded-[999px] bg-black/90 transition-all duration-0 ease-in hover:rounded-[4px] "
+          className="relative size-24 rounded-[999px] bg-white/40 transition-all duration-0 ease-in hover:rounded-[4px] "
           onClick={() => choosePiece("q")}
         >
-          <QueenPiece color={Colors.WHITE} />
+          <div className="cursor-pointer flex items-center justify-center">
+            <QueenPiece color={game.currentPlayer} />
+          </div>
         </button>
         <button
           id="promotion-rook"
-          className="border-1 border-white p-1 rounded-[999px] bg-black/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
+          className="relative size-24 rounded-[999px] bg-white/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
           onClick={() => choosePiece("r")}
         >
-          <RookPiece color={Colors.WHITE} />
+          <div className="cursor-pointer flex items-center justify-center">
+            <RookPiece color={game.currentPlayer} />
+          </div>
         </button>
         <button
           id="promotion-knight"
-          className="border-1 border-white p-1 rounded-[999px] bg-black/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
+          className="relative size-24 rounded-[999px] bg-white/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
           onClick={() => choosePiece("n")}
         >
-          <KnightPiece color={Colors.WHITE} />
+          <div className="cursor-pointer flex items-center justify-center">
+            <KnightPiece color={game.currentPlayer} />
+          </div>
         </button>
         <button
           id="promotion-bishop"
-          className="border-1 border-white p-1 rounded-[999px] bg-black/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
+          className="relative size-24 rounded-[999px] bg-white/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
           onClick={() => choosePiece("b")}
         >
-          <BishopPiece color={Colors.WHITE} />
+          <div className="cursor-pointer flex items-center justify-center">
+            <BishopPiece color={game.currentPlayer} />
+          </div>
         </button>
       </div>
     </>

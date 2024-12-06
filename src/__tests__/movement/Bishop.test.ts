@@ -1,24 +1,10 @@
-import { Bishop } from "@/controllers/classes/Bishop";
-import { Board } from "@/types";
-
-let onlyBishopBoard: Board;
-
-beforeEach(() => {
-  onlyBishopBoard = [
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, "B", null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-  ];
-});
+import { setupGame } from "@/main";
 
 describe("Bishop piece actions", () => {
   it("should be able to move upRight multiple squares", () => {
-    const bishopWithOnlyUpRightFree: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -27,14 +13,16 @@ describe("Bishop piece actions", () => {
       [null, null, null, "P", "P", "p", null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
-    const canMoveDiagUpRight = Bishop.canBishopMove(bishopWithOnlyUpRightFree, { row: 4, col: 4 }, { row: 2, col: 6 });
+    ]);
+    const canMoveDiagUpRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
 
     expect(canMoveDiagUpRight).toBe(true);
   });
 
   it("should be able to move downRight multiple squares", () => {
-    const bishopWithOnlyDownRightFree: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -43,17 +31,15 @@ describe("Bishop piece actions", () => {
       [null, null, null, "P", "P", null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
-    const canMoveDiagDownRight = Bishop.canBishopMove(
-      bishopWithOnlyDownRightFree,
-      { row: 4, col: 4 },
-      { row: 6, col: 6 }
-    );
+    ]);
+    const canMoveDiagDownRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
 
     expect(canMoveDiagDownRight).toBe(true);
   });
   it("should be able to move upLeft multiple squares", () => {
-    const bishopWithOnlyUpLeftFree: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -62,13 +48,15 @@ describe("Bishop piece actions", () => {
       [null, null, null, "P", "P", "P", null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
-    const canMoveDiagUpLeft = Bishop.canBishopMove(bishopWithOnlyUpLeftFree, { row: 4, col: 4 }, { row: 2, col: 2 });
+    ]);
+    const canMoveDiagUpLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
 
     expect(canMoveDiagUpLeft).toBe(true);
   });
   it("should be able to move downLeft multiple squares", () => {
-    const bishopWithOnlyDownLeftFree: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -77,21 +65,29 @@ describe("Bishop piece actions", () => {
       [null, null, null, null, "P", "P", null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
-    const canMoveDiagLeftDown = Bishop.canBishopMove(
-      bishopWithOnlyDownLeftFree,
-      { row: 4, col: 4 },
-      { row: 6, col: 2 }
-    );
+    ]);
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
 
     expect(canMoveDiagLeftDown).toBe(true);
   });
 
   it("should not move in a straight line", () => {
-    const canMoveRight = Bishop.canBishopMove(onlyBishopBoard, { row: 4, col: 4 }, { row: 4, col: 6 });
-    const canMoveLeft = Bishop.canBishopMove(onlyBishopBoard, { row: 4, col: 4 }, { row: 4, col: 2 });
-    const canMoveUp = Bishop.canBishopMove(onlyBishopBoard, { row: 4, col: 4 }, { row: 2, col: 4 });
-    const canMoveDown = Bishop.canBishopMove(onlyBishopBoard, { row: 4, col: 4 }, { row: 6, col: 4 });
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "B", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
+    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
 
     expect(canMoveRight).toBe(false);
     expect(canMoveLeft).toBe(false);
@@ -100,7 +96,9 @@ describe("Bishop piece actions", () => {
   });
 
   it("should not move through pieces", () => {
-    const bishopWithPiecesAround: Board = [
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
@@ -109,12 +107,12 @@ describe("Bishop piece actions", () => {
       [null, null, null, "P", "P", "P", null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-    ];
+    ]);
 
-    const canMoveDiagRightDown = Bishop.canBishopMove(bishopWithPiecesAround, { row: 4, col: 4 }, { row: 6, col: 6 });
-    const canMoveDiagLeftDown = Bishop.canBishopMove(bishopWithPiecesAround, { row: 4, col: 4 }, { row: 6, col: 2 });
-    const canMoveDiagRightUp = Bishop.canBishopMove(bishopWithPiecesAround, { row: 4, col: 4 }, { row: 2, col: 6 });
-    const canMoveDiagLeftUp = Bishop.canBishopMove(bishopWithPiecesAround, { row: 4, col: 4 }, { row: 2, col: 2 });
+    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);
