@@ -1,7 +1,7 @@
 import { directionToCoordinates } from "@/controllers/auxFunctions";
-import { Board } from "@/controllers/classes/Board";
+import type { Board } from "@/controllers/classes/Board";
 import { Colors, Coordinates } from "@/types";
-import { Piece } from "./Piece";
+import type { Piece } from "./Piece";
 
 export class Square {
   constructor(public coordinates: Coordinates, public piece: Piece | null = null) {}
@@ -14,23 +14,18 @@ export class Square {
     this.piece = null;
   }
 
-  isBeingAttackedByWhitePieces(board: Board): boolean {
+  public getWhiteAttackingPieces(board: Board): Array<Piece> {
     const attackingPieces = this.getAttackingPiece(board);
     const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board);
 
-    const whiteAttackingPieces = attackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.WHITE);
-    const whiteAttackingKnights = attackingPieceFromLPositions.filter(
-      (attackingKnights) => attackingKnights.color === Colors.WHITE
-    );
+    const allAttackingPieces = [...attackingPieces, ...attackingPieceFromLPositions];
 
-    if (whiteAttackingPieces.length || whiteAttackingKnights.length) {
-      return true;
-    }
+    const whiteAttackingPieces = allAttackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.WHITE);
 
-    return false;
+    return whiteAttackingPieces;
   }
 
-  isBeingAttackedByBlackPieces(board: Board): boolean {
+  public getBlackAttackingPieces(board: Board): Array<Piece> {
     const attackingPieces = this.getAttackingPiece(board);
     const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board);
 
@@ -38,24 +33,23 @@ export class Square {
 
     const blackAttackingPieces = allAttackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.BLACK);
 
-    if (blackAttackingPieces.length) {
-      return true;
-    }
-
-    return false;
+    return blackAttackingPieces;
   }
 
-  getAttackingPiece(board: Board): Piece[] {
+  private getAttackingPiece(board: Board): Piece[] {
     const attackingPieces = Object.entries(directionToCoordinates)
       .map(([key, value]) => {
         if (key === "same") return null;
 
-        const tempCell = { ...this.coordinates };
+        const tempCell = {
+          row: this.coordinates.row + value.row,
+          col: this.coordinates.col + value.col,
+        };
 
-        while (tempCell.row > 0 && tempCell.col > 0 && tempCell.row < 7 && tempCell.col < 7) {
+        while (board.isInsideBoard(tempCell)) {
           // sum first to avoid checking the current square
-          tempCell.row = tempCell.row + value.row;
-          tempCell.col = tempCell.col + value.col;
+
+          console.log(tempCell, key, value);
 
           const possiblePiece = board.getSquare({ row: tempCell.row, col: tempCell.col });
 
@@ -64,6 +58,9 @@ export class Square {
           if (!value.pieces.includes(possiblePiece.piece.pieceLetter)) {
             return null;
           }
+
+          tempCell.row = tempCell.row + value.row;
+          tempCell.col = tempCell.col + value.col;
 
           return possiblePiece.piece;
         }
@@ -90,7 +87,7 @@ export class Square {
         const rowModified = this.coordinates.row + modifier.row;
         const colModified = this.coordinates.col + modifier.col;
 
-        if (rowModified < 0 || rowModified > 7 || colModified < 0 || colModified > 7) return null;
+        if (!board.isInsideBoard({ row: rowModified, col: colModified })) return null;
 
         const cellInLPositiion = { row: rowModified, col: colModified };
         const piece = board.getSquare({ row: cellInLPositiion.row, col: cellInLPositiion.col }).piece;

@@ -17,6 +17,8 @@ export function setupGame() {
   const board = new Board(initialBoard);
   const game = new Game(board);
 
+  game.calculateLegalMoves();
+
   return {
     game,
   };

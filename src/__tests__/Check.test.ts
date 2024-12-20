@@ -1,8 +1,10 @@
-import { King } from "@/controllers/classes/King";
+import { King } from "@/controllers/classes/pieces/King";
 import { setupGame } from "@/main";
+import { nameClassRelation } from "@/utils";
 
 describe("Test suite do detect if a king is in check", () => {
   it("should detect if a king is in check by a queen", () => {
+    console.log({ nameClassRelation });
     const { game } = setupGame();
     const { board } = game;
     board.from([

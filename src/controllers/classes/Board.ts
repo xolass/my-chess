@@ -42,11 +42,28 @@ export class Board {
         }
       })
     );
+
     return this;
+  }
+
+  public isInsideBoard({ row, col }: Coordinates) {
+    return !!this.grid?.[row]?.[col];
   }
 
   public getSquare(coordinates: Coordinates) {
     return this.grid[coordinates.row][coordinates.col];
+  }
+
+  public getPieces(currentPlayer: Colors): Piece[] {
+    return this.grid.flat().reduce<Piece[]>((acc, square) => {
+      const squarePiece = square.piece;
+      if (!squarePiece) return acc;
+
+      if (squarePiece.color === currentPlayer) {
+        acc.push(squarePiece);
+      }
+      return acc;
+    }, []);
   }
 
   public getPiecesOfAKind(piece: PieceIdentifier, currentPlayer: Colors): Piece[] {

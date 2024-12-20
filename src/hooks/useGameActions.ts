@@ -2,11 +2,11 @@ import { Castle } from "@/controllers/classes/Castle";
 import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Fen } from "@/controllers/classes/Fen";
 import { Promotion } from "@/controllers/classes/Promotion";
-import { useGameState } from "@/controllers/fenGameState";
 import { setupGame } from "@/main";
 import { useGameStore } from "@/stores/GameContext";
 import { useCallback, useEffect } from "react";
 import { Coordinates, MoveFlags, PromotionOptions } from "../types";
+import { useGameState } from "./useFenGame";
 
 const { game } = setupGame();
 const { board } = game;
@@ -76,11 +76,12 @@ export function useGameActions() {
 
       game.castleMove(isShortCastle);
     } else {
-      const isMoveValid = game.validateMove({ from, to, flags });
+      const isLegalMove = piece.legalMoves.find(({ row, col }) => row === to.row && col === to.col);
 
-      if (!isMoveValid) return;
+      if (!isLegalMove) return;
 
       game.makeMove({ from, to, flags });
+      game.calculateLegalMoves();
     }
 
     if (piece.name === "p") {

@@ -13,13 +13,16 @@ function Board({ board }: BoardProps) {
   const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
 
   return (
-    <div className={twMerge("flex flex-col rounded-md", "rotate-180")}>
+    <div className={twMerge("flex flex-col rounded-md", isBlackPlayer && "rotate-180")}>
       {board.getLettersGrid().map((row, rowIndex) => {
         return (
           <div key={"row" + rowIndex} className="flex flex-row">
             {row.map((piece, colIndex) => (
               <BoardCell key={"col" + colIndex} row={rowIndex} col={colIndex}>
                 <PieceComponent piece={piece} coordinates={{ col: colIndex, row: rowIndex }} />
+                <span className="absolute text-xs text-black">
+                  {rowIndex} {colIndex}
+                </span>
               </BoardCell>
             ))}
           </div>

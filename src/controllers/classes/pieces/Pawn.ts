@@ -9,6 +9,53 @@ export class Pawn extends Piece {
     super(color, coordinates, "p");
   }
 
+  override calculateLegalMoves(board: Board): Array<Coordinates> {
+    const moves: Coordinates[] = [];
+
+    const forward = this.color === Colors.WHITE ? -1 : 1;
+
+    const forwardOne = { row: this.coordinates.row + forward, col: this.coordinates.col };
+    if (this.isValidMove(board, forwardOne)) {
+      moves.push(forwardOne);
+    }
+
+    const forwardTwo = { row: this.coordinates.row + 2 * forward, col: this.coordinates.col };
+    if (this.isValidMove(board, forwardTwo)) {
+      moves.push(forwardTwo);
+    }
+
+    const leftCapture = { row: this.coordinates.row + forward, col: this.coordinates.col - 1 };
+    if (this.isValidMove(board, leftCapture)) {
+      moves.push(leftCapture);
+    }
+
+    const rightCapture = { row: this.coordinates.row + forward, col: this.coordinates.col + 1 };
+    if (this.isValidMove(board, rightCapture)) {
+      moves.push(rightCapture);
+    }
+
+    return moves;
+  }
+
+  override calculateAttackingSquares(board: Board): Array<Coordinates> {
+    const moves: Coordinates[] = [];
+
+    const forward = this.color === Colors.WHITE ? -1 : 1;
+
+    const leftCapture = { row: this.coordinates.row + forward, col: this.coordinates.col - 1 };
+    const rightCapture = { row: this.coordinates.row + forward, col: this.coordinates.col + 1 };
+
+    if (board.isInsideBoard(leftCapture)) {
+      moves.push(leftCapture);
+    }
+
+    if (board.isInsideBoard(leftCapture)) {
+      moves.push(rightCapture);
+    }
+
+    return moves;
+  }
+
   override isValidMove(board: Board, to: Coordinates, flags?: MoveFlags): boolean {
     const from = this.coordinates;
 

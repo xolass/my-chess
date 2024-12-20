@@ -1,5 +1,7 @@
+import { getDirection } from "@/controllers/auxFunctions";
 import { Board } from "@/controllers/classes/Board";
-import { King } from "@/controllers/classes/King";
+import { King } from "@/controllers/classes/pieces/King";
+import { Pin } from "@/controllers/classes/Pin";
 import { Colors, Move } from "@/types";
 import { nameClassRelation } from "@/utils";
 
@@ -11,6 +13,7 @@ export class Game {
   }
 
   public validateMove({ from, to, flags }: Move): boolean {
+    console.log({ from });
     const startSquare = this._board.getSquare(from);
     const piece = startSquare.piece;
 
@@ -118,31 +121,48 @@ export class Game {
     rook.setPosition({ row, col: rookCol + rookPositionOffset });
   }
 
-  public willKingBeAttacked({ from, to, flags }: Move) {
+  public willKingBeAttacked({ from, to }: Move) {
     console.log("checking if king will be attacked");
+
     const [king] = this._board.getPiecesOfAKind("k", this.currentPlayer);
+
     if (!king) return false; // to test positions where both kings are not on the board
 
     if (!(king instanceof King)) throw new Error("Invalid piece type");
 
-    const prevBoard = new Board(this._board.getLettersGrid());
+    const pin = new Pin(this.board, from, this.currentPlayer);
 
-    this.makeMove({ from, to, flags });
+    if (pin.pinnedPiece) {
+      const movingPinnedPieceDirection = getDirection(from, to);
 
-    const kingIsBeingAttacked = king.isInCheck(this._board);
+      const pinningDirection = pin.getPinDirection();
+      // will leave the pin
+      if (pinningDirection !== movingPinnedPieceDirection) return true;
+    }
 
-    // not a good idea, doing it this way will not be able to check if checkmate
-    // it needs to be done in a more complex way, maybe checking for legal moves for each piece,
-    // store it on the piece and the validate function becomes "find the move in that list"
-    // maybe store if a piece is pinned
-    // but focus on getting all legal moves for all the pieces and update on each move
-    this.rollbackMove(prevBoard);
+    if (this.currentPlayer === Colors.WHITE) {
+      const attackingBlackPieces = this._board.getSquare(to).getBlackAttackingPieces(this._board);
 
-    return kingIsBeingAttacked;
+      if (attackingBlackPieces.length) return true;
+    } else {
+      const attackingWhitePieces = this._board.getSquare(to).getWhiteAttackingPieces(this._board);
+
+      if (attackingWhitePieces.length) return true;
+    }
+
+    return false;
   }
 
   public isCheckmate() {
-    throw new Error("Method not implemented.");
+    const pieces = this._board.getPieces(this.currentPlayer);
+
+    const totalLegalMoves = pieces.reduce((prevValue, piece) => {
+      return prevValue + piece.legalMoves.length;
+    }, 0);
+
+    if (totalLegalMoves === 0) return true;
+
+    return false;
   }
 
   public rollbackMove(prevBoard: Board) {
@@ -158,6 +178,20 @@ export class Game {
     }
 
     this.currentPlayer = this.currentPlayer === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+  }
+
+  public calculateLegalMoves() {
+    const colorPieces = this._board.getPieces(this.currentPlayer);
+    let legalMoveCounter = 0;
+
+    colorPieces.forEach((piece) => {
+      const legalMoves = piece.calculateLegalMoves(this._board);
+      legalMoveCounter += legalMoves.length;
+      piece.legalMoves = legalMoves;
+      console.log({ legalMoves });
+    });
+
+    console.log(`calculated ${legalMoveCounter} legal moves`);
   }
 
   get board() {

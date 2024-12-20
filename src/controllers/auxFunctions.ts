@@ -1,6 +1,8 @@
 import { Coordinates, PieceLetter } from "@/types";
 
-export function getDirection(from: Coordinates, to: Coordinates) {
+export type Direction = "downRight" | "downLeft" | "upRight" | "upLeft" | "up" | "down" | "left" | "right" | "same";
+
+export function getDirection(from: Coordinates, to: Coordinates): Direction {
   if (from.row < to.row && from.col < to.col) return "downRight";
   if (from.row < to.row && from.col > to.col) return "downLeft";
   if (from.row > to.row && from.col < to.col) return "upRight";

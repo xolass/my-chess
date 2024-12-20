@@ -22,7 +22,7 @@ export interface GameContextType {
 export const useGameStore = create<GameContextType>((set) => ({
   game: new Game(new Board(initialBoard)),
   setGame: (game) => set({ game }),
-  isBlackPlayerVision: true,
+  isBlackPlayerVision: false,
   setIsBlackPlayerVision: (isBlackPlayer) => set({ isBlackPlayerVision: isBlackPlayer }),
   isPromotionModalOpen: false,
   setPromotionModalOpen: (newModalState) => set({ isPromotionModalOpen: newModalState }),
