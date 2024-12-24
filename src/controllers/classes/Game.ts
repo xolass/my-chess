@@ -1,7 +1,5 @@
-import { getDirection } from "@/controllers/auxFunctions";
 import { Board } from "@/controllers/classes/Board";
 import { King } from "@/controllers/classes/pieces/King";
-import { Pin } from "@/controllers/classes/Pin";
 import { Colors, Move } from "@/types";
 import { nameClassRelation } from "@/utils";
 
@@ -130,22 +128,29 @@ export class Game {
 
     if (!(king instanceof King)) throw new Error("Invalid piece type");
 
-    const pin = new Pin(this.board, from, this.currentPlayer);
+    const movingPiece = this._board.getSquare(from).piece
 
-    if (pin.pinnedPiece) {
-      const movingPinnedPieceDirection = getDirection(from, to);
+    if (!movingPiece) throw new Error('no piece moving')
 
-      const pinningDirection = pin.getPinDirection();
-      // will leave the pin
-      if (pinningDirection !== movingPinnedPieceDirection) return true;
-    }
+    const boardAfterMove = new Board(this._board.getLettersGrid())
+    boardAfterMove.setSquare(from, null)
+    boardAfterMove.setSquare(to, movingPiece)
+    movingPiece.setPosition(to);
+
+    const [kingPositionInNewBoard] = boardAfterMove.getPiecesOfAKind("k", this.currentPlayer);
+
+    if (!kingPositionInNewBoard) return false; // to test positions where both kings are not on the board
+
+    if (!(kingPositionInNewBoard instanceof King)) throw new Error("Invalid piece type");
 
     if (this.currentPlayer === Colors.WHITE) {
-      const attackingBlackPieces = this._board.getSquare(to).getBlackAttackingPieces(this._board);
+      const attackingBlackPieces = this._board.getSquare(kingPositionInNewBoard.coordinates).getBlackAttackingPieces(boardAfterMove);
+      movingPiece.setPosition(from);
 
       if (attackingBlackPieces.length) return true;
     } else {
-      const attackingWhitePieces = this._board.getSquare(to).getWhiteAttackingPieces(this._board);
+      const attackingWhitePieces = this._board.getSquare(kingPositionInNewBoard.coordinates).getWhiteAttackingPieces(boardAfterMove);
+      movingPiece.setPosition(from);
 
       if (attackingWhitePieces.length) return true;
     }
@@ -184,14 +189,20 @@ export class Game {
     const colorPieces = this._board.getPieces(this.currentPlayer);
     let legalMoveCounter = 0;
 
-    colorPieces.forEach((piece) => {
+    const validLegalMoves = colorPieces.map((piece) => {
       const legalMoves = piece.calculateLegalMoves(this._board);
-      legalMoveCounter += legalMoves.length;
-      piece.legalMoves = legalMoves;
-      console.log({ legalMoves });
+      const validLegalMoves = legalMoves.filter((to) => {
+        return this.validateMove({ from: piece.coordinates, to })
+      })
+      legalMoveCounter += validLegalMoves.length;
+      piece.legalMoves = validLegalMoves;
+      return { piece: piece.pieceLetter, validLegalMoves };
     });
 
+    console.log(validLegalMoves)
     console.log(`calculated ${legalMoveCounter} legal moves`);
+
+    return validLegalMoves;
   }
 
   get board() {

@@ -268,8 +268,10 @@ describe("Test suite do defend king with other pieces", () => {
     ]);
 
     const valid = game.validateMove({ from: { row: 3, col: 0 }, to: { row: 3, col: 3 } });
+    const invalid = game.validateMove({ from: { row: 3, col: 0 }, to: { row: 3, col: 2 } });
 
     expect(valid).toBe(true);
+    expect(invalid).toBe(false);
   });
 
   it("should not let pinned pieces to go in front of king defending check", () => {

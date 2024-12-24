@@ -10,13 +10,33 @@ export class Knight extends Piece {
     super(color, coordinates, "n");
   }
 
-  override calculateLegalMoves(board: Board): Array<Coordinates> {
-    const directions = Object.values(directionToCoordinates);
+  override isValidMove(board: Board, to: Coordinates): boolean {
+    const from = this.coordinates;
 
+    if (this.isSamePosition(to)) return false;
+
+    if (!board.isInsideBoard(to)) return false
+
+    if (this.isTryingToCaptureAlly(board, to)) return false;
+
+    if (!this.isKnightWayOfMoving(from, to)) return false;
+
+    return true;
+  }
+
+  override calculateLegalMoves(board: Board): Array<Coordinates> {
+    const directions = [
+      { row: -1, col: -2 },
+      { row: -1, col: 2 },
+      { row: 1, col: -2 },
+      { row: 1, col: 2 },
+      { row: -2, col: -1 },
+      { row: -2, col: 1 },
+      { row: 2, col: -1 },
+      { row: 2, col: 1 }
+    ];
     const moves = directions
       .map((direction) => {
-        if (!direction.pieces.includes(this.pieceLetter)) return;
-
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
 
         if (board.isInsideBoard(next) && this.isValidMove(board, next)) {
@@ -29,11 +49,19 @@ export class Knight extends Piece {
   }
 
   override calculateAttackingSquares(board: Board): Array<Coordinates> {
-    const directions = Object.values(directionToCoordinates);
+    const directions = [
+      { row: -1, col: -2 },
+      { row: -1, col: 2 },
+      { row: 1, col: -2 },
+      { row: 1, col: 2 },
+      { row: -2, col: -1 },
+      { row: -2, col: 1 },
+      { row: 2, col: -1 },
+      { row: 2, col: 1 }
+    ];
 
     const moves = directions
       .map((direction) => {
-        if (!direction.pieces.includes(this.pieceLetter)) return;
 
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
         if (this.isAttackingThisSquare(board, next)) {
@@ -43,18 +71,6 @@ export class Knight extends Piece {
       .filter(Boolean) as Coordinates[];
 
     return moves;
-  }
-
-  override isValidMove(board: Board, to: Coordinates): boolean {
-    const from = this.coordinates;
-
-    if (this.isSamePosition(to)) return false;
-
-    if (this.isTryingToCaptureAlly(board, to)) return false;
-
-    if (!this.isKnightWayOfMoving(from, to)) return false;
-
-    return true;
   }
 
   private isAttackingThisSquare(board: Board, to: Coordinates): boolean {

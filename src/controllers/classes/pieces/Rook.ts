@@ -62,6 +62,8 @@ export class Rook extends Piece {
 
     if (this.isSamePosition(to)) return false;
 
+    if (!board.isInsideBoard(to)) return false
+
     if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (board.isTherePieceBetween(from, to)) return false;

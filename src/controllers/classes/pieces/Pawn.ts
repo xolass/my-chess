@@ -61,6 +61,8 @@ export class Pawn extends Piece {
 
     if (this.isSamePosition(to)) return false;
 
+    if (!board.isInsideBoard(to)) return false
+
     if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (board.isTherePieceBetween(from, to)) return false;
@@ -75,20 +77,27 @@ export class Pawn extends Piece {
 
     if (this.isTryingToGoBackwards(to)) return false;
 
-    if (enPassant && EnPassant.isEnPassant(board, from, to)) return true;
+    if (enPassant && !EnPassant.isEnPassant(board, from, to)) return false;
 
-    if (this.validCapture(board, to)) {
+    if (this.isCapture(board, from, to)) {
+      return this.validCapture(board, to)
+    } else {
+      if (from.col !== to.col) return false;
+
+      if (Math.abs(from.row - to.row) > 2) return false;
+      if (Math.abs(from.row - to.row) === 2) return this.isFirstMove;
+
       return true;
     }
+  }
 
-    if (from.col !== to.col) return false;
+  private isCapture(board: Board, from: Coordinates, to: Coordinates) {
+    const currentPiece = board.getSquare(from).piece;
+    const targetPiece = board.getSquare(to).piece
 
-    if (Math.abs(from.row - to.row) > 2) return false;
-    if (Math.abs(from.row - to.row) === 2) {
-      return this.isFirstMove;
-    }
 
-    return true;
+    console.log({ currentPiece, targetPiece })
+    return currentPiece && targetPiece
   }
 
   private validCapture(board: Board, to: Coordinates) {

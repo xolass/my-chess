@@ -8,6 +8,22 @@ export class Bishop extends Piece {
     super(color, coordinates, "b");
   }
 
+
+  override isValidMove(board: Board, to: Coordinates): boolean {
+    const from = this.coordinates;
+
+    if (this.isSamePosition(to)) return false;
+
+    if (!board.isInsideBoard(to)) return false
+
+    if (this.isTryingToCaptureAlly(board, to)) return false;
+
+    if (board.isTherePieceBetween(from, to)) return false;
+
+    if (!this.isBishopWayOfMoving(from, to)) return false;
+    return true;
+  }
+
   override calculateLegalMoves(board: Board): Array<Coordinates> {
     const directions = Object.values(directionToCoordinates);
 
@@ -54,19 +70,6 @@ export class Bishop extends Piece {
       .filter(Boolean) as Coordinates[];
 
     return moves;
-  }
-
-  override isValidMove(board: Board, to: Coordinates): boolean {
-    const from = this.coordinates;
-
-    if (this.isSamePosition(to)) return false;
-
-    if (this.isTryingToCaptureAlly(board, to)) return false;
-
-    if (board.isTherePieceBetween(from, to)) return false;
-
-    if (!this.isBishopWayOfMoving(from, to)) return false;
-    return true;
   }
 
   private isAttackingThisSquare(board: Board, to: Coordinates): boolean {

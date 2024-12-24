@@ -147,4 +147,43 @@ describe("Pawn movement actions", () => {
     expect(canMove2Up).toBe(false);
     expect(canMove3Up).toBe(false);
   });
+
+  it("should NOT be able for white pawns to capture forwards (moving 2)", () => {
+    const { game } = setupGame();
+    const { board } = game;
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "p", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "P", null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+
+    const captureForwards2 = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
+
+    expect(captureForwards2).toBe(false);
+  });
+
+  it("should NOT be able for white pawns to capture forwards (moving 1)", () => {
+    const { game } = setupGame();
+    const { board } = game;
+
+    board.from([
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, "p", null, null, null],
+      [null, null, null, null, "P", null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ]);
+
+    const captureForwards1 = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 3, col: 4 } });
+
+    expect(captureForwards1).toBe(false);
+  });
 });

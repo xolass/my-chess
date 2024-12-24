@@ -4,7 +4,7 @@ import { Colors, Coordinates } from "@/types";
 import type { Piece } from "./Piece";
 
 export class Square {
-  constructor(public coordinates: Coordinates, public piece: Piece | null = null) {}
+  constructor(public coordinates: Coordinates, public piece: Piece | null = null) { }
 
   placePiece(piece: Piece) {
     this.piece = piece;
@@ -42,14 +42,16 @@ export class Square {
         if (key === "same") return null;
 
         const tempCell = {
-          row: this.coordinates.row + value.row,
-          col: this.coordinates.col + value.col,
+          row: this.coordinates.row,
+          col: this.coordinates.col,
         };
 
-        while (board.isInsideBoard(tempCell)) {
+        do {
           // sum first to avoid checking the current square
+          tempCell.row = tempCell.row + value.row;
+          tempCell.col = tempCell.col + value.col;
 
-          console.log(tempCell, key, value);
+          if (!board.isInsideBoard(tempCell)) break;
 
           const possiblePiece = board.getSquare({ row: tempCell.row, col: tempCell.col });
 
@@ -59,11 +61,9 @@ export class Square {
             return null;
           }
 
-          tempCell.row = tempCell.row + value.row;
-          tempCell.col = tempCell.col + value.col;
 
           return possiblePiece.piece;
-        }
+        } while (true)
       })
       .filter((piece) => Boolean(piece)) as Piece[];
 

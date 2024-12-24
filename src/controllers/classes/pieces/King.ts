@@ -39,7 +39,7 @@ export class King extends Piece {
     if (!square.piece)
       throw new Error(
         "King not found" +
-          JSON.stringify({ cause: { coordinates: this.coordinates, board: board.formatedGrid } }, null, 2)
+        JSON.stringify({ cause: { coordinates: this.coordinates, board: board.formatedGrid } }, null, 2)
       );
 
     if (this.color === Colors.WHITE) return !!square.getBlackAttackingPieces(board).length;
@@ -54,6 +54,8 @@ export class King extends Piece {
     const isHorizontal = from.row === to.row;
     const isVertical = from.col === to.col;
     const isDiagonal = Math.abs(from.row - to.row) === Math.abs(from.col - to.col);
+
+    // less or equal because in case of up, down, left right, col/row is equal, so === 0 
     const isMovingOneSquare = Math.abs(from.row - to.row) <= 1 && Math.abs(from.col - to.col) <= 1;
 
     return isMovingOneSquare && (isHorizontal || isVertical || isDiagonal);
@@ -94,4 +96,5 @@ export class King extends Piece {
 
     return moves;
   }
+
 }

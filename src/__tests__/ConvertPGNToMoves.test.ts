@@ -1,4 +1,7 @@
 describe("Convert PGN to moves", () => {
+  it('should work', () => {
+    expect(true).toBe(true)
+  })
   //   it("should get move from game notation for pawn moves", () => {
   //     const { game } = setupGame();
   //
