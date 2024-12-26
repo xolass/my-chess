@@ -23,11 +23,11 @@ describe("King movement actions", () => {
     const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
     const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
 
+    expect(canMoveUp).toBe(true);
     expect(canMoveDiagRightDown).toBe(true);
     expect(canMoveDiagLeftDown).toBe(true);
     expect(canMoveDiagRightUp).toBe(true);
     expect(canMoveDiagLeftUp).toBe(true);
-    expect(canMoveUp).toBe(true);
     expect(canMoveDown).toBe(true);
     expect(canMoveLeft).toBe(true);
     expect(canMoveRight).toBe(true);

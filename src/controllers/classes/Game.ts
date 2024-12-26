@@ -1,5 +1,5 @@
 import { Board } from "@/controllers/classes/Board";
-import { King } from "@/controllers/classes/King";
+import { King } from "@/controllers/classes/pieces/King";
 import { Colors, Move } from "@/types";
 import { nameClassRelation } from "@/utils";
 
@@ -11,6 +11,7 @@ export class Game {
   }
 
   public validateMove({ from, to, flags }: Move): boolean {
+    console.log({ from });
     const startSquare = this._board.getSquare(from);
     const piece = startSquare.piece;
 
@@ -118,31 +119,55 @@ export class Game {
     rook.setPosition({ row, col: rookCol + rookPositionOffset });
   }
 
-  public willKingBeAttacked({ from, to, flags }: Move) {
+  public willKingBeAttacked({ from, to }: Move) {
     console.log("checking if king will be attacked");
+
     const [king] = this._board.getPiecesOfAKind("k", this.currentPlayer);
+
     if (!king) return false; // to test positions where both kings are not on the board
 
     if (!(king instanceof King)) throw new Error("Invalid piece type");
 
-    const prevBoard = new Board(this._board.getLettersGrid());
+    const movingPiece = this._board.getSquare(from).piece
 
-    this.makeMove({ from, to, flags });
+    if (!movingPiece) throw new Error('no piece moving')
 
-    const kingIsBeingAttacked = king.isInCheck(this._board);
+    const boardAfterMove = new Board(this._board.getLettersGrid())
+    boardAfterMove.setSquare(from, null)
+    boardAfterMove.setSquare(to, movingPiece)
+    movingPiece.setPosition(to);
 
-    // not a good idea, doing it this way will not be able to check if checkmate
-    // it needs to be done in a more complex way, maybe checking for legal moves for each piece,
-    // store it on the piece and the validate function becomes "find the move in that list"
-    // maybe store if a piece is pinned
-    // but focus on getting all legal moves for all the pieces and update on each move
-    this.rollbackMove(prevBoard);
+    const [kingPositionInNewBoard] = boardAfterMove.getPiecesOfAKind("k", this.currentPlayer);
 
-    return kingIsBeingAttacked;
+    if (!kingPositionInNewBoard) return false; // to test positions where both kings are not on the board
+
+    if (!(kingPositionInNewBoard instanceof King)) throw new Error("Invalid piece type");
+
+    if (this.currentPlayer === Colors.WHITE) {
+      const attackingBlackPieces = this._board.getSquare(kingPositionInNewBoard.coordinates).getBlackAttackingPieces(boardAfterMove);
+      movingPiece.setPosition(from);
+
+      if (attackingBlackPieces.length) return true;
+    } else {
+      const attackingWhitePieces = this._board.getSquare(kingPositionInNewBoard.coordinates).getWhiteAttackingPieces(boardAfterMove);
+      movingPiece.setPosition(from);
+
+      if (attackingWhitePieces.length) return true;
+    }
+
+    return false;
   }
 
   public isCheckmate() {
-    throw new Error("Method not implemented.");
+    const pieces = this._board.getPieces(this.currentPlayer);
+
+    const totalLegalMoves = pieces.reduce((prevValue, piece) => {
+      return prevValue + piece.legalMoves.length;
+    }, 0);
+
+    if (totalLegalMoves === 0) return true;
+
+    return false;
   }
 
   public rollbackMove(prevBoard: Board) {
@@ -158,6 +183,26 @@ export class Game {
     }
 
     this.currentPlayer = this.currentPlayer === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+  }
+
+  public calculateLegalMoves() {
+    const colorPieces = this._board.getPieces(this.currentPlayer);
+    let legalMoveCounter = 0;
+
+    const validLegalMoves = colorPieces.map((piece) => {
+      const legalMoves = piece.calculateLegalMoves(this._board);
+      const validLegalMoves = legalMoves.filter((to) => {
+        return this.validateMove({ from: piece.coordinates, to })
+      })
+      legalMoveCounter += validLegalMoves.length;
+      piece.legalMoves = validLegalMoves;
+      return { piece: piece.pieceLetter, validLegalMoves };
+    });
+
+    console.log(validLegalMoves)
+    console.log(`calculated ${legalMoveCounter} legal moves`);
+
+    return validLegalMoves;
   }
 
   get board() {

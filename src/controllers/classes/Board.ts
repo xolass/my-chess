@@ -21,7 +21,7 @@ export class Board {
   );
 
   constructor(private initialBoard?: LettersGrid) {
-    this.setupBoard();
+    this.setupBoard(this.initialBoard);
   }
 
   public from(matrix: LettersGrid) {
@@ -42,11 +42,28 @@ export class Board {
         }
       })
     );
+
     return this;
+  }
+
+  public isInsideBoard({ row, col }: Coordinates) {
+    return !!this.grid?.[row]?.[col];
   }
 
   public getSquare(coordinates: Coordinates) {
     return this.grid[coordinates.row][coordinates.col];
+  }
+
+  public getPieces(currentPlayer: Colors): Piece[] {
+    return this.grid.flat().reduce<Piece[]>((acc, square) => {
+      const squarePiece = square.piece;
+      if (!squarePiece) return acc;
+
+      if (squarePiece.color === currentPlayer) {
+        acc.push(squarePiece);
+      }
+      return acc;
+    }, []);
   }
 
   public getPiecesOfAKind(piece: PieceIdentifier, currentPlayer: Colors): Piece[] {
@@ -89,12 +106,18 @@ export class Board {
     }
   }
 
+  public setSquare(cell: Coordinates, piece: Piece | null) {
+    this.grid[cell.row][cell.col].piece = piece
+  }
+
   private placePiece(piece: Piece, { row, col }: Coordinates) {
     this.grid[row][col].placePiece(piece);
     piece.setPosition({ row, col }); // Set the position in the piece as well
   }
 
-  private setupBoard() {
-    this.from(this.initialBoard ?? initialPiecePositions);
+  private setupBoard(initialPosition: LettersGrid | undefined) {
+
+    console.log({ initialPiecePositions, initialPosition })
+    this.from(initialPosition ?? initialPiecePositions);
   }
 }

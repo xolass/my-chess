@@ -8,15 +8,15 @@ export class Promotion {
 
     if (piece.name !== "p") return false;
 
+    if (piece.color === Colors.WHITE && to.row !== 0) {
+      return false;
+    }
+    if (piece.color === Colors.BLACK && to.row !== 7) {
+      return false;
+    }
+
     if (!piece.isValidMove(board, to)) return false;
 
-    if (piece.color === Colors.WHITE) {
-      if (to.row === 0) return true;
-    }
-    if (piece.color === Colors.BLACK) {
-      if (to.row === 7) return true;
-    }
-
-    return false;
+    return true;
   }
 }
