@@ -10,11 +10,11 @@ test.describe("Simple piece movements", async () => {
     expect(boardState).toStrictEqual([
       ["r", "n", "b", "q", "k", "b", "n", "r"],
       ["p", "p", "p", "p", "p", "p", "p", "p"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["P", "P", "P", "P", null, "P", "P", "P"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["P", "P", "P", "P", undefined, "P", "P", "P"],
       ["R", "N", "B", "Q", "K", "B", "N", "R"],
     ]);
   });

@@ -5,14 +5,14 @@ describe("King movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
     const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 5 } });
     const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 3 } });
@@ -37,14 +37,14 @@ describe("King movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
     const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
     const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
@@ -69,14 +69,14 @@ describe("King movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "P", "P", "P", null, null],
-      [null, null, null, "P", "K", "P", null, null],
-      [null, null, null, "P", "P", "P", null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "P", "P", "P", undefined, undefined],
+      [undefined, undefined, undefined, "P", "K", "P", undefined, undefined],
+      [undefined, undefined, undefined, "P", "P", "P", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
     const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 5 } });
     const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 5, col: 3 } });

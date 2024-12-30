@@ -1,4 +1,3 @@
-import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Game } from "@/controllers/classes/Game";
 import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Piece } from "@/controllers/classes/Piece";
@@ -13,11 +12,7 @@ export class PgnGamePlayer {
 
     // Filter pieces that can legally move to the target square
     const validPieces = possiblePieces.filter((piece) => {
-      const isEnPassant = EnPassant.isEnPassant(this.game.board, piece.coordinates, move.to);
-      return piece.isValidMove(this.game.board, move.to, {
-        enPassant: isEnPassant,
-        promotion: move.promotion,
-      });
+      return piece.isValidMove(this.game.board, move.to);
     });
 
     if (validPieces.length > 1) {

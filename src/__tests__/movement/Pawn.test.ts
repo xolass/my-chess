@@ -6,14 +6,14 @@ describe("Pawn movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
@@ -31,14 +31,14 @@ describe("Pawn movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
     game.currentPlayer = Colors.BLACK;
 
@@ -57,14 +57,14 @@ describe("Pawn movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const canMoveUp = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
@@ -82,14 +82,14 @@ describe("Pawn movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     game.currentPlayer = Colors.BLACK;
@@ -109,14 +109,14 @@ describe("Pawn movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const canMove2Up = game.validateMove({ from: { row: 5, col: 4 }, to: { row: 3, col: 4 } });
@@ -131,14 +131,14 @@ describe("Pawn movement actions", () => {
     const { board } = game;
 
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const canMove2Up = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 4, col: 4 } });
@@ -152,14 +152,14 @@ describe("Pawn movement actions", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const captureForwards2 = game.validateMove({ from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
@@ -172,14 +172,14 @@ describe("Pawn movement actions", () => {
     const { board } = game;
 
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const captureForwards1 = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 3, col: 4 } });

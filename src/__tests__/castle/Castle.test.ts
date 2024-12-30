@@ -12,14 +12,14 @@ describe("Castle test suite", () => {
     game.castleMove(true);
 
     expect(board.getLettersGrid()).toEqual([
-      ["r", null, null, null, "k", null, null, "r"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["R", null, null, null, null, "R", "K", null],
+      ["r", undefined, undefined, undefined, "k", undefined, undefined, "r"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["R", undefined, undefined, undefined, undefined, "R", "K", undefined],
     ]);
   });
   it("should be able to castle white queen side", () => {
@@ -31,14 +31,14 @@ describe("Castle test suite", () => {
     game.castleMove(false);
 
     expect(board.getLettersGrid()).toEqual([
-      ["r", null, null, null, "k", null, null, "r"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, "K", "R", null, null, null, "R"],
+      ["r", undefined, undefined, undefined, "k", undefined, undefined, "r"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, "K", "R", undefined, undefined, undefined, "R"],
     ]);
   });
 
@@ -52,14 +52,14 @@ describe("Castle test suite", () => {
     game.castleMove(true);
 
     expect(board.getLettersGrid()).toEqual([
-      ["r", null, null, null, null, "r", "k", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["R", null, null, null, "K", null, null, "R"],
+      ["r", undefined, undefined, undefined, undefined, "r", "k", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["R", undefined, undefined, undefined, "K", undefined, undefined, "R"],
     ]);
   });
 
@@ -73,14 +73,14 @@ describe("Castle test suite", () => {
     game.castleMove(false);
 
     expect(board.getLettersGrid()).toEqual([
-      [null, null, "k", "r", null, null, null, "r"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["R", null, null, null, "K", null, null, "R"],
+      [undefined, undefined, "k", "r", undefined, undefined, undefined, "r"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["R", undefined, undefined, undefined, "K", undefined, undefined, "R"],
     ]);
   });
 });

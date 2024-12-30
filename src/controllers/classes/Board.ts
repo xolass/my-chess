@@ -1,24 +1,12 @@
 import { directionToCoordinates, getDirection } from "@/controllers/auxFunctions";
+import { Fen } from "@/controllers/classes/Fen";
 import { Colors, Coordinates, Grid, LettersGrid, PieceIdentifier } from "@/types";
 import { nameClassRelation } from "@/utils";
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 
-const initialPiecePositions: LettersGrid = [
-  ["r", "n", "b", "q", "k", "b", "n", "r"],
-  ["p", "p", "p", "p", "p", "p", "p", "p"],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  ["P", "P", "P", "P", "P", "P", "P", "P"],
-  ["R", "N", "B", "Q", "K", "B", "N", "R"],
-];
-
 export class Board {
-  grid: Grid = Array.from({ length: 8 }, (_, row) =>
-    Array.from({ length: 8 }, (_, col) => new Square({ row, col }, null))
-  );
+  grid: Grid = Array.from({ length: 8 }, (_, row) => Array.from({ length: 8 }, (_, col) => new Square({ row, col })));
 
   constructor(private initialBoard?: LettersGrid) {
     this.setupBoard(this.initialBoard);
@@ -29,7 +17,7 @@ export class Board {
       row.forEach((pieceLetter, colIndex) => {
         const square = new Square({ row: rowIndex, col: colIndex });
         if (!pieceLetter) {
-          square.piece = null;
+          square.piece = undefined;
           this.grid[rowIndex][colIndex] = square;
         } else {
           const piece = pieceLetter.toLowerCase() as PieceIdentifier;
@@ -79,7 +67,7 @@ export class Board {
   }
 
   public getLettersGrid() {
-    return this.grid.map((row) => row.map((square) => square.piece?.pieceLetter || null));
+    return this.grid.map((row) => row.map((square) => square.piece?.pieceLetter || undefined));
   }
 
   public get formatedGrid() {
@@ -100,14 +88,14 @@ export class Board {
         this.getSquare({
           row: from.row + rowModifier * i,
           col: from.col + colModifier * i,
-        }).piece !== null
+        }).piece !== undefined
       )
         return true;
     }
   }
 
-  public setSquare(cell: Coordinates, piece: Piece | null) {
-    this.grid[cell.row][cell.col].piece = piece
+  public setSquare(cell: Coordinates, piece?: Piece) {
+    this.grid[cell.row][cell.col].piece = piece;
   }
 
   private placePiece(piece: Piece, { row, col }: Coordinates) {
@@ -116,8 +104,7 @@ export class Board {
   }
 
   private setupBoard(initialPosition: LettersGrid | undefined) {
-
-    console.log({ initialPiecePositions, initialPosition })
+    const initialPiecePositions = new Fen().getMatrix();
     this.from(initialPosition ?? initialPiecePositions);
   }
 }

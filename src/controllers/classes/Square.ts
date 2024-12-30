@@ -4,14 +4,14 @@ import { Colors, Coordinates } from "@/types";
 import type { Piece } from "./Piece";
 
 export class Square {
-  constructor(public coordinates: Coordinates, public piece: Piece | null = null) { }
+  constructor(public coordinates: Coordinates, public piece?: Piece) {}
 
   placePiece(piece: Piece) {
     this.piece = piece;
   }
 
   removePiece() {
-    this.piece = null;
+    this.piece = undefined;
   }
 
   public getWhiteAttackingPieces(board: Board): Array<Piece> {
@@ -39,7 +39,7 @@ export class Square {
   private getAttackingPiece(board: Board): Piece[] {
     const attackingPieces = Object.entries(directionToCoordinates)
       .map(([key, value]) => {
-        if (key === "same") return null;
+        if (key === "same") return;
 
         const tempCell = {
           row: this.coordinates.row,
@@ -58,12 +58,11 @@ export class Square {
           if (!possiblePiece.piece) continue;
 
           if (!value.pieces.includes(possiblePiece.piece.pieceLetter)) {
-            return null;
+            return;
           }
 
-
           return possiblePiece.piece;
-        } while (true)
+        } while (true);
       })
       .filter((piece) => Boolean(piece)) as Piece[];
 
@@ -87,16 +86,16 @@ export class Square {
         const rowModified = this.coordinates.row + modifier.row;
         const colModified = this.coordinates.col + modifier.col;
 
-        if (!board.isInsideBoard({ row: rowModified, col: colModified })) return null;
+        if (!board.isInsideBoard({ row: rowModified, col: colModified })) return;
 
         const cellInLPositiion = { row: rowModified, col: colModified };
         const piece = board.getSquare({ row: cellInLPositiion.row, col: cellInLPositiion.col }).piece;
 
-        if (!piece) return null;
+        if (!piece) return;
 
         if (piece.name === "n") return piece;
 
-        return null;
+        return;
       })
       .filter((piece) => piece) as Piece[];
 

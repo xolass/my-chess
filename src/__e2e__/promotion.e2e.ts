@@ -18,13 +18,13 @@ test.describe("Promotion", async () => {
     const boardState = await page.evaluate(() => window.boardState);
 
     expect(boardState).toStrictEqual([
-      ["r", "n", "b", "q", "k", null, "Q", "r"],
-      ["p", "p", "p", "p", "p", null, null, "p"],
-      [null, null, null, null, null, "n", null, "b"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["P", "P", "P", "P", null, "P", "P", "P"],
+      ["r", "n", "b", "q", "k", undefined, "Q", "r"],
+      ["p", "p", "p", "p", "p", undefined, undefined, "p"],
+      [undefined, undefined, undefined, undefined, undefined, "n", undefined, "b"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["P", "P", "P", "P", undefined, "P", "P", "P"],
       ["R", "N", "B", "Q", "K", "B", "N", "R"],
     ]);
   });

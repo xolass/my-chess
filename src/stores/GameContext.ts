@@ -1,6 +1,6 @@
-import { Board } from "@/controllers/classes/Board";
+import { Fen } from "@/controllers/classes/Fen";
 import { Game } from "@/controllers/classes/Game";
-import { initialBoard } from "@/main";
+import { initialPosition } from "@/main";
 import { Coordinates, PromotionOptions } from "@/types";
 import { create } from "zustand";
 
@@ -20,8 +20,8 @@ export interface GameContextType {
 }
 
 export const useGameStore = create<GameContextType>((set) => ({
-  game: new Game(new Board(initialBoard)),
   setGame: (game) => set({ game }),
+  game: new Game(new Fen(initialPosition)),
   isBlackPlayerVision: false,
   setIsBlackPlayerVision: (isBlackPlayer) => set({ isBlackPlayerVision: isBlackPlayer }),
   isPromotionModalOpen: false,

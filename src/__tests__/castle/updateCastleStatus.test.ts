@@ -4,14 +4,14 @@ import { LettersGrid } from "@/types";
 
 describe("Update castle status test suite", () => {
   const castleBoard: LettersGrid = [
-    ["r", null, null, null, "k", null, null, "r"],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    ["R", null, null, null, "K", null, null, "R"],
+    ["r", undefined, undefined, undefined, "k", undefined, undefined, "r"],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    ["R", undefined, undefined, undefined, "K", undefined, undefined, "R"],
   ];
   const initialCastleStatus = "KQkq";
 
