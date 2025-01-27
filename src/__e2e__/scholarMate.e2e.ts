@@ -15,14 +15,14 @@ test.describe("Famous games", async () => {
     const boardState = await page.evaluate(() => window.boardState);
 
     expect(boardState).toStrictEqual([
-      ["r", null, "b", "q", "k", "b", null, "r"],
-      ["p", "p", "p", "p", null, "Q", "p", "p"],
-      [null, null, "n", null, null, "n", null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, "B", null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      ["P", "P", "P", "P", null, "P", "P", "P"],
-      ["R", "N", "B", null, "K", null, "N", "R"],
+      ["r", undefined, "b", "q", "k", "b", undefined, "r"],
+      ["p", "p", "p", "p", undefined, "Q", "p", "p"],
+      [undefined, undefined, "n", undefined, undefined, "n", undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined],
+      [undefined, undefined, "B", undefined, "P", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["P", "P", "P", "P", undefined, "P", "P", "P"],
+      ["R", "N", "B", undefined, "K", undefined, "N", "R"],
     ]);
   });
 });

@@ -8,14 +8,14 @@ describe("Test suite do detect if a king is in check", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, "q", null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, "q", undefined, "K", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const piece = board.getSquare({ row: 3, col: 4 }).piece;
@@ -32,14 +32,14 @@ describe("Test suite do detect if a king is in check", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "r", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "r", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const piece = board.getSquare({ row: 3, col: 4 }).piece;
@@ -56,14 +56,14 @@ describe("Test suite do detect if a king is in check", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, "b", null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, "b", undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const piece = board.getSquare({ row: 3, col: 4 }).piece;
@@ -80,14 +80,14 @@ describe("Test suite do detect if a king is in check", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "n", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "n", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const piece = board.getSquare({ row: 3, col: 4 }).piece;
@@ -104,14 +104,14 @@ describe("Test suite do detect if a king is in check", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "k", null, null, null],
-      [null, null, null, "P", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "k", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "P", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const piece = board.getSquare({ row: 3, col: 4 }).piece;
@@ -129,14 +129,14 @@ describe("Test suite do detect if a king is in check", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, "B", null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "R", "K", null, "Q", null],
-      [null, null, null, "P", null, null, "N", null],
-      [null, null, null, null, null, "N", null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, "B", undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "R", "K", undefined, undefined, "Q"],
+      [undefined, undefined, undefined, "P", undefined, undefined, undefined, "N"],
+      [undefined, undefined, undefined, undefined, undefined, "N", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const piece = board.getSquare({ row: 3, col: 4 }).piece;
@@ -156,14 +156,14 @@ describe("Test suite do move away from checks", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, "q", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "q", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const invalid1 = game.validateMove({ from: { row: 3, col: 4 }, to: { row: 4, col: 4 } });
@@ -177,14 +177,14 @@ describe("Test suite do move away from checks", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "q", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "q", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const invalid1 = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 3, col: 4 } });
@@ -198,14 +198,14 @@ describe("Test suite do move away from checks", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, "q", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "q", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const valid = game.validateMove({ from: { row: 3, col: 4 }, to: { row: 2, col: 4 } });
@@ -217,14 +217,14 @@ describe("Test suite do move away from checks", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      [null, null, null, "q", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "q", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const valid = game.validateMove({ from: { row: 3, col: 4 }, to: { row: 4, col: 3 } });
@@ -236,14 +236,14 @@ describe("Test suite do move away from checks", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "K", null, null, null],
-      ["r", null, null, "q", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined],
+      ["r", undefined, undefined, undefined, "q", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const invalid = game.validateMove({ from: { row: 3, col: 4 }, to: { row: 4, col: 3 } });
@@ -257,14 +257,14 @@ describe("Test suite do defend king with other pieces", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "K", null, null, null, null],
-      ["R", null, null, null, null, null, null, null],
-      [null, null, null, "q", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "K", undefined, undefined, undefined, undefined, undefined],
+      ["R", undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "q", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const valid = game.validateMove({ from: { row: 3, col: 0 }, to: { row: 3, col: 3 } });
@@ -278,14 +278,14 @@ describe("Test suite do defend king with other pieces", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, "r", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "B", null, null, null],
-      [null, null, "q", null, "K", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, "r", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "B", undefined, undefined, undefined, undefined],
+      [undefined, "q", undefined, undefined, "K", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const invalid = game.validateMove({ from: { row: 2, col: 4 }, to: { row: 3, col: 3 } });

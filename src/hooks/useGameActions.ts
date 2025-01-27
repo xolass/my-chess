@@ -1,6 +1,5 @@
-import { Castle } from "@/controllers/classes/Castle";
-import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Fen } from "@/controllers/classes/Fen";
+import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Promotion } from "@/controllers/classes/Promotion";
 import { setupGame } from "@/main";
 import { useGameStore } from "@/stores/GameContext";
@@ -45,17 +44,11 @@ export function useGameActions() {
     const newFen = new Fen(currentFen.fen);
     const flags: MoveFlags = {};
 
-    const isEnPassant = EnPassant.isEnPassant(board, from, to);
     const isPromotion = Promotion.isPromotion(board, from, to);
-    const isCastle = Castle.isCastleMove(from, to);
 
     const piece = board.getSquare(from)?.piece;
     if (!piece) return;
     if (piece.color !== game.currentPlayer) return;
-
-    if (isEnPassant) {
-      flags.enPassant = true;
-    }
 
     if (isPromotion) {
       const promotionPiece = await getPromotionPiece(to);
@@ -67,22 +60,12 @@ export function useGameActions() {
       };
     }
 
-    if (isCastle) {
-      const isCastleValid = Castle.canCastle(board, from, to, currentFen.castleStatus);
+    const isLegalMove = piece.legalMoves.find(({ row, col }) => row === to.row && col === to.col);
 
-      if (!isCastleValid) return;
+    if (!isLegalMove) return;
 
-      const isShortCastle = Castle.isShortCastle(from, to);
-
-      game.castleMove(isShortCastle);
-    } else {
-      const isLegalMove = piece.legalMoves.find(({ row, col }) => row === to.row && col === to.col);
-
-      if (!isLegalMove) return;
-
-      game.makeMove({ from, to, flags });
-      game.calculateLegalMoves();
-    }
+    game.makeMove({ from, to, flags });
+    game.calculateLegalMoves();
 
     if (piece.name === "p") {
       newFen.resetHalfMoveClock();
@@ -94,7 +77,9 @@ export function useGameActions() {
 
     newFen.switchTurns();
     newFen.setFenPieces(fenPieces);
-    newFen.setEnPassantTargetSquare(newFen.enPassantTargetSquare);
+    newFen.setEnPassantTargetSquare(
+      newFen.enPassantTargetSquare ? MoveNotation.toCell(newFen.enPassantTargetSquare) : "-"
+    );
 
     currentMovingPiece.current = undefined;
     addToFenHistory(newFen);

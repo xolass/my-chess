@@ -11,7 +11,7 @@ import QueenPiece from "../pieces/queen";
 import RookPiece from "../pieces/rook";
 
 interface Props {
-  piece: PieceLetter | null;
+  piece: PieceLetter | undefined;
   coordinates: Coordinates;
 }
 

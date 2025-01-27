@@ -1,4 +1,5 @@
 import { Board } from "@/controllers/classes/Board";
+import MoveNotation from "@/controllers/classes/MoveNotation";
 import {
   Colors,
   EnPassantTargetSquare,
@@ -10,9 +11,11 @@ import {
   PieceLetter,
 } from "@/types";
 
+const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 export class Fen {
-  constructor(previousFen: FenType) {
-    this._fen = previousFen;
+  constructor(previousFen?: FenType) {
+    this._fen = previousFen ?? initialFen;
     this.setEnPassantTargetSquare("-"); // always reset to base state
   }
 
@@ -56,14 +59,14 @@ export class Fen {
 
   public getMatrix(): LettersGrid {
     function getFENRowAsArray(row: string) {
-      const cells: Array<PieceLetter | null> = [];
+      const cells: Array<PieceLetter | undefined> = [];
       Array.from(row).forEach((char) => {
         if (Number.isNaN(Number(char))) {
           return cells.push(char as PieceLetter);
         }
 
         const emptySpaces = Number(char);
-        cells.push(...Array.from<null>({ length: emptySpaces }).fill(null));
+        cells.push(...Array.from<undefined>({ length: emptySpaces }).fill(undefined));
       });
 
       return cells;
@@ -84,7 +87,10 @@ export class Fen {
     return this._fen.split(" ")[2] as FenCastle;
   }
   public get enPassantTargetSquare() {
-    return this._fen.split(" ")[3] as EnPassantTargetSquare;
+    const moveNotation = this._fen.split(" ")[3] as EnPassantTargetSquare;
+
+    if (moveNotation === "-") return;
+    return MoveNotation.toCoordinate(moveNotation);
   }
   public get halfMoveClock() {
     return Number(this._fen.split(" ")[4]);

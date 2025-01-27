@@ -1,7 +1,6 @@
-import { Colors, Coordinates, MoveFlags } from "@/types";
+import { Colors, Coordinates } from "@/types";
 
 import { Board } from "@/controllers/classes/Board";
-import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Piece } from "@/controllers/classes/Piece";
 
 export class Pawn extends Piece {
@@ -56,31 +55,29 @@ export class Pawn extends Piece {
     return moves;
   }
 
-  override isValidMove(board: Board, to: Coordinates, flags?: MoveFlags): boolean {
+  override isValidMove(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
 
     if (this.isSamePosition(to)) return false;
 
-    if (!board.isInsideBoard(to)) return false
+    if (!board.isInsideBoard(to)) return false;
 
     if (this.isTryingToCaptureAlly(board, to)) return false;
 
     if (board.isTherePieceBetween(from, to)) return false;
 
-    if (!this.isPawnWayOfMoving(board, to, flags?.enPassant)) return false;
+    if (!this.isPawnWayOfMoving(board, to)) return false;
 
     return true;
   }
 
-  private isPawnWayOfMoving(board: Board, to: Coordinates, enPassant?: boolean): boolean {
+  private isPawnWayOfMoving(board: Board, to: Coordinates): boolean {
     const from = this.coordinates;
 
     if (this.isTryingToGoBackwards(to)) return false;
 
-    if (enPassant && !EnPassant.isEnPassant(board, from, to)) return false;
-
     if (this.isCapture(board, from, to)) {
-      return this.validCapture(board, to)
+      return this.validCapture(board, to);
     } else {
       if (from.col !== to.col) return false;
 
@@ -93,11 +90,9 @@ export class Pawn extends Piece {
 
   private isCapture(board: Board, from: Coordinates, to: Coordinates) {
     const currentPiece = board.getSquare(from).piece;
-    const targetPiece = board.getSquare(to).piece
+    const targetPiece = board.getSquare(to).piece;
 
-
-    console.log({ currentPiece, targetPiece })
-    return currentPiece && targetPiece
+    return currentPiece && targetPiece;
   }
 
   private validCapture(board: Board, to: Coordinates) {
@@ -137,5 +132,9 @@ export class Pawn extends Piece {
     if (this.color === Colors.BLACK && this.coordinates.row === 1) return true;
 
     return false;
+  }
+
+  static isDoubleMove(from: Coordinates, to: Coordinates) {
+    return from.col === to.col && Math.abs(from.row - to.row) === 2;
   }
 }

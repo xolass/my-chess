@@ -1,10 +1,8 @@
-import { Board } from "@/controllers/classes/Board";
 import { Game } from "@/controllers/classes/Game";
 
 describe("Make game moves", () => {
   it("should make pawn moves", () => {
-    const board = new Board();
-    const game = new Game(board);
+    const game = new Game();
 
     game.makeMove({ from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
     game.makeMove({ from: { row: 1, col: 4 }, to: { row: 3, col: 4 } });
@@ -19,22 +17,16 @@ describe("Make game moves", () => {
     game.makeMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
     game.makeMove({ from: { row: 3, col: 1 }, to: { row: 4, col: 1 } });
     game.makeMove({ from: { row: 6, col: 2 }, to: { row: 4, col: 2 } });
-    game.makeMove({
-      from: { row: 4, col: 1 },
-      to: { row: 5, col: 2 },
-      flags: {
-        enPassant: true,
-      },
-    });
+    game.makeMove({ from: { row: 4, col: 1 }, to: { row: 5, col: 2 } });
 
-    expect(board.getLettersGrid()).toStrictEqual([
+    expect(game.board.getLettersGrid()).toEqual([
       ["r", "n", "b", "q", "k", "b", "n", "r"],
-      ["p", null, "p", null, null, null, "p", "p"],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", "P", null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, "p", "P", null, null, "P", null],
-      ["P", "P", null, null, null, null, null, "P"],
+      ["p", undefined, "p", undefined, undefined, undefined, "p", "p"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", "P", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, "p", "P", undefined, undefined, "P", undefined],
+      ["P", "P", undefined, undefined, undefined, undefined, undefined, "P"],
       ["R", "N", "B", "Q", "K", "B", "N", "R"],
     ]);
   });

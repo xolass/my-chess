@@ -1,7 +1,13 @@
 import { Board } from "@/controllers/classes/Board";
+import { Piece } from "@/controllers/classes/Piece";
+import { Pawn } from "@/controllers/classes/pieces/Pawn";
 import { Colors, Coordinates } from "@/types";
 
 export class EnPassant {
+  static isMoveEnpassantEnabling(piece: Piece, from: Coordinates, to: Coordinates) {
+    return piece.name === "p" && Pawn.isDoubleMove(from, to);
+  }
+
   static canEnPassant(to: Coordinates, enPassantTargetCoordinates: Coordinates) {
     return to.row === enPassantTargetCoordinates.row && to.col === enPassantTargetCoordinates.col;
   }
@@ -27,5 +33,13 @@ export class EnPassant {
     if (fromPiece.color === Colors.BLACK) {
       if (to.row === 5) return true;
     }
+  }
+
+  static getEnPassantTargetSquare(to: Coordinates) {
+    const modifier = to.row === 3 ? -1 : 1;
+    return {
+      col: to.col,
+      row: to.row + modifier,
+    };
   }
 }

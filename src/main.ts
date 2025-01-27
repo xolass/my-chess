@@ -1,21 +1,12 @@
-import { Board } from "@/controllers/classes/Board";
+import { Fen } from "@/controllers/classes/Fen";
 import { Game } from "@/controllers/classes/Game";
-import { LettersGrid } from "@/types";
+import { FenType } from "@/types";
 
-export const initialBoard: LettersGrid = [
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, "k", null, null, null],
-  [null, null, null, "P", null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-];
+export const initialPosition = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" as FenType;
 
 export function setupGame() {
-  const board = new Board(initialBoard);
-  const game = new Game(board);
+  const fen = new Fen(initialPosition);
+  const game = new Game(fen);
 
   game.calculateLegalMoves();
 

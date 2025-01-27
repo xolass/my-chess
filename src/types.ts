@@ -1,5 +1,9 @@
 import { Square } from "@/controllers/classes/Square";
 
+export type OnlyOneOf<T> = {
+  [K in keyof T]: Pick<T, K> & Partial<Record<Exclude<keyof T, K>, never>>;
+}[keyof T];
+
 export type Coordinates = {
   row: number;
   col: number;
@@ -10,7 +14,7 @@ export enum Colors {
   BLACK = "b",
 }
 
-export type LettersGrid = Array<Array<PieceLetter | null>>;
+export type LettersGrid = Array<Array<PieceLetter | undefined>>;
 
 export type PieceIdentifier = "p" | "r" | "n" | "b" | "q" | "k";
 
@@ -76,6 +80,5 @@ export type Castle = {
 };
 
 export type MoveFlags = {
-  enPassant?: boolean;
   promotion?: Promotion;
 };

@@ -7,7 +7,6 @@ import {
 import { Castle } from "@/controllers/classes/Castle";
 import { setupGame } from "@/main";
 
-// TODO: add tests to check if the king is in check or will be in check after the castle
 describe("Can castle test suite", () => {
   it("[white][king] should prevent castle if there are pieces in between the king and the rook", () => {
     const { game } = setupGame();

@@ -1,5 +1,5 @@
 import { Board } from "@/controllers/classes/Board";
-import { Colors, Coordinates, MoveFlags, PieceIdentifier, PieceLetter } from "@/types";
+import { Colors, Coordinates, PieceIdentifier, PieceLetter } from "@/types";
 
 export abstract class Piece {
   pieceLetter: PieceLetter;
@@ -24,7 +24,7 @@ export abstract class Piece {
     return true;
   }
 
-  abstract isValidMove(board: Board, to: Coordinates, flags?: MoveFlags): boolean;
+  abstract isValidMove(board: Board, to: Coordinates): boolean;
 
   abstract calculateLegalMoves(board: Board): Array<Coordinates>;
 

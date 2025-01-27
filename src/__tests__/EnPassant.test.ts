@@ -7,14 +7,14 @@ describe("En passant mechanics", () => {
     const { board } = game;
 
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "R", null, null, null, null],
-      [null, null, null, null, "P", "p", null, null],
-      ["P", "p", null, null, null, null, "P", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "R", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", "p", undefined, undefined],
+      ["P", "p", undefined, undefined, undefined, undefined, undefined, "P"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const enPassantTargetCoordinatesForWhite = { row: 2, col: 5 };
@@ -48,48 +48,49 @@ describe("En passant mechanics", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "R", null, null, null, null],
-      [null, null, null, null, "P", "p", null, null],
-      ["P", "p", null, null, null, null, "P", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "R", undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", "p", undefined, undefined],
+      ["P", "p", undefined, undefined, undefined, undefined, undefined, "P"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
+    game.enPassantTargetSquare = { row: 2, col: 5 };
 
     game.makeMove({
       from: { row: 3, col: 4 },
       to: { row: 2, col: 5 },
-      flags: { enPassant: true },
     });
 
     expect(board.getLettersGrid()).toEqual([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "R", null, "P", null, null],
-      [null, null, null, null, null, null, null, null],
-      ["P", "p", null, null, null, null, "P", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "R", undefined, "P", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      ["P", "p", undefined, undefined, undefined, undefined, undefined, "P"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
+
+    game.enPassantTargetSquare = { row: 5, col: 0 };
 
     game.makeMove({
       from: { row: 4, col: 1 },
       to: { row: 5, col: 0 },
-      flags: { enPassant: true },
     });
 
     expect(board.getLettersGrid()).toEqual([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "R", null, "P", null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "P", null],
-      ["p", null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "R", undefined, "P", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, "P"],
+      ["p", undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
   });
 });

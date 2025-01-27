@@ -6,14 +6,14 @@ describe("Promotion test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "P", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, "p", null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "P"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, "p", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const isWhitePromoting = Promotion.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
@@ -27,14 +27,14 @@ describe("Promotion test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, "R", null],
-      [null, null, null, null, null, null, null, "P"],
-      [null, null, null, "p", null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, "q", null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, "R"],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, "P"],
+      [undefined, undefined, undefined, "p", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, "q", undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const pawnNotReachingOtherSide = Promotion.isPromotion(board, { row: 5, col: 7 }, { row: 6, col: 7 });
@@ -54,14 +54,14 @@ describe("Promotion test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "P", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "p", null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "P", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     game.makeMove({
@@ -71,14 +71,14 @@ describe("Promotion test suite", () => {
     });
 
     expect(board.getLettersGrid()).toStrictEqual([
-      [null, null, null, null, null, null, "Q", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "p", null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "Q", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     game.makeMove({
@@ -88,14 +88,14 @@ describe("Promotion test suite", () => {
     });
 
     expect(board.getLettersGrid()).toStrictEqual([
-      [null, null, null, null, null, null, "Q", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, "q", null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "Q", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, "q", undefined],
     ]);
   });
 });
@@ -104,14 +104,14 @@ it("should be able to transform a pawn into a rook when reaching the other side 
   const { game } = setupGame();
   const { board } = game;
   board.from([
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "P", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "p", null],
-    [null, null, null, null, null, null, null, null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "P", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
   ]);
 
   game.makeMove({
@@ -121,14 +121,14 @@ it("should be able to transform a pawn into a rook when reaching the other side 
   });
 
   expect(board.getLettersGrid()).toStrictEqual([
-    [null, null, null, null, null, null, "R", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "p", null],
-    [null, null, null, null, null, null, null, null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "R", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
   ]);
 
   game.makeMove({
@@ -138,14 +138,14 @@ it("should be able to transform a pawn into a rook when reaching the other side 
   });
 
   expect(board.getLettersGrid()).toStrictEqual([
-    [null, null, null, null, null, null, "R", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "r", null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "R", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "r", undefined],
   ]);
 });
 
@@ -153,14 +153,14 @@ it("should be able to transform a pawn into a knight when reaching the other sid
   const { game } = setupGame();
   const { board } = game;
   board.from([
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "P", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "p", null],
-    [null, null, null, null, null, null, null, null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "P", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
   ]);
 
   game.makeMove({
@@ -170,14 +170,14 @@ it("should be able to transform a pawn into a knight when reaching the other sid
   });
 
   expect(board.getLettersGrid()).toStrictEqual([
-    [null, null, null, null, null, null, "N", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "p", null],
-    [null, null, null, null, null, null, null, null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "N", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
   ]);
 
   game.makeMove({
@@ -187,14 +187,14 @@ it("should be able to transform a pawn into a knight when reaching the other sid
   });
 
   expect(board.getLettersGrid()).toStrictEqual([
-    [null, null, null, null, null, null, "N", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "n", null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "N", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "n", undefined],
   ]);
 });
 
@@ -202,14 +202,14 @@ it("should be able to transform a pawn into a bishop when reaching the other sid
   const { game } = setupGame();
   const { board } = game;
   board.from([
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "P", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "p", null],
-    [null, null, null, null, null, null, null, null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "P", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
   ]);
 
   game.makeMove({
@@ -219,14 +219,14 @@ it("should be able to transform a pawn into a bishop when reaching the other sid
   });
 
   expect(board.getLettersGrid()).toStrictEqual([
-    [null, null, null, null, null, null, "B", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "p", null],
-    [null, null, null, null, null, null, null, null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "B", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "p", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
   ]);
 
   game.makeMove({
@@ -236,13 +236,13 @@ it("should be able to transform a pawn into a bishop when reaching the other sid
   });
 
   expect(board.getLettersGrid()).toStrictEqual([
-    [null, null, null, null, null, null, "B", null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, null, null],
-    [null, null, null, null, null, null, "b", null],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "B", undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+    [undefined, undefined, undefined, undefined, undefined, undefined, "b", undefined],
   ]);
 });

@@ -2,6 +2,6 @@ export {};
 
 declare global {
   interface Window {
-    boardState: (string | null)[][];
+    boardState: (string | undefined)[][];
   }
 }

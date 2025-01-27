@@ -5,14 +5,14 @@ describe("Capture mechanic", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, "Q", null, "B", null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "Q", undefined, "B", undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
     const exd5 = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
     const exf5 = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
@@ -30,14 +30,14 @@ describe("Capture mechanic", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, "Q", null, "B", null, null],
-      [null, null, null, null, "P", null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined],
+      [undefined, undefined, undefined, "Q", undefined, "B", undefined, undefined],
+      [undefined, undefined, undefined, undefined, "P", undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const qxe6 = game.validateMove({ from: { row: 3, col: 3 }, to: { row: 2, col: 4 } });
@@ -51,14 +51,14 @@ describe("Capture mechanic", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, "P", null, "P", null, null],
-      [null, null, "Q", null, null, null, "B", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined],
+      [undefined, undefined, undefined, "P", undefined, "P", undefined, undefined],
+      [undefined, undefined, "Q", undefined, undefined, undefined, "B", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const qxe6 = game.validateMove({ from: { row: 5, col: 2 }, to: { row: 2, col: 4 } });
@@ -72,14 +72,14 @@ describe("Capture mechanic", () => {
     const { game } = setupGame();
     const { board } = game;
     board.from([
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, "p", null, null, null],
-      [null, null, null, "p", null, "p", null, null],
-      [null, null, "Q", null, null, null, "B", null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, "p", undefined, undefined, undefined],
+      [undefined, undefined, undefined, "p", undefined, "p", undefined, undefined],
+      [undefined, undefined, "Q", undefined, undefined, undefined, "B", undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
     const qxe6 = game.validateMove({ from: { row: 5, col: 2 }, to: { row: 2, col: 4 } });
