@@ -32,22 +32,6 @@ export class King extends Piece {
     return true;
   }
 
-  public isInCheck(board: Board): boolean {
-    console.log("isInCheck");
-    const square = board.getSquare(this.coordinates);
-
-    if (!square.piece)
-      throw new Error(
-        "King not found" +
-          JSON.stringify({ cause: { coordinates: this.coordinates, board: board.formatedGrid } }, undefined, 2)
-      );
-
-    if (this.color === Colors.WHITE) return !!square.getBlackAttackingPieces(board).length;
-    if (this.color === Colors.BLACK) return !!square.getWhiteAttackingPieces(board).length;
-
-    return false;
-  }
-
   private isKingWayOfMoving(from: Coordinates, to: Coordinates) {
     console.log("is king way of moving");
 

@@ -9,8 +9,6 @@ import { Colors, Coordinates, PieceIdentifier } from "@/types";
 
 type PieceConstructor = new (color: Colors, position: Coordinates, name: PieceIdentifier) => Piece;
 
-console.log({ King });
-
 export const nameClassRelation: Record<PieceIdentifier, PieceConstructor> = {
   p: Pawn,
   b: Bishop,
