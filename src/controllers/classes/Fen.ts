@@ -1,5 +1,4 @@
 import { Board } from "@/controllers/classes/Board";
-import MoveNotation from "@/controllers/classes/MoveNotation";
 import {
   Colors,
   EnPassantTargetSquare,
@@ -87,10 +86,7 @@ export class Fen {
     return this._fen.split(" ")[2] as FenCastle;
   }
   public get enPassantTargetSquare() {
-    const moveNotation = this._fen.split(" ")[3] as EnPassantTargetSquare;
-
-    if (moveNotation === "-") return;
-    return MoveNotation.toCoordinate(moveNotation);
+    return this._fen.split(" ")[3] as EnPassantTargetSquare;
   }
   public get halfMoveClock() {
     return Number(this._fen.split(" ")[4]);
@@ -100,15 +96,16 @@ export class Fen {
   }
 
   public setFenPieces(newValue: FenPiecesSection) {
+    if (!this.enPassantTargetSquare) throw new Error();
     this._fen =
       `${newValue} ${this.turn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
   }
-  private setTurn(newValue: FenColors) {
+  public setTurn(newValue: FenColors) {
     const newTurn = newValue === Colors.WHITE ? "w" : "b";
     this._fen =
       `${this.fenPieces} ${newTurn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
   }
-  private setCastleStatus(newValue: FenCastle) {
+  public setCastleStatus(newValue: FenCastle) {
     this._fen =
       `${this.fenPieces} ${this.turn} ${newValue} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
   }
@@ -116,11 +113,11 @@ export class Fen {
     this._fen =
       `${this.fenPieces} ${this.turn} ${this.castleStatus} ${newValue} ${this.halfMoveClock} ${this.turnsCount}` as FenType;
   }
-  private setHalfMoveClock(newValue: number) {
+  public setHalfMoveClock(newValue: number) {
     this._fen =
       `${this.fenPieces} ${this.turn} ${this.castleStatus} ${this.enPassantTargetSquare} ${newValue} ${this.turnsCount}` as FenType;
   }
-  private setTurnsCount(newValue: number) {
+  public setTurnsCount(newValue: number) {
     this._fen =
       `${this.fenPieces} ${this.turn} ${this.castleStatus} ${this.enPassantTargetSquare} ${this.halfMoveClock} ${newValue}` as FenType;
   }

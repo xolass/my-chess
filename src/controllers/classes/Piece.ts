@@ -26,7 +26,7 @@ export abstract class Piece {
 
   abstract isValidMove(board: Board, to: Coordinates): boolean;
 
-  abstract calculateLegalMoves(board: Board): Array<Coordinates>;
+  abstract calculatePossibleMoves(board: Board): Array<Coordinates>;
 
   abstract calculateAttackingSquares(board: Board): Array<Coordinates>;
 

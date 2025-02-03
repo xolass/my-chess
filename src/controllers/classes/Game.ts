@@ -3,6 +3,8 @@ import { Castle } from "@/controllers/classes/Castle";
 import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Fen } from "@/controllers/classes/Fen";
 import { HalfMoveClock } from "@/controllers/classes/HalfMoveClock";
+import MoveNotation from "@/controllers/classes/MoveNotation";
+import { Piece } from "@/controllers/classes/Piece";
 import { King } from "@/controllers/classes/pieces/King";
 import { Colors, Coordinates, FenCastle, Move } from "@/types";
 import { nameClassRelation } from "@/utils";
@@ -24,17 +26,37 @@ export class Game {
     this.currentPlayer = fen.turn;
     this.turn = fen.turnsCount;
     this.halfMoveClock = fen.halfMoveClock;
-    this.enPassantTargetSquare = fen.enPassantTargetSquare;
+
+    if (fen.enPassantTargetSquare === "-") {
+      this.enPassantTargetSquare = undefined;
+    } else {
+      this.enPassantTargetSquare = MoveNotation.toCoordinate(fen.enPassantTargetSquare);
+    }
   }
 
-  public validateMove({ from, to, flags }: Move): boolean {
+  public clone() {
+    const newFen = new Fen();
+
+    newFen.setFenPieces(Fen.fromBoard(this.board));
+    newFen.setCastleStatus(this.castleStatus);
+    newFen.setTurnsCount(this.turn);
+    newFen.setHalfMoveClock(this.halfMoveClock);
+    newFen.setTurn(this.currentPlayer);
+
+    if (this.enPassantTargetSquare) {
+      newFen.setEnPassantTargetSquare(MoveNotation.toCell(this.enPassantTargetSquare));
+    } else {
+      newFen.setEnPassantTargetSquare("-");
+    }
+
+    return new Game(newFen);
+  }
+
+  public validateMove({ from, to }: Move): boolean {
     const startSquare = this.board.getSquare(from);
     const piece = startSquare.piece;
 
-    console.log("validating");
-
     if (!piece) {
-      console.info("no piece");
       return false;
     }
 
@@ -49,11 +71,6 @@ export class Game {
 
     if (!piece.isValidMove(this.board, to)) {
       console.info("not valid move");
-      return false;
-    }
-
-    if (this.willKingBeAttacked({ from, to, flags })) {
-      console.info("king will be attacked");
       return false;
     }
 
@@ -170,49 +187,6 @@ export class Game {
     rook.setPosition({ row, col: rookCol + rookPositionOffset });
   }
 
-  public willKingBeAttacked({ from, to }: Move) {
-    console.log("checking if king will be attacked");
-
-    const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
-
-    if (!king) return false; // to test positions where both kings are not on the board
-
-    if (!(king instanceof King)) throw new Error("Invalid piece type");
-
-    const movingPiece = this.board.getSquare(from).piece;
-
-    if (!movingPiece) throw new Error("no piece moving");
-
-    const boardAfterMove = new Board(this.board.getLettersGrid());
-    boardAfterMove.setSquare(from, undefined);
-    boardAfterMove.setSquare(to, movingPiece);
-    movingPiece.setPosition(to);
-
-    const [kingPositionInNewBoard] = boardAfterMove.getPiecesOfAKind("k", this.currentPlayer);
-
-    if (!kingPositionInNewBoard) return false; // to test positions where both kings are not on the board
-
-    if (!(kingPositionInNewBoard instanceof King)) throw new Error("Invalid piece type");
-
-    if (this.currentPlayer === Colors.WHITE) {
-      const attackingBlackPieces = this.board
-        .getSquare(kingPositionInNewBoard.coordinates)
-        .getBlackAttackingPieces(boardAfterMove);
-      movingPiece.setPosition(from);
-
-      if (attackingBlackPieces.length) return true;
-    } else {
-      const attackingWhitePieces = this.board
-        .getSquare(kingPositionInNewBoard.coordinates)
-        .getWhiteAttackingPieces(boardAfterMove);
-      movingPiece.setPosition(from);
-
-      if (attackingWhitePieces.length) return true;
-    }
-
-    return false;
-  }
-
   public isCheckmate() {
     const pieces = this.board.getPieces(this.currentPlayer);
 
@@ -220,32 +194,100 @@ export class Game {
       return prevValue + piece.legalMoves.length;
     }, 0);
 
-    if (totalLegalMoves === 0) return true;
+    if (totalLegalMoves === 0) {
+      const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
+      if (!king) return false;
+
+      if (this.isPieceBeingAttacked(king)) {
+        return true;
+      }
+    }
 
     return false;
   }
 
-  public rollbackMove(prevBoard: Board) {
-    console.log("rolling back move");
-    this.board = prevBoard;
-    this.switchPlayer();
+  public isStaleMate() {
+    const pieces = this.board.getPieces(this.currentPlayer);
+
+    const totalLegalMoves = pieces.reduce((prevValue, piece) => {
+      return prevValue + piece.legalMoves.length;
+    }, 0);
+
+    if (totalLegalMoves === 0) {
+      const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
+      if (!king) return false;
+
+      if (!this.isPieceBeingAttacked(king)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public isPieceBeingAttacked(piece?: Piece): boolean {
+    if (!piece) return false;
+    const square = this.board.getSquare(piece.coordinates);
+
+    if (piece.color === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
+    if (piece.color === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
+
+    return false;
+  }
+
+  public willSquareBeAttacked(coordinates: Coordinates) {
+    const square = this.board.getSquare(coordinates);
+
+    if (this.currentPlayer === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
+    if (this.currentPlayer === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
+  }
+
+  private doesMoveRemoveCheck(move: Move): boolean {
+    const simulatedGame = this.clone();
+    simulatedGame.makeMove({ from: move.from, to: move.to });
+
+    const [king] = simulatedGame.board.getPiecesOfAKind("k", this.currentPlayer);
+    if (!king) return false;
+
+    // Check if the king is still in check after the move
+    return !this.isPieceBeingAttacked(king);
   }
 
   public calculateLegalMoves() {
     const colorPieces = this.board.getPieces(this.currentPlayer);
+    const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
+    const isKingInCheck = this.isPieceBeingAttacked(king);
     let legalMoveCounter = 0;
 
-    const validLegalMoves = colorPieces.map((piece) => {
-      const legalMoves = piece.calculateLegalMoves(this.board);
-      const validLegalMoves = legalMoves.filter((to) => {
-        return this.validateMove({ from: piece.coordinates, to, flags: {} });
+    const legalMoves = colorPieces.map((piece) => {
+      const isKingMoving = piece.name === "k";
+      const possibleMoves = piece.calculatePossibleMoves(this.board);
+
+      // Filter moves that are valid and don't leave the king in check
+      const validLegalMoves = possibleMoves.filter((to) => {
+        const move: Move = { from: piece.coordinates, to };
+
+        if (!this.validateMove(move)) return false;
+
+        // If the king is in check, only allow moves that remove the check
+        if (isKingInCheck && !this.doesMoveRemoveCheck(move)) return false;
+        if (isKingMoving && this.willSquareBeAttacked(to)) return false;
+
+        return true;
       });
+
+      if (piece instanceof King) {
+        const kingCastleMoves = piece.getCastlePossibleMoves(this.board, this.castleStatus);
+
+        validLegalMoves.push(...kingCastleMoves);
+      }
+
       legalMoveCounter += validLegalMoves.length;
       piece.legalMoves = validLegalMoves;
       return { piece: piece.pieceLetter, validLegalMoves };
     });
 
-    return validLegalMoves;
+    return legalMoves;
   }
 
   public switchPlayer() {

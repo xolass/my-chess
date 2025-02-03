@@ -1,7 +1,8 @@
 import { directionToCoordinates } from "@/controllers/auxFunctions";
 import { Board } from "@/controllers/classes/Board";
+import { Castle } from "@/controllers/classes/Castle";
 import { Piece } from "@/controllers/classes/Piece";
-import { Colors, Coordinates } from "@/types";
+import { Colors, Coordinates, FenCastle } from "@/types";
 
 export class King extends Piece {
   constructor(public override color: Colors, public override coordinates: Coordinates) {
@@ -32,20 +33,20 @@ export class King extends Piece {
     return true;
   }
 
-  public isInCheck(board: Board): boolean {
-    console.log("isInCheck");
-    const square = board.getSquare(this.coordinates);
+  public getCastlePossibleMoves(board: Board, castleStatus: FenCastle) {
+    const from = this.coordinates;
+    const castlePossibilities = [
+      Castle.WHITE_SHORT_ROOK_COORDINATES,
+      Castle.WHITE_LONG_ROOK_COORDINATES,
+      Castle.BLACK_SHORT_ROOK_COORDINATES,
+      Castle.BLACK_LONG_ROOK_COORDINATES,
+    ];
 
-    if (!square.piece)
-      throw new Error(
-        "King not found" +
-          JSON.stringify({ cause: { coordinates: this.coordinates, board: board.formatedGrid } }, undefined, 2)
-      );
+    const castleLegalMoves = castlePossibilities.filter((to) => {
+      return Castle.canCastle(board, from, to, castleStatus);
+    });
 
-    if (this.color === Colors.WHITE) return !!square.getBlackAttackingPieces(board).length;
-    if (this.color === Colors.BLACK) return !!square.getWhiteAttackingPieces(board).length;
-
-    return false;
+    return castleLegalMoves;
   }
 
   private isKingWayOfMoving(from: Coordinates, to: Coordinates) {
@@ -61,7 +62,7 @@ export class King extends Piece {
     return isMovingOneSquare && (isHorizontal || isVertical || isDiagonal);
   }
 
-  override calculateLegalMoves(board: Board): Array<Coordinates> {
+  override calculatePossibleMoves(board: Board): Array<Coordinates> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions

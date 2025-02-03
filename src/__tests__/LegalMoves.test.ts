@@ -16,12 +16,14 @@ describe("Compare amount of legal moves in different positions", () => {
       }, 0);
 
       console.info({ calculatedLegalMoves, legalMovesAmount, position });
+
+      expect(calculatedLegalMoves).toEqual(legalMovesAmount);
     });
   });
 
   it("single position", () => {
     console.log = () => {};
-    const singlePosition = { "8/8/8/8/8/8/8/4K2k w - - 0 1": 5 };
+    const singlePosition = { "4k3/8/8/8/8/8/4R3/4K3 b - - 0 1": 4 }; // 'r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1'
 
     Object.entries(singlePosition).forEach(([position, legalMovesAmount]) => {
       const game = new Game(new Fen(position as FenType));

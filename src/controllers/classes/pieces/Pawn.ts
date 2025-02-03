@@ -8,7 +8,7 @@ export class Pawn extends Piece {
     super(color, coordinates, "p");
   }
 
-  override calculateLegalMoves(board: Board): Array<Coordinates> {
+  override calculatePossibleMoves(board: Board): Array<Coordinates> {
     const moves: Coordinates[] = [];
 
     const forward = this.color === Colors.WHITE ? -1 : 1;
