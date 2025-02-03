@@ -84,14 +84,15 @@ export class Board {
       const direction = getDirection(from, to);
 
       const { row: rowModifier, col: colModifier } = directionToCoordinates[direction];
-      if (
-        this.getSquare({
-          row: from.row + rowModifier * i,
-          col: from.col + colModifier * i,
-        }).piece !== undefined
-      )
-        return true;
+      const squarePiece = this.getSquare({
+        row: from.row + rowModifier * i,
+        col: from.col + colModifier * i,
+      }).piece;
+
+      if (squarePiece !== undefined) return true;
     }
+
+    return false;
   }
 
   public setSquare(cell: Coordinates, piece?: Piece) {

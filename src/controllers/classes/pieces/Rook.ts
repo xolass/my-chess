@@ -9,7 +9,7 @@ export class Rook extends Piece {
     super(color, coordinates, "r");
   }
 
-  override calculateLegalMoves(board: Board): Array<Coordinates> {
+  override calculatePossibleMoves(board: Board): Array<Coordinates> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions
@@ -62,7 +62,7 @@ export class Rook extends Piece {
 
     if (this.isSamePosition(to)) return false;
 
-    if (!board.isInsideBoard(to)) return false
+    if (!board.isInsideBoard(to)) return false;
 
     if (this.isTryingToCaptureAlly(board, to)) return false;
 

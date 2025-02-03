@@ -4,6 +4,8 @@ import { EnPassant } from "@/controllers/classes/EnPassant";
 import { Fen } from "@/controllers/classes/Fen";
 import { HalfMoveClock } from "@/controllers/classes/HalfMoveClock";
 import MoveNotation from "@/controllers/classes/MoveNotation";
+import { Piece } from "@/controllers/classes/Piece";
+import { King } from "@/controllers/classes/pieces/King";
 import { Colors, Coordinates, FenCastle, Move } from "@/types";
 import { nameClassRelation } from "@/utils";
 
@@ -50,14 +52,11 @@ export class Game {
     return new Game(newFen);
   }
 
-  public validateMove({ from, to, flags }: Move): boolean {
+  public validateMove({ from, to }: Move): boolean {
     const startSquare = this.board.getSquare(from);
     const piece = startSquare.piece;
 
-    console.log("validating");
-
     if (!piece) {
-      console.info("no piece");
       return false;
     }
 
@@ -195,69 +194,100 @@ export class Game {
       return prevValue + piece.legalMoves.length;
     }, 0);
 
-    if (totalLegalMoves === 0) return true;
+    if (totalLegalMoves === 0) {
+      const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
+      if (!king) return false;
+
+      if (this.isPieceBeingAttacked(king)) {
+        return true;
+      }
+    }
 
     return false;
   }
 
-  public isKingInCheck(color: Colors): boolean {
-    const [king] = this.board.getPiecesOfAKind("k", color);
-    if (!king) return false; // if there is no king, there is no check
+  public isStaleMate() {
+    const pieces = this.board.getPieces(this.currentPlayer);
 
-    const square = this.board.getSquare(king.coordinates);
+    const totalLegalMoves = pieces.reduce((prevValue, piece) => {
+      return prevValue + piece.legalMoves.length;
+    }, 0);
 
-    if (color === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
-    if (color === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
+    if (totalLegalMoves === 0) {
+      const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
+      if (!king) return false;
+
+      if (!this.isPieceBeingAttacked(king)) {
+        return true;
+      }
+    }
 
     return false;
+  }
+
+  public isPieceBeingAttacked(piece?: Piece): boolean {
+    if (!piece) return false;
+    const square = this.board.getSquare(piece.coordinates);
+
+    if (piece.color === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
+    if (piece.color === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
+
+    return false;
+  }
+
+  public willSquareBeAttacked(coordinates: Coordinates) {
+    const square = this.board.getSquare(coordinates);
+
+    if (this.currentPlayer === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
+    if (this.currentPlayer === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
   }
 
   private doesMoveRemoveCheck(move: Move): boolean {
     const simulatedGame = this.clone();
     simulatedGame.makeMove({ from: move.from, to: move.to });
 
+    const [king] = simulatedGame.board.getPiecesOfAKind("k", this.currentPlayer);
+    if (!king) return false;
+
     // Check if the king is still in check after the move
-    return !this.isKingInCheck(this.currentPlayer);
-  }
-
-  private isPiecePinned(from: Coordinates, to: Coordinates, color: Colors): boolean {
-    const simulatedGame = this.clone();
-    simulatedGame.makeMove({ from, to });
-
-    // Check if the king is in check after the move
-    return this.isKingInCheck(color);
+    return !this.isPieceBeingAttacked(king);
   }
 
   public calculateLegalMoves() {
     const colorPieces = this.board.getPieces(this.currentPlayer);
+    const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
+    const isKingInCheck = this.isPieceBeingAttacked(king);
     let legalMoveCounter = 0;
-    const isKingInCheck = this.isKingInCheck(this.currentPlayer);
 
-    const validLegalMoves = colorPieces.map((piece) => {
-      const legalMoves = piece.calculateLegalMoves(this.board);
+    const legalMoves = colorPieces.map((piece) => {
+      const isKingMoving = piece.name === "k";
+      const possibleMoves = piece.calculatePossibleMoves(this.board);
 
       // Filter moves that are valid and don't leave the king in check
-      const validLegalMoves = legalMoves.filter((to) => {
+      const validLegalMoves = possibleMoves.filter((to) => {
         const move: Move = { from: piece.coordinates, to };
 
-        // Check if the move is valid and doesn't leave the king in check
         if (!this.validateMove(move)) return false;
 
         // If the king is in check, only allow moves that remove the check
         if (isKingInCheck && !this.doesMoveRemoveCheck(move)) return false;
-
-        // Check if the piece is pinned and the move is legal
-        if (this.isPiecePinned(piece.coordinates, to, this.currentPlayer)) return false;
+        if (isKingMoving && this.willSquareBeAttacked(to)) return false;
 
         return true;
       });
+
+      if (piece instanceof King) {
+        const kingCastleMoves = piece.getCastlePossibleMoves(this.board, this.castleStatus);
+
+        validLegalMoves.push(...kingCastleMoves);
+      }
 
       legalMoveCounter += validLegalMoves.length;
       piece.legalMoves = validLegalMoves;
       return { piece: piece.pieceLetter, validLegalMoves };
     });
 
-    return validLegalMoves;
+    return legalMoves;
   }
 
   public switchPlayer() {

@@ -14,42 +14,43 @@ export class Square {
     this.piece = undefined;
   }
 
-  public getWhiteAttackingPieces(board: Board): Array<Piece> {
-    const attackingPieces = this.getAttackingPiece(board);
+  public getAllAttackingPieces(board: Board) {
+    const attackingPieces = this.getAttackingPieces(board);
     const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board);
 
-    const allAttackingPieces = [...attackingPieces, ...attackingPieceFromLPositions];
+    return [...attackingPieces, ...attackingPieceFromLPositions];
+  }
 
+  public getWhiteAttackingPieces(board: Board): Array<Piece> {
+    const allAttackingPieces = this.getAllAttackingPieces(board);
     const whiteAttackingPieces = allAttackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.WHITE);
 
     return whiteAttackingPieces;
   }
 
   public getBlackAttackingPieces(board: Board): Array<Piece> {
-    const attackingPieces = this.getAttackingPiece(board);
-    const attackingPieceFromLPositions = this.getAttackingPieceFromLPositions(board);
-
-    const allAttackingPieces = [...attackingPieces, ...attackingPieceFromLPositions];
+    const allAttackingPieces = this.getAllAttackingPieces(board);
 
     const blackAttackingPieces = allAttackingPieces.filter((attackingPiece) => attackingPiece.color === Colors.BLACK);
 
     return blackAttackingPieces;
   }
 
-  private getAttackingPiece(board: Board): Piece[] {
+  private getAttackingPieces(board: Board): Piece[] {
     const attackingPieces = Object.entries(directionToCoordinates)
       .map(([key, value]) => {
         if (key === "same") return;
 
-        const tempCell = {
-          row: this.coordinates.row,
-          col: this.coordinates.col,
-        };
+        let loopIndex = 0;
 
         do {
+          loopIndex++;
+
           // sum first to avoid checking the current square
-          tempCell.row = tempCell.row + value.row;
-          tempCell.col = tempCell.col + value.col;
+          const tempCell = {
+            row: this.coordinates.row + value.row * loopIndex,
+            col: this.coordinates.col + value.col * loopIndex,
+          };
 
           if (!board.isInsideBoard(tempCell)) break;
 
@@ -57,6 +58,10 @@ export class Square {
 
           if (!possiblePiece.piece) continue;
 
+          if (possiblePiece.piece.name === "k") {
+            // king walks only 1 square
+            if (loopIndex > 1) return;
+          }
           if (!value.pieces.includes(possiblePiece.piece.pieceLetter)) {
             return;
           }

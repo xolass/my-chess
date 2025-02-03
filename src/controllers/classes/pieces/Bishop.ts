@@ -14,7 +14,6 @@ export class Bishop extends Piece {
     if (this.isSamePosition(to)) return false;
     console.log("isSamePosition");
 
-    console.log(board.formatedGrid);
     if (!board.isInsideBoard(to)) return false;
     console.log("isInsideBoard");
 
@@ -29,7 +28,7 @@ export class Bishop extends Piece {
     return true;
   }
 
-  override calculateLegalMoves(board: Board): Array<Coordinates> {
+  override calculatePossibleMoves(board: Board): Array<Coordinates> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions
