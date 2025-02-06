@@ -10,12 +10,11 @@ import {
   PieceLetter,
 } from "@/types";
 
-const initialFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+const defaultFen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 export class Fen {
-  constructor(previousFen?: FenType) {
-    this._fen = previousFen ?? initialFen;
-    this.setEnPassantTargetSquare("-"); // always reset to base state
+  constructor(initialFen?: FenType) {
+    this._fen = initialFen ?? defaultFen;
   }
 
   private _fen: FenType;

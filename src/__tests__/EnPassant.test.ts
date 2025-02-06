@@ -1,4 +1,4 @@
-import { EnPassant } from "@/controllers/classes/EnPassant";
+import { EnPassantManager } from "@/controllers/classes/EnPassantManager";
 import { setupGame } from "@/main";
 
 describe("En passant mechanics", () => {
@@ -9,7 +9,7 @@ describe("En passant mechanics", () => {
     board.from([
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
-      [undefined, undefined, undefined, "R", undefined, undefined, undefined, undefined, undefined],
+      [undefined, undefined, undefined, "R", undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, "P", "p", undefined, undefined],
       ["P", "p", undefined, undefined, undefined, undefined, undefined, "P"],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
@@ -17,31 +17,27 @@ describe("En passant mechanics", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+    const whitePiece = board.getSquare({ row: 3, col: 4 }).piece!;
+    const blackPiece = board.getSquare({ row: 4, col: 1 }).piece!;
+    const regularCapturePiece = board.getSquare({ row: 2, col: 3 }).piece!;
+    const regularPawnMovementPiece = board.getSquare({ row: 3, col: 4 }).piece!;
+
     const enPassantTargetCoordinatesForWhite = { row: 2, col: 5 };
     const enPassantTargetCoordinatesForBlack = { row: 5, col: 0 };
 
-    const isForWhite = EnPassant.isEnPassant(board, { row: 3, col: 4 }, enPassantTargetCoordinatesForWhite);
-    const isForBlack = EnPassant.isEnPassant(board, { row: 4, col: 1 }, enPassantTargetCoordinatesForBlack);
-    const isRegularCapture = EnPassant.isEnPassant(board, { row: 4, col: 6 }, { row: 3, col: 5 });
-    const isRegularPawnMovement = EnPassant.isEnPassant(board, { row: 3, col: 4 }, { row: 2, col: 4 });
-    const isRegularPieceMovement = EnPassant.isEnPassant(board, { row: 3, col: 2 }, enPassantTargetCoordinatesForWhite);
+    const forWhite = EnPassantManager.isEnPassant(whitePiece, { row: 2, col: 5 }, enPassantTargetCoordinatesForWhite);
+    const forBlack = EnPassantManager.isEnPassant(blackPiece, { row: 5, col: 0 }, enPassantTargetCoordinatesForBlack);
+    const regularCapture = EnPassantManager.isEnPassant(regularCapturePiece, { row: 4, col: 6 }, { row: 3, col: 5 });
+    const regularPawnMovement = EnPassantManager.isEnPassant(
+      regularPawnMovementPiece,
+      { row: 2, col: 4 },
+      enPassantTargetCoordinatesForWhite
+    );
 
-    expect(isForWhite).toBe(true);
-    expect(isForBlack).toBe(true);
-    expect(isRegularCapture).toBe(false);
-    expect(isRegularPawnMovement).toBe(false);
-    expect(isRegularPieceMovement).toBe(false);
-  });
-
-  it("Should detect if en passant is possible", () => {
-    const enPassantTargetSquare = { row: 2, col: 5 };
-    const enPassantTargetCoordinates = { row: 2, col: 5 };
-
-    const can = EnPassant.canEnPassant(enPassantTargetCoordinates, enPassantTargetSquare);
-    const cant = EnPassant.canEnPassant({ row: 3, col: 5 }, enPassantTargetSquare);
-
-    expect(can).toBe(true);
-    expect(cant).toBe(false);
+    expect(forWhite).toBe(true);
+    expect(forBlack).toBe(true);
+    expect(regularCapture).toBe(false);
+    expect(regularPawnMovement).toBe(false);
   });
 
   it("Should capture the pawn behind the movement", () => {
@@ -92,5 +88,22 @@ describe("En passant mechanics", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
+  });
+  it("Should check if a move enables en passant", () => {
+    const { game } = setupGame();
+
+    const from = { row: 6, col: 4 };
+    const doubleMove = { row: 4, col: 4 };
+    const singleMove = { row: 5, col: 4 };
+
+    const piece = game.board.getSquare(from).piece;
+
+    if (!piece) throw new Error("no piece");
+
+    const valid = EnPassantManager.isMoveEnpassantEnabling(piece, from, doubleMove);
+    const invalid = EnPassantManager.isMoveEnpassantEnabling(piece, from, singleMove);
+
+    expect(valid).toBe(true);
+    expect(invalid).toBe(false);
   });
 });

@@ -1,3 +1,4 @@
+import { CastleManager } from "@/controllers/classes/CastleManager";
 import { Game } from "@/controllers/classes/Game";
 import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Piece } from "@/controllers/classes/Piece";
@@ -43,7 +44,7 @@ export class PgnGamePlayer {
       const move = new MoveNotation(moveString);
 
       if (move.isShortCastle || move.isLongCastle) {
-        this.game.castleMove(move.isShortCastle);
+        CastleManager.performCastleMove(this.game.board, this.game.currentPlayer, move.isShortCastle);
         movesHistory.push("castle");
       } else if (move.promotion) {
         const { to, promotion } = move;

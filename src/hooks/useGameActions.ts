@@ -1,5 +1,3 @@
-import { Fen } from "@/controllers/classes/Fen";
-import MoveNotation from "@/controllers/classes/MoveNotation";
 import { Promotion } from "@/controllers/classes/Promotion";
 import { setupGame } from "@/main";
 import { useGameStore } from "@/stores/GameContext";
@@ -11,14 +9,14 @@ const { game } = setupGame();
 const { board } = game;
 
 export function useGameActions() {
-  const { addToFenHistory, currentMovingPiece, currentFen, fenHistory } = useGameState();
+  const { addToFenHistory, currentMovingPiece, fenHistory } = useGameState();
   const setPromotionModalOpen = useGameStore((state) => state.setPromotionModalOpen);
   const setHandlePromotingPiece = useGameStore((state) => state.setHandlePromotingPiece);
   const setPositionToSpawnModal = useGameStore((state) => state.setPositionToSpawnModal);
   const setGame = useGameStore((state) => state.setGame);
 
   useEffect(() => {
-    console.log(fenHistory[fenHistory.length - 1]);
+    console.log(fenHistory.map(({ fen }) => fen));
   }, [fenHistory]);
 
   const onPieceDragStart = useCallback(
@@ -41,14 +39,16 @@ export function useGameActions() {
   }
 
   const onPieceDragEnd = async (from: Coordinates, to: Coordinates) => {
-    const newFen = new Fen(currentFen.fen);
     const flags: MoveFlags = {};
-
-    const isPromotion = Promotion.isPromotion(board, from, to);
 
     const piece = board.getSquare(from)?.piece;
     if (!piece) return;
-    if (piece.color !== game.currentPlayer) return;
+
+    const isLegalMove = piece.legalMoves.find(({ row, col }) => row === to.row && col === to.col);
+
+    if (!isLegalMove) return;
+
+    const isPromotion = Promotion.isPromotion(board, from, to);
 
     if (isPromotion) {
       const promotionPiece = await getPromotionPiece(to);
@@ -60,29 +60,15 @@ export function useGameActions() {
       };
     }
 
-    const isLegalMove = piece.legalMoves.find(({ row, col }) => row === to.row && col === to.col);
-
-    if (!isLegalMove) return;
-
     game.makeMove({ from, to, flags });
     game.calculateLegalMoves();
 
-    if (piece.name === "p") {
-      newFen.resetHalfMoveClock();
-    }
-
     window.boardState = board.getLettersGrid();
-
-    const fenPieces = Fen.fromBoard(board);
-
-    newFen.switchTurns();
-    newFen.setFenPieces(fenPieces);
-    newFen.setEnPassantTargetSquare(
-      newFen.enPassantTargetSquare ? MoveNotation.toCell(newFen.enPassantTargetSquare) : "-"
-    );
+    window.game = game;
 
     currentMovingPiece.current = undefined;
-    addToFenHistory(newFen);
+
+    addToFenHistory(game.toFen());
     setGame(game);
   };
 
