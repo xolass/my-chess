@@ -58,8 +58,8 @@ export class Square {
 
           if (!possiblePiece.piece) continue;
 
-          if (possiblePiece.piece.name === "k") {
-            // king walks only 1 square
+          if (possiblePiece.piece.name === "k" || possiblePiece.piece.name === "p") {
+            // king walks and pawn captures only move 1 square
             if (loopIndex > 1) return;
           }
           if (!value.pieces.includes(possiblePiece.piece.pieceLetter)) {

@@ -1,6 +1,6 @@
 import { directionToCoordinates } from "@/controllers/auxFunctions";
 import { Board } from "@/controllers/classes/Board";
-import { Castle } from "@/controllers/classes/Castle";
+import { CastleManager } from "@/controllers/classes/CastleManager";
 import { Piece } from "@/controllers/classes/Piece";
 import { Colors, Coordinates, FenCastle } from "@/types";
 
@@ -36,22 +36,20 @@ export class King extends Piece {
   public getCastlePossibleMoves(board: Board, castleStatus: FenCastle) {
     const from = this.coordinates;
     const castlePossibilities = [
-      Castle.WHITE_SHORT_ROOK_COORDINATES,
-      Castle.WHITE_LONG_ROOK_COORDINATES,
-      Castle.BLACK_SHORT_ROOK_COORDINATES,
-      Castle.BLACK_LONG_ROOK_COORDINATES,
+      CastleManager.WHITE_SHORT_ROOK_COORDINATES,
+      CastleManager.WHITE_LONG_ROOK_COORDINATES,
+      CastleManager.BLACK_SHORT_ROOK_COORDINATES,
+      CastleManager.BLACK_LONG_ROOK_COORDINATES,
     ];
 
     const castleLegalMoves = castlePossibilities.filter((to) => {
-      return Castle.canCastle(board, from, to, castleStatus);
+      return CastleManager.canCastle(board, from, to, castleStatus);
     });
 
     return castleLegalMoves;
   }
 
   private isKingWayOfMoving(from: Coordinates, to: Coordinates) {
-    console.log("is king way of moving");
-
     const isHorizontal = from.row === to.row;
     const isVertical = from.col === to.col;
     const isDiagonal = Math.abs(from.row - to.row) === Math.abs(from.col - to.col);

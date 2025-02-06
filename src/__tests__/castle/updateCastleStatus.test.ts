@@ -1,4 +1,4 @@
-import { Castle } from "@/controllers/classes/Castle";
+import { CastleManager } from "@/controllers/classes/CastleManager";
 import { setupGame } from "@/main";
 import { LettersGrid } from "@/types";
 
@@ -20,7 +20,7 @@ describe("Update castle status test suite", () => {
     const { board } = game;
     const kingInitialPosition = { row: 0, col: 4 };
 
-    const newCastleStatusAfterKingMove = Castle.updateCastleStatus(
+    const newCastleStatusAfterKingMove = CastleManager.updateCastleStatus(
       board.from(castleBoard),
       kingInitialPosition,
       initialCastleStatus
@@ -34,7 +34,7 @@ describe("Update castle status test suite", () => {
     const { board } = game;
     const rookInitialPosition = { row: 0, col: 7 };
 
-    const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
+    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
       initialCastleStatus
@@ -47,7 +47,7 @@ describe("Update castle status test suite", () => {
     const { board } = game;
     const rookInitialPosition = { row: 0, col: 0 };
 
-    const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
+    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
       initialCastleStatus
@@ -60,7 +60,7 @@ describe("Update castle status test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     const kingInitialPosition = { row: 7, col: 4 };
-    const newCastleStatusAfterKingMove = Castle.updateCastleStatus(
+    const newCastleStatusAfterKingMove = CastleManager.updateCastleStatus(
       board.from(castleBoard),
       kingInitialPosition,
       initialCastleStatus
@@ -73,7 +73,7 @@ describe("Update castle status test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     const rookInitialPosition = { row: 7, col: 7 };
-    const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
+    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
       initialCastleStatus
@@ -86,7 +86,7 @@ describe("Update castle status test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     const rookInitialPosition = { row: 7, col: 0 };
-    const newCastleStatusAfterRookMove = Castle.updateCastleStatus(
+    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
       initialCastleStatus

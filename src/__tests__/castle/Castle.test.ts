@@ -1,4 +1,5 @@
 import { getCastleBoard } from "@/__tests__/castle/mocks/castleBoard";
+import { CastleManager } from "@/controllers/classes/CastleManager";
 import { setupGame } from "@/main";
 import { Colors } from "@/types";
 
@@ -9,7 +10,7 @@ describe("Castle test suite", () => {
 
     board.from(getCastleBoard());
 
-    game.castleMove(true);
+    CastleManager.performCastleMove(board, game.currentPlayer, true);
 
     expect(board.getLettersGrid()).toEqual([
       ["r", undefined, undefined, undefined, "k", undefined, undefined, "r"],
@@ -28,7 +29,7 @@ describe("Castle test suite", () => {
 
     board.from(getCastleBoard());
 
-    game.castleMove(false);
+    CastleManager.performCastleMove(board, game.currentPlayer, false);
 
     expect(board.getLettersGrid()).toEqual([
       ["r", undefined, undefined, undefined, "k", undefined, undefined, "r"],
@@ -49,7 +50,7 @@ describe("Castle test suite", () => {
     board.from(getCastleBoard());
     game.currentPlayer = Colors.BLACK;
 
-    game.castleMove(true);
+    CastleManager.performCastleMove(board, game.currentPlayer, true);
 
     expect(board.getLettersGrid()).toEqual([
       ["r", undefined, undefined, undefined, undefined, "r", "k", undefined],
@@ -70,7 +71,7 @@ describe("Castle test suite", () => {
     board.from(getCastleBoard());
     game.currentPlayer = Colors.BLACK;
 
-    game.castleMove(false);
+    CastleManager.performCastleMove(board, game.currentPlayer, false);
 
     expect(board.getLettersGrid()).toEqual([
       [undefined, undefined, "k", "r", undefined, undefined, undefined, "r"],

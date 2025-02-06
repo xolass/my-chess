@@ -1,7 +1,8 @@
 import { Board } from "@/controllers/classes/Board";
-import { Coordinates, FenCastle, PieceLetter } from "@/types";
+import { King } from "@/controllers/classes/pieces/King";
+import { Colors, Coordinates, FenCastle, PieceLetter } from "@/types";
 
-export class Castle {
+export class CastleManager {
   static WHITE_SHORT_ROOK_COORDINATES = { row: 7, col: 7 };
   static WHITE_LONG_ROOK_COORDINATES = { row: 7, col: 0 };
   static BLACK_SHORT_ROOK_COORDINATES = { row: 0, col: 7 };
@@ -78,6 +79,7 @@ export class Castle {
 
     return castleStatus.includes(this.WHITE_LONG_CASTLE_IDENTIFIER);
   }
+
   private static canBlackShortCastle(board: Board, castleStatus: FenCastle) {
     const isKingInTheRightPlace = board.getSquare(this.BLACK_KING_COORDINATES).piece?.pieceLetter === "k";
     const isRookInTheRightPlace = board.getSquare(this.BLACK_SHORT_ROOK_COORDINATES).piece?.pieceLetter === "r";
@@ -117,6 +119,35 @@ export class Castle {
     if (isRook) return true;
 
     return false;
+  }
+
+  static performCastleMove(board: Board, currentPlayer: Colors, isShortCastle: boolean) {
+    const row = currentPlayer === Colors.WHITE ? 7 : 0;
+    const kingCol = 4;
+    const rookCol = isShortCastle ? 7 : 0;
+
+    const rookSquare = board.getSquare({ row, col: rookCol });
+    const kingSquare = board.getSquare({ row, col: kingCol });
+
+    const rook = rookSquare.piece;
+    const king = kingSquare.piece;
+
+    if (!rook || !king || !(king instanceof King)) {
+      throw new Error("Invalid castling move");
+    }
+
+    // Move king and rook to their new positions
+    const kingTargetCol = kingCol + (isShortCastle ? 2 : -2);
+    const rookTargetCol = rookCol + (isShortCastle ? -2 : 3);
+
+    board.getSquare({ row, col: kingTargetCol }).placePiece(king);
+    board.getSquare({ row, col: rookTargetCol }).placePiece(rook);
+
+    king.setPosition({ row, col: kingTargetCol });
+    rook.setPosition({ row, col: rookTargetCol });
+
+    rookSquare.removePiece();
+    kingSquare.removePiece();
   }
 
   static updateCastleStatus(board: Board, from: Coordinates, previousFenCastle: FenCastle): FenCastle {

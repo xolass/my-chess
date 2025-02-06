@@ -20,9 +20,9 @@ function Board({ board }: BoardProps) {
             {row.map((piece, colIndex) => (
               <BoardCell key={"col" + colIndex} row={rowIndex} col={colIndex}>
                 <PieceComponent piece={piece} coordinates={{ col: colIndex, row: rowIndex }} />
-                <span className="pointer-events-none absolute text-xs text-black">
+                {/* <span className="pointer-events-none absolute text-xs text-black">
                   {rowIndex} {colIndex}
-                </span>
+                </span> */}
               </BoardCell>
             ))}
           </div>

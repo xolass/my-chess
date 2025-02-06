@@ -12,19 +12,14 @@ export class Bishop extends Piece {
     const from = this.coordinates;
 
     if (this.isSamePosition(to)) return false;
-    console.log("isSamePosition");
 
     if (!board.isInsideBoard(to)) return false;
-    console.log("isInsideBoard");
 
     if (this.isTryingToCaptureAlly(board, to)) return false;
-    console.log("isTryingToCaptureAlly");
 
     if (board.isTherePieceBetween(from, to)) return false;
-    console.log("isTherePieceBetween");
 
     if (!this.isBishopWayOfMoving(from, to)) return false;
-    console.log("isBishopWayOfMoving");
     return true;
   }
 

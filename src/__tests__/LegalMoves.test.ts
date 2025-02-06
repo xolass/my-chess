@@ -5,7 +5,6 @@ import legalMovesList from "./mocks/legal_moves.json";
 
 describe("Compare amount of legal moves in different positions", () => {
   it("should get amount of legal moves correctly", () => {
-    console.log = () => {};
     Object.entries(legalMovesList).forEach(([position, legalMovesAmount]) => {
       const game = new Game(new Fen(position as FenType));
 
@@ -22,11 +21,11 @@ describe("Compare amount of legal moves in different positions", () => {
   });
 
   it("single position", () => {
-    console.log = () => {};
-    const singlePosition = { "4k3/8/8/8/8/8/4R3/4K3 b - - 0 1": 4 }; // 'r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1'
+    const singlePosition = { "rnbqkbnr/ppp2ppp/8/3Pp3/8/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 3": 31 };
 
     Object.entries(singlePosition).forEach(([position, legalMovesAmount]) => {
-      const game = new Game(new Fen(position as FenType));
+      const fen = new Fen(position as FenType);
+      const game = new Game(fen);
 
       const legalMoves = game.calculateLegalMoves();
 
@@ -38,7 +37,11 @@ describe("Compare amount of legal moves in different positions", () => {
         calculatedLegalMoves,
         legalMovesAmount,
         position,
-        legalMoves: JSON.stringify(legalMoves, undefined, 2),
+        legalMoves: JSON.stringify(
+          legalMoves.filter(({ validLegalMoves }) => validLegalMoves.length),
+          undefined,
+          2
+        ),
       });
     });
   });

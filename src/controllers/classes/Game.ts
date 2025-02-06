@@ -1,13 +1,14 @@
 import { Board } from "@/controllers/classes/Board";
-import { Castle } from "@/controllers/classes/Castle";
-import { EnPassant } from "@/controllers/classes/EnPassant";
+import { CastleManager } from "@/controllers/classes/CastleManager";
+import { EnPassantManager } from "@/controllers/classes/EnPassantManager";
 import { Fen } from "@/controllers/classes/Fen";
+import { GameUtils } from "@/controllers/classes/GameUtils";
 import { HalfMoveClock } from "@/controllers/classes/HalfMoveClock";
 import MoveNotation from "@/controllers/classes/MoveNotation";
-import { Piece } from "@/controllers/classes/Piece";
 import { King } from "@/controllers/classes/pieces/King";
+import { Pawn } from "@/controllers/classes/pieces/Pawn";
+import { MoveExecutor } from "@/controllers/MoveExecutor";
 import { Colors, Coordinates, FenCastle, Move } from "@/types";
-import { nameClassRelation } from "@/utils";
 
 type GameConstructor = Fen;
 
@@ -34,22 +35,19 @@ export class Game {
     }
   }
 
-  public clone() {
-    const newFen = new Fen();
+  public toFen(): Fen {
+    const fen = new Fen();
+    fen.setFenPieces(Fen.fromBoard(this.board));
+    fen.setCastleStatus(this.castleStatus);
+    fen.setTurnsCount(this.turn);
+    fen.setHalfMoveClock(this.halfMoveClock);
+    fen.setTurn(this.currentPlayer);
+    fen.setEnPassantTargetSquare(this.enPassantTargetSquare ? MoveNotation.toCell(this.enPassantTargetSquare) : "-");
+    return fen;
+  }
 
-    newFen.setFenPieces(Fen.fromBoard(this.board));
-    newFen.setCastleStatus(this.castleStatus);
-    newFen.setTurnsCount(this.turn);
-    newFen.setHalfMoveClock(this.halfMoveClock);
-    newFen.setTurn(this.currentPlayer);
-
-    if (this.enPassantTargetSquare) {
-      newFen.setEnPassantTargetSquare(MoveNotation.toCell(this.enPassantTargetSquare));
-    } else {
-      newFen.setEnPassantTargetSquare("-");
-    }
-
-    return new Game(newFen);
+  public clone(): Game {
+    return new Game(this.toFen());
   }
 
   public validateMove({ from, to }: Move): boolean {
@@ -65,7 +63,7 @@ export class Game {
       return false;
     }
 
-    if (Castle.isCastleMove(from, to) && !Castle.canCastle(this.board, from, to, this.castleStatus)) {
+    if (CastleManager.isCastleMove(from, to) && !CastleManager.canCastle(this.board, from, to, this.castleStatus)) {
       return false;
     }
 
@@ -86,49 +84,10 @@ export class Game {
     if (!piece)
       throw new Error("Invalid move: no piece at this position.", { cause: { board: this.board.formatedGrid } });
 
-    const isCastle = Castle.isCastleMove(from, to);
+    MoveExecutor.executeMove(this, from, to, flags);
 
-    if (isCastle && Castle.canCastle(this.board, from, to, this.castleStatus)) {
-      const isShortCastle = Castle.isShortCastle(from, to);
-
-      this.castleMove(isShortCastle);
-    }
-
-    if (EnPassant.isEnPassant(this.board, from, to)) {
-      console.log(`en passant`);
-      if (!this.enPassantTargetSquare) return;
-
-      if (EnPassant.canEnPassant(to, this.enPassantTargetSquare)) {
-        const colorModifier = this.currentPlayer === Colors.WHITE ? 1 : -1;
-
-        const enPassantedPieceSquare = this.board.getSquare({
-          row: this.enPassantTargetSquare.row + colorModifier,
-          col: this.enPassantTargetSquare.col,
-        });
-
-        enPassantedPieceSquare.removePiece();
-        endSquare.placePiece(piece);
-        piece.setPosition(to);
-
-        startSquare.removePiece();
-      }
-    } else if (flags?.promotion) {
-      console.log(`promotion to ${flags.promotion.promotionPiece}`);
-      const PieceClass = nameClassRelation[flags.promotion.promotionPiece];
-
-      const promotionPiece = new PieceClass(this.currentPlayer, to, flags.promotion.promotionPiece);
-
-      startSquare.removePiece();
-      endSquare.placePiece(promotionPiece);
-    } else {
-      startSquare.removePiece();
-      endSquare.placePiece(piece);
-
-      piece.setPosition(to);
-    }
-
-    if (Castle.shouldUpdateCastleStatus(piece.pieceLetter, this.castleStatus)) {
-      this.castleStatus = Castle.updateCastleStatus(this.board, piece.coordinates, this.castleStatus);
+    if (CastleManager.shouldUpdateCastleStatus(piece.pieceLetter, this.castleStatus)) {
+      this.castleStatus = CastleManager.updateCastleStatus(this.board, piece.coordinates, this.castleStatus);
     }
 
     if (HalfMoveClock.shouldReset(piece, targetPiece)) {
@@ -137,8 +96,8 @@ export class Game {
       this.halfMoveClock++;
     }
 
-    if (EnPassant.isMoveEnpassantEnabling(piece, from, to)) {
-      this.enPassantTargetSquare = EnPassant.getEnPassantTargetSquare(to);
+    if (EnPassantManager.isMoveEnpassantEnabling(piece, from, to)) {
+      this.enPassantTargetSquare = EnPassantManager.getEnPassantTargetSquare(to);
     } else {
       this.enPassantTargetSquare = undefined;
     }
@@ -148,115 +107,10 @@ export class Game {
     return true;
   }
 
-  public castleMove(isShortCastle: boolean) {
-    console.log(`castling ${isShortCastle ? "short" : "long"}`);
-    const rookCol = isShortCastle ? 7 : 0;
-    const kingCol = 4;
-    const row = this.currentPlayer === Colors.WHITE ? 7 : 0;
-    const rookInitialSquare = this.board.getSquare({ row, col: rookCol });
-    const kingInitialSquare = this.board.getSquare({ row, col: kingCol });
-
-    const rook = rookInitialSquare.piece;
-    const king = kingInitialSquare.piece;
-
-    if (!rook || !king) {
-      throw new Error("Invalid move: no piece at this position.", {
-        cause: { board: this.board.formatedGrid },
-      });
-    }
-
-    kingInitialSquare.removePiece();
-    rookInitialSquare.removePiece();
-
-    const kingPositionOffset = isShortCastle ? 2 : -2;
-    const rookPositionOffset = isShortCastle ? -2 : 3;
-
-    const kingFinalSquare = this.board.getSquare({
-      row,
-      col: kingCol + kingPositionOffset,
-    });
-    const rookFinalSquare = this.board.getSquare({
-      row,
-      col: rookCol + rookPositionOffset,
-    });
-
-    kingFinalSquare.placePiece(king);
-    rookFinalSquare.placePiece(rook);
-
-    king.setPosition({ row, col: kingCol + kingPositionOffset });
-    rook.setPosition({ row, col: rookCol + rookPositionOffset });
-  }
-
-  public isCheckmate() {
-    const pieces = this.board.getPieces(this.currentPlayer);
-
-    const totalLegalMoves = pieces.reduce((prevValue, piece) => {
-      return prevValue + piece.legalMoves.length;
-    }, 0);
-
-    if (totalLegalMoves === 0) {
-      const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
-      if (!king) return false;
-
-      if (this.isPieceBeingAttacked(king)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  public isStaleMate() {
-    const pieces = this.board.getPieces(this.currentPlayer);
-
-    const totalLegalMoves = pieces.reduce((prevValue, piece) => {
-      return prevValue + piece.legalMoves.length;
-    }, 0);
-
-    if (totalLegalMoves === 0) {
-      const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
-      if (!king) return false;
-
-      if (!this.isPieceBeingAttacked(king)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  public isPieceBeingAttacked(piece?: Piece): boolean {
-    if (!piece) return false;
-    const square = this.board.getSquare(piece.coordinates);
-
-    if (piece.color === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
-    if (piece.color === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
-
-    return false;
-  }
-
-  public willSquareBeAttacked(coordinates: Coordinates) {
-    const square = this.board.getSquare(coordinates);
-
-    if (this.currentPlayer === Colors.WHITE) return !!square.getBlackAttackingPieces(this.board).length;
-    if (this.currentPlayer === Colors.BLACK) return !!square.getWhiteAttackingPieces(this.board).length;
-  }
-
-  private doesMoveRemoveCheck(move: Move): boolean {
-    const simulatedGame = this.clone();
-    simulatedGame.makeMove({ from: move.from, to: move.to });
-
-    const [king] = simulatedGame.board.getPiecesOfAKind("k", this.currentPlayer);
-    if (!king) return false;
-
-    // Check if the king is still in check after the move
-    return !this.isPieceBeingAttacked(king);
-  }
-
   public calculateLegalMoves() {
     const colorPieces = this.board.getPieces(this.currentPlayer);
     const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
-    const isKingInCheck = this.isPieceBeingAttacked(king);
+    const isKingInCheck = GameUtils.isPieceBeingAttacked(this.board, king);
     let legalMoveCounter = 0;
 
     const legalMoves = colorPieces.map((piece) => {
@@ -270,11 +124,22 @@ export class Game {
         if (!this.validateMove(move)) return false;
 
         // If the king is in check, only allow moves that remove the check
-        if (isKingInCheck && !this.doesMoveRemoveCheck(move)) return false;
-        if (isKingMoving && this.willSquareBeAttacked(to)) return false;
+        if (isKingInCheck && !GameUtils.doesMoveRemoveCheck(this, move)) return false;
+        if (isKingMoving && GameUtils.isSquareAttacked(this.board, to, this.currentPlayer)) return false;
 
         return true;
       });
+
+      if (piece instanceof Pawn) {
+        const enPassantLegalMoves = EnPassantManager.getEnPassantLegalMoves(
+          this.board,
+          piece,
+          this.currentPlayer,
+          this.enPassantTargetSquare
+        );
+
+        validLegalMoves.push(...enPassantLegalMoves);
+      }
 
       if (piece instanceof King) {
         const kingCastleMoves = piece.getCastlePossibleMoves(this.board, this.castleStatus);
@@ -291,7 +156,6 @@ export class Game {
   }
 
   public switchPlayer() {
-    console.log("switching player");
     if (this.currentPlayer === Colors.BLACK) {
       this.turn++;
     }
