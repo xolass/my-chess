@@ -2,12 +2,12 @@ import { useGameStore } from "@/stores/GameContext";
 import { BlackPawnAsset } from "assets/blackPawn";
 import { WhitePawnAsset } from "assets/whitePawn";
 import { twMerge } from "tailwind-merge";
-import { Colors, GenericPiece } from "../../types";
+import { Colors, GenericPiece } from "../../shared/types";
 
 function PawnPiece({ color }: GenericPiece) {
-  const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
+  const player = useGameStore((state) => state.player);
   return (
-    <div className={twMerge("size-full absolute bg-contain", isBlackPlayer && "rotate-180")}>
+    <div className={twMerge("size-full absolute bg-contain", player === Colors.BLACK && "rotate-180")}>
       {color === Colors.WHITE ? <WhitePawnAsset /> : <BlackPawnAsset />}
     </div>
   );

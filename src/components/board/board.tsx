@@ -1,5 +1,6 @@
 "use client";
-import { Board as BoardClass } from "@/controllers/classes/Board";
+import { Board as BoardClass } from "@/shared/classes/Board";
+import { Colors } from "@/shared/types";
 import { useGameStore } from "@/stores/GameContext";
 import { twMerge } from "tailwind-merge";
 import BoardCell from "./cell";
@@ -10,19 +11,16 @@ interface BoardProps {
 }
 
 function Board({ board }: BoardProps) {
-  const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
+  const player = useGameStore((state) => state.player);
 
   return (
-    <div className={twMerge("flex flex-col rounded-md", isBlackPlayer && "rotate-180")}>
+    <div className={twMerge("flex flex-col rounded-md cursor-pointer", player === Colors.BLACK && "rotate-180")}>
       {board.getLettersGrid().map((row, rowIndex) => {
         return (
           <div key={"row" + rowIndex} className="flex flex-row">
             {row.map((piece, colIndex) => (
               <BoardCell key={"col" + colIndex} row={rowIndex} col={colIndex}>
                 <PieceComponent piece={piece} coordinates={{ col: colIndex, row: rowIndex }} />
-                {/* <span className="pointer-events-none absolute text-xs text-black">
-                  {rowIndex} {colIndex}
-                </span> */}
               </BoardCell>
             ))}
           </div>

@@ -1,4 +1,4 @@
-import { LettersGrid } from "@/types";
+import { LettersGrid } from "@/shared/types";
 
 export const getCastleBoard = (): LettersGrid => {
   return [

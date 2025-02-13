@@ -1,5 +1,5 @@
 import { setupGame } from "@/main";
-import { Colors } from "@/types";
+import { Colors } from "@/shared/types";
 
 describe("Pawn movement actions", () => {
   it("should be able for white pawns to move only up", () => {

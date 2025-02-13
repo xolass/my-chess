@@ -3,13 +3,14 @@ import KnightPiece from "@/components/pieces/knight";
 import QueenPiece from "@/components/pieces/queen";
 import RookPiece from "@/components/pieces/rook";
 import { useOutsideClick } from "@/hooks/useClickOutside";
+import { Colors, PromotionOptions } from "@/shared/types";
 import { useGameStore } from "@/stores/GameContext";
-import { Colors, PromotionOptions } from "@/types";
+import { usePromotionStore } from "@/stores/PromotionContext";
 import { twMerge } from "tailwind-merge";
 
 export function PromotionPopup() {
   const game = useGameStore((state) => state.game);
-  const handlePromotingPiece = useGameStore((state) => state.handlePromotingPiece);
+  const handlePromotingPiece = usePromotionStore((state) => state.handlePromotingPiece);
 
   const clickOutsideRef = useOutsideClick(onClickOutside);
 

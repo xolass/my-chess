@@ -1,5 +1,5 @@
-import { Fen } from "@/controllers/classes/Fen";
-import { Coordinates, FenType } from "@/types";
+import { Fen } from "@/shared/classes/Fen";
+import { Coordinates, FenType } from "@/shared/types";
 import { useRef, useState } from "react";
 
 export function useGameState() {

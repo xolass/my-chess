@@ -2,7 +2,7 @@
 import { useGameStore } from "@/stores/GameContext";
 import { useDraggable } from "@dnd-kit/core";
 import React, { useMemo } from "react";
-import { Colors, Coordinates, PieceLetter } from "../../types";
+import { Colors, Coordinates, PieceLetter } from "../../shared/types";
 import BishopPiece from "../pieces/bishop";
 import KingPiece from "../pieces/king";
 import KnightPiece from "../pieces/knight";
@@ -16,7 +16,7 @@ interface Props {
 }
 
 function PieceComponent({ piece, coordinates }: Props) {
-  const isBlackPlayer = useGameStore((state) => state.isBlackPlayerVision);
+  const isBlackPlayer = useGameStore((state) => state.player);
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: `${piece} ${coordinates.col}-${coordinates.row}`,
     data: { piece, coordinates },

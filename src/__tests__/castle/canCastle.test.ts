@@ -4,8 +4,8 @@ import {
   getBoardWithPieceNextToRook,
   getCastleBoard,
 } from "@/__tests__/castle/mocks/castleBoard";
-import { CastleManager } from "@/controllers/classes/CastleManager";
 import { setupGame } from "@/main";
+import { CastleManager } from "@/shared/classes/CastleManager";
 
 describe("Can castle test suite", () => {
   it("[white][king] should prevent castle if there are pieces in between the king and the rook", () => {

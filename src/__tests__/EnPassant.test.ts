@@ -1,5 +1,5 @@
-import { EnPassantManager } from "@/controllers/classes/EnPassantManager";
 import { setupGame } from "@/main";
+import { EnPassantManager } from "@/shared/classes/EnPassantManager";
 
 describe("En passant mechanics", () => {
   it("Should detect if a movement is an en passant", () => {
