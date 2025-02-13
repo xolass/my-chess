@@ -1,11 +1,10 @@
-import { getBaseBoardAsMatrix } from "@/__tests__/mocks/board";
-import { Board } from "@/controllers/classes/Board";
-import { Fen } from "@/controllers/classes/Fen";
-import { FenType } from "@/types";
+import { baseFenBoard, getBaseBoardAsMatrix } from "@/__tests__/mocks/board";
+import { Board } from "@/shared/classes/Board";
+import { Fen } from "@/shared/classes/Fen";
 
 describe("State conversions test suite", () => {
   it("Should transform correctly the fen into a matrix", () => {
-    const initialFen = new Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR" as FenType);
+    const initialFen = new Fen(baseFenBoard);
     const matrix = initialFen.getMatrix();
 
     expect(matrix).toEqual(getBaseBoardAsMatrix());

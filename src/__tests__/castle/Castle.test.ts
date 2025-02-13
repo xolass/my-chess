@@ -1,7 +1,7 @@
 import { getCastleBoard } from "@/__tests__/castle/mocks/castleBoard";
-import { CastleManager } from "@/controllers/classes/CastleManager";
 import { setupGame } from "@/main";
-import { Colors } from "@/types";
+import { CastleManager } from "@/shared/classes/CastleManager";
+import { Colors } from "@/shared/types";
 
 describe("Castle test suite", () => {
   it("should be able to castle white king side", () => {

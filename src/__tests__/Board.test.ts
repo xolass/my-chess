@@ -1,5 +1,5 @@
-import { Board } from "@/controllers/classes/Board";
-import { Colors } from "@/types";
+import { Board } from "@/shared/classes/Board";
+import { Colors } from "@/shared/types";
 
 describe("Board mechanics", () => {
   it("Should not be able build a board from an starting matrix", () => {

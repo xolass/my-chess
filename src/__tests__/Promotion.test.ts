@@ -1,5 +1,5 @@
-import { Promotion } from "@/controllers/classes/Promotion";
 import { setupGame } from "@/main";
+import { PromotionManager } from "@/shared/classes/PromotionManager";
 
 describe("Promotion test suite", () => {
   it("should tell when a move is a promotion", () => {
@@ -16,8 +16,8 @@ describe("Promotion test suite", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const isWhitePromoting = Promotion.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
-    const isBlackPromoting = Promotion.isPromotion(board, { row: 6, col: 5 }, { row: 7, col: 5 });
+    const isWhitePromoting = PromotionManager.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
+    const isBlackPromoting = PromotionManager.isPromotion(board, { row: 6, col: 5 }, { row: 7, col: 5 });
 
     expect(isWhitePromoting).toBe(true);
     expect(isBlackPromoting).toBe(true);
@@ -37,11 +37,11 @@ describe("Promotion test suite", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const pawnNotReachingOtherSide = Promotion.isPromotion(board, { row: 5, col: 7 }, { row: 6, col: 7 });
-    const rookGettingToLastRank = Promotion.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
-    const queenGettingToFirstRank = Promotion.isPromotion(board, { row: 6, col: 5 }, { row: 7, col: 5 });
-    const pawnMovingToWrongSide = Promotion.isPromotion(board, { row: 1, col: 4 }, { row: 0, col: 4 });
-    const pawnMovingMoreThanAllowed = Promotion.isPromotion(board, { row: 3, col: 3 }, { row: 7, col: 3 });
+    const pawnNotReachingOtherSide = PromotionManager.isPromotion(board, { row: 5, col: 7 }, { row: 6, col: 7 });
+    const rookGettingToLastRank = PromotionManager.isPromotion(board, { row: 1, col: 6 }, { row: 0, col: 6 });
+    const queenGettingToFirstRank = PromotionManager.isPromotion(board, { row: 6, col: 5 }, { row: 7, col: 5 });
+    const pawnMovingToWrongSide = PromotionManager.isPromotion(board, { row: 1, col: 4 }, { row: 0, col: 4 });
+    const pawnMovingMoreThanAllowed = PromotionManager.isPromotion(board, { row: 3, col: 3 }, { row: 7, col: 3 });
 
     expect(rookGettingToLastRank).toBe(false);
     expect(queenGettingToFirstRank).toBe(false);

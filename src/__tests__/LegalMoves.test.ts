@@ -1,6 +1,6 @@
-import { Fen } from "@/controllers/classes/Fen";
-import { Game } from "@/controllers/classes/Game";
-import { FenType } from "@/types";
+import { Fen } from "@/shared/classes/Fen";
+import { Game } from "@/shared/classes/Game";
+import { FenType } from "@/shared/types";
 import legalMovesList from "./mocks/legal_moves.json";
 
 describe("Compare amount of legal moves in different positions", () => {

@@ -1,6 +1,6 @@
-import { CastleManager } from "@/controllers/classes/CastleManager";
 import { setupGame } from "@/main";
-import { LettersGrid } from "@/types";
+import { CastleManager } from "@/shared/classes/CastleManager";
+import { LettersGrid } from "@/shared/types";
 
 describe("Update castle status test suite", () => {
   const castleBoard: LettersGrid = [

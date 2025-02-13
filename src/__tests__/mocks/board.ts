@@ -1,4 +1,4 @@
-import { LettersGrid } from "@/types";
+import { LettersGrid } from "@/shared/types";
 
 export const baseFenBoard = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 

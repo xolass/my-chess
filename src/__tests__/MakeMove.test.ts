@@ -1,4 +1,4 @@
-import { Game } from "@/controllers/classes/Game";
+import { Game } from "@/shared/classes/Game";
 
 describe("Make game moves", () => {
   it("should make pawn moves", () => {
