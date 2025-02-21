@@ -1,8 +1,8 @@
-import { directionToCoordinates } from "@/shared/auxFunctions";
 import { Board } from "@/shared/classes/Board";
 import { CastleManager } from "@/shared/classes/CastleManager";
 import { Piece } from "@/shared/classes/Piece";
 import { Colors, Coordinates, FenCastle } from "@/shared/types";
+import { directionToCoordinates } from "@/shared/utils";
 
 export class King extends Piece {
   constructor(public override color: Colors, public override coordinates: Coordinates) {
@@ -15,18 +15,6 @@ export class King extends Piece {
     if (this.isSamePosition(to)) return false;
 
     if (this.isTryingToCaptureAlly(board, to)) return false;
-
-    if (!this.isKingWayOfMoving(from, to)) return false;
-
-    return true;
-  }
-
-  private isAttackingThisSquare(board: Board, to: Coordinates): boolean {
-    const from = this.coordinates;
-
-    if (!board.isInsideBoard(to)) return false;
-
-    if (this.isSamePosition(to)) return false;
 
     if (!this.isKingWayOfMoving(from, to)) return false;
 
@@ -78,7 +66,7 @@ export class King extends Piece {
     return moves;
   }
 
-  override calculateAttackingSquares(board: Board): Array<Coordinates> {
+  override getAllDirectionMoves(board: Board): Array<Coordinates> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions
@@ -87,7 +75,7 @@ export class King extends Piece {
 
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
 
-        if (this.isAttackingThisSquare(board, next)) {
+        if (board.isInsideBoard(next)) {
           return next;
         }
       })

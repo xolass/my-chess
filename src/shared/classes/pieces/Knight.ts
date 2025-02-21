@@ -47,7 +47,7 @@ export class Knight extends Piece {
     return moves;
   }
 
-  override calculateAttackingSquares(board: Board): Array<Coordinates> {
+  override getAllDirectionMoves(board: Board): Array<Coordinates> {
     const directions = [
       { row: -1, col: -2 },
       { row: -1, col: 2 },
@@ -58,29 +58,17 @@ export class Knight extends Piece {
       { row: 2, col: -1 },
       { row: 2, col: 1 },
     ];
-
     const moves = directions
       .map((direction) => {
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
-        if (this.isAttackingThisSquare(board, next)) {
+
+        if (board.isInsideBoard(next)) {
           return next;
         }
       })
       .filter(Boolean) as Coordinates[];
 
     return moves;
-  }
-
-  private isAttackingThisSquare(board: Board, to: Coordinates): boolean {
-    const from = this.coordinates;
-
-    if (board.isInsideBoard(to)) return false;
-
-    if (this.isSamePosition(to)) return false;
-
-    if (!this.isKnightWayOfMoving(from, to)) return false;
-
-    return true;
   }
 
   private isKnightWayOfMoving(from: Coordinates, to: Coordinates) {

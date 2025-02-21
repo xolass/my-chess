@@ -1,6 +1,6 @@
-import { directionToCoordinates } from "@/shared/auxFunctions";
 import type { Board } from "@/shared/classes/Board";
 import { Colors, Coordinates } from "@/shared/types";
+import { directionToCoordinates } from "@/shared/utils";
 import type { Piece } from "./Piece";
 
 export class Square {

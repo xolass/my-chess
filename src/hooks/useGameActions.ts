@@ -4,37 +4,24 @@ import { PromotionManager } from "@/shared/classes/PromotionManager";
 import { StalemateManager } from "@/shared/classes/StalemateManager";
 import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
 import { useGameStore } from "@/stores/GameContext";
+import { useMoveStore } from "@/stores/MoveContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
-import { useEffect } from "react";
-import { useGameState } from "./useFenGame";
+
 const { game } = setupGame();
 const { board } = game;
 
 export function useGameActions() {
-  const { addToFenHistory, fenHistory } = useGameState();
   const setPromotionModalOpen = usePromotionStore((state) => state.setPromotionModalOpen);
   const setHandlePromotingPiece = usePromotionStore((state) => state.setHandlePromotingPiece);
   const setPositionToSpawnModal = usePromotionStore((state) => state.setPositionToSpawnModal);
-  const currentMovingPiece = useGameStore(({ currentMovingPiece }) => currentMovingPiece);
-  const setCurrentMovingPiece = useGameStore(({ setCurrentMovingPiece }) => setCurrentMovingPiece);
+
   const setGame = useGameStore((state) => state.setGame);
+  const addToGameHistory = useGameStore(({ addToGameHistory }) => addToGameHistory);
 
-  useEffect(() => {
-    console.log(fenHistory.map(({ fen }) => fen));
-  }, [fenHistory]);
+  const setMovingPiece = useMoveStore(({ setMovingPiece }) => setMovingPiece);
+  const movingPiece = useMoveStore(({ movingPiece }) => movingPiece);
 
-  const onPieceDragStart = (coordinates: Coordinates) => {
-    const piece = board.getSquare(coordinates).piece;
-    if (!piece) return;
-
-    if (piece === currentMovingPiece) {
-      setCurrentMovingPiece(undefined);
-    } else {
-      setCurrentMovingPiece(piece);
-    }
-  };
-
-  async function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions | null> {
+  function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions | null> {
     return new Promise((resolve) => {
       setPromotionModalOpen(true);
       setPositionToSpawnModal(coordinatesToRenderModalOn);
@@ -46,7 +33,24 @@ export function useGameActions() {
     });
   }
 
-  const onPieceDragEnd = async (from: Coordinates, to: Coordinates) => {
+  const resetMovingPiece = () => {
+    setMovingPiece(undefined);
+  };
+
+  const pieceClick = (coordinates: Coordinates) => {
+    const piece = board.getSquare(coordinates).piece;
+    if (!piece) return;
+
+    piece.getAllDirectionMoves(board);
+
+    if (piece === movingPiece) {
+      setMovingPiece(undefined);
+    } else {
+      setMovingPiece(piece);
+    }
+  };
+
+  const pieceRelease = async (from: Coordinates, to: Coordinates) => {
     const flags: MoveFlags = {};
 
     const piece = board.getSquare(from)?.piece;
@@ -70,15 +74,18 @@ export function useGameActions() {
       };
     }
 
-    game.makeMove({ from, to, flags });
-    game.calculateLegalMoves();
+    game.makeMove({ from, to, flags }); // this passes the turn
+
+    game.calculateLegalMoves(); // for the current player
+    game.clearLastTurnLegalMoves(); // for the previous player
+    game.calculatePreMoves(); // for the previous player
 
     window.boardState = board.getLettersGrid();
     window.game = game;
 
-    setCurrentMovingPiece(undefined);
+    setMovingPiece(undefined);
 
-    addToFenHistory(game.toFen());
+    addToGameHistory(game.toFen());
     setGame(game);
 
     if (CheckmateManager.isCheckMate(game.board, game.currentPlayer)) {
@@ -90,7 +97,8 @@ export function useGameActions() {
   };
 
   return {
-    onPieceDragStart,
-    onPieceDragEnd,
+    pieceClick,
+    pieceRelease,
+    resetMovingPiece,
   };
 }

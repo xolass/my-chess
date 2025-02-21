@@ -9,6 +9,7 @@ import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { King } from "@/shared/classes/pieces/King";
 import { Pawn } from "@/shared/classes/pieces/Pawn";
 import { Colors, Coordinates, FenCastle, Move } from "@/shared/types";
+import { getOppositeColor } from "@/shared/utils";
 
 type GameConstructor = Fen;
 
@@ -33,6 +34,9 @@ export class Game {
     } else {
       this.enPassantTargetSquare = MoveNotation.toCoordinate(fen.enPassantTargetSquare);
     }
+
+    this.calculateLegalMoves();
+    this.calculatePreMoves();
   }
 
   public toFen(): Fen {
@@ -107,8 +111,17 @@ export class Game {
     return true;
   }
 
+  public clearLastTurnLegalMoves() {
+    const lastTurnColorPieces = this.board.getPieces(getOppositeColor(this.currentPlayer));
+
+    lastTurnColorPieces.forEach((piece) => {
+      piece.legalMoves = [];
+    });
+  }
+
   public calculateLegalMoves() {
     const colorPieces = this.board.getPieces(this.currentPlayer);
+
     const [king] = this.board.getPiecesOfAKind("k", this.currentPlayer);
     const isKingInCheck = GameUtils.isPieceBeingAttacked(this.board, king);
     let legalMoveCounter = 0;
@@ -155,11 +168,23 @@ export class Game {
     return legalMoves;
   }
 
+  public calculatePreMoves() {
+    const colorPieces = this.board.getPieces(this.currentPlayer);
+    const oppositeColorPieces = this.board.getPieces(getOppositeColor(this.currentPlayer));
+
+    const allPieces = [...oppositeColorPieces, ...colorPieces];
+
+    allPieces.forEach((piece) => {
+      const possiblePreMoves = piece.getAllDirectionMoves(this.board);
+
+      piece.preMoves = possiblePreMoves;
+    });
+  }
+
   public switchPlayer() {
     if (this.currentPlayer === Colors.BLACK) {
       this.turn++;
     }
-
     this.currentPlayer = this.currentPlayer === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
   }
 }

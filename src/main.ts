@@ -8,7 +8,9 @@ export function setupGame() {
   const fen = new Fen(initialPosition);
   const game = new Game(fen);
 
-  game.calculateLegalMoves();
+  if (window) {
+    window.game = game;
+  }
 
   return {
     game,
