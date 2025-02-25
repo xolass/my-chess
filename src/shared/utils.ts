@@ -67,3 +67,7 @@ export const getOppositeColor = (color: Colors) => {
 
   return Colors.WHITE;
 };
+
+export function isCoordinateEqual(coordinate1: Coordinates, coordinate2: Coordinates) {
+  return coordinate1.col === coordinate2.col && coordinate1.row === coordinate2.row;
+}

@@ -3,6 +3,7 @@ import { CheckmateManager } from "@/shared/classes/CheckmateManager";
 import { PromotionManager } from "@/shared/classes/PromotionManager";
 import { StalemateManager } from "@/shared/classes/StalemateManager";
 import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
+import { isCoordinateEqual } from "@/shared/utils";
 import { useGameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
@@ -18,8 +19,8 @@ export function useGameActions() {
   const setGame = useGameStore((state) => state.setGame);
   const addToGameHistory = useGameStore(({ addToGameHistory }) => addToGameHistory);
 
-  const setMovingPiece = useMoveStore(({ setMovingPiece }) => setMovingPiece);
   const movingPiece = useMoveStore(({ movingPiece }) => movingPiece);
+  const setMovingPiece = useMoveStore(({ setMovingPiece }) => setMovingPiece);
 
   function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions | null> {
     return new Promise((resolve) => {
@@ -37,28 +38,28 @@ export function useGameActions() {
     setMovingPiece(undefined);
   };
 
-  const pieceClick = (coordinates: Coordinates) => {
+  const pieceDrag = (coordinates: Coordinates) => {
     const piece = board.getSquare(coordinates).piece;
     if (!piece) return;
 
     piece.getAllDirectionMoves(board);
 
-    if (piece === movingPiece) {
-      setMovingPiece(undefined);
-    } else {
-      setMovingPiece(piece);
-    }
+    setMovingPiece(piece);
   };
 
-  const pieceRelease = async (from: Coordinates, to: Coordinates) => {
+  const pieceDragRelease = async (from: Coordinates, to: Coordinates) => {
     const flags: MoveFlags = {};
+
+    if (!isCoordinateEqual(from, to)) {
+      setMovingPiece(undefined);
+    }
 
     const piece = board.getSquare(from)?.piece;
     if (!piece) return;
 
     if (game.currentPlayer !== piece.color) return;
 
-    const isLegalMove = piece.legalMoves.find(({ row, col }) => row === to.row && col === to.col);
+    const isLegalMove = piece.legalMoves.find((pieceCoordinate) => isCoordinateEqual(pieceCoordinate, to));
 
     if (!isLegalMove) return;
 
@@ -83,8 +84,6 @@ export function useGameActions() {
     window.boardState = board.getLettersGrid();
     window.game = game;
 
-    setMovingPiece(undefined);
-
     addToGameHistory(game.toFen());
     setGame(game);
 
@@ -97,8 +96,8 @@ export function useGameActions() {
   };
 
   return {
-    pieceClick,
-    pieceRelease,
+    pieceDrag,
+    pieceDragRelease,
     resetMovingPiece,
   };
 }

@@ -8,7 +8,7 @@ export function setupGame() {
   const fen = new Fen(initialPosition);
   const game = new Game(fen);
 
-  if (window) {
+  if (globalThis.window) {
     window.game = game;
   }
 

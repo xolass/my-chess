@@ -4,6 +4,7 @@ import PieceComponent from "@/components/pieces/piece";
 import { useGameActions } from "@/hooks/useGameActions";
 import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { Square } from "@/shared/classes/Square";
+import { isCoordinateEqual } from "@/shared/utils";
 import { useGameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 
@@ -19,16 +20,15 @@ function BoardCell(props: BoardCellProps) {
   const { coordinates, piece } = square;
   const { row, col } = coordinates;
 
-  const { pieceRelease } = useGameActions();
+  const [isMouseOver, setIsMouseOver] = useState(false);
+  const { pieceDragRelease, resetMovingPiece } = useGameActions();
 
   const movingPiece = useMoveStore((state) => state.movingPiece);
   const { currentPlayer } = useGameStore((state) => state.game);
   const player = useGameStore((state) => state.player);
 
-  const [isMouseOver, setMouseOver] = useState(false);
-
-  const isPieceLegalMove = movingPiece?.legalMoves.find((lm) => lm.row === row && lm.col === col);
-  const isMoveAPreMove = movingPiece?.preMoves.find((pm) => pm.row === row && pm.col === col);
+  const isPieceLegalMove = movingPiece?.legalMoves.find((lmCoord) => isCoordinateEqual(lmCoord, coordinates));
+  const isMoveAPreMove = movingPiece?.preMoves.find((pmCoord) => isCoordinateEqual(pmCoord, coordinates));
 
   const isPreMove = isMoveAPreMove && player !== currentPlayer;
 
@@ -38,16 +38,16 @@ function BoardCell(props: BoardCellProps) {
     if (!isPieceLegalMove) return;
 
     if (event === "enter") {
-      return setMouseOver(true);
+      return setIsMouseOver(true);
     }
 
-    return setMouseOver(false);
+    return setIsMouseOver(false);
   }
 
-  function handleCellClick() {
+  function handleCellClick(e: React.MouseEvent) {
     if (!movingPiece) return;
-    pieceRelease(movingPiece.coordinates, coordinates);
-    setMouseOver(false);
+    pieceDragRelease(movingPiece.coordinates, coordinates);
+    resetMovingPiece();
   }
 
   return (
@@ -62,7 +62,6 @@ function BoardCell(props: BoardCellProps) {
         onMouseLeave={() => handleMouseMove("leave")}
         onClick={handleCellClick}
       >
-        {piece && <PieceComponent piece={piece} />}
         <BoardCellOverlay
           cellCoordinates={coordinates}
           movingPiece={movingPiece}
@@ -70,6 +69,7 @@ function BoardCell(props: BoardCellProps) {
           isPieceLegalMove={!!isPieceLegalMove}
           isPiecePreMove={!!isPreMove}
         />
+        {piece && <PieceComponent piece={piece} />}
       </div>
     </DroppableCell>
   );
