@@ -1,7 +1,6 @@
 import { Piece } from "@/shared/classes/Piece";
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
-import { CSSProperties } from "react";
+import { DragOverlay, useDraggable } from "@dnd-kit/core";
+import { twMerge } from "tailwind-merge";
 
 interface DraggableProps {
   piece: Piece;
@@ -12,28 +11,22 @@ export function DraggablePiece(props: DraggableProps) {
   const { piece, children } = props;
   const { coordinates, pieceLetter } = piece;
 
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `${piece.pieceLetter} ${coordinates.col}-${coordinates.row}`,
     data: { pieceLetter, coordinates },
   });
 
-  const draggingStyle: CSSProperties = isDragging
-    ? {
-        transform: CSS.Translate.toString(transform),
-        zIndex: 999,
-        pointerEvents: "none",
-      }
-    : {};
-
   return (
-    <div
-      ref={setNodeRef}
-      className="cursor-pointer size-full flex items-center justify-center"
-      {...listeners}
-      {...attributes}
-      style={draggingStyle}
-    >
-      {children}
-    </div>
+    <>
+      {isDragging && <DragOverlay className="pointer-events-none">{children}</DragOverlay>}
+      <div
+        ref={setNodeRef}
+        className={twMerge("cursor-pointer size-full flex items-center justify-center", isDragging && "opacity-50")}
+        {...listeners}
+        {...attributes}
+      >
+        {children}
+      </div>
+    </>
   );
 }
