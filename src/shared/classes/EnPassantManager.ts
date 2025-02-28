@@ -2,6 +2,7 @@ import { Board } from "@/shared/classes/Board";
 import { Piece } from "@/shared/classes/Piece";
 import { Pawn } from "@/shared/classes/pieces/Pawn";
 import { Colors, Coordinates } from "@/shared/types";
+import { isCoordinateEqual } from "@/shared/utils";
 
 export class EnPassantManager {
   static isMoveEnpassantEnabling(piece: Piece, from: Coordinates, to: Coordinates) {
@@ -11,7 +12,7 @@ export class EnPassantManager {
   static isEnPassant(piece: Piece, to: Coordinates, enPassantTargetCoordinates?: Coordinates) {
     if (piece.name !== "p") return false;
     if (!enPassantTargetCoordinates) return false;
-    return to.row === enPassantTargetCoordinates.row && to.col === enPassantTargetCoordinates.col;
+    return isCoordinateEqual(enPassantTargetCoordinates, to);
   }
 
   static getEnPassantLegalMoves(

@@ -8,9 +8,18 @@ import { useGameStore } from "@/stores/GameContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
 import { twMerge } from "tailwind-merge";
 
-export function PromotionPopup() {
+interface PromotionPopupProps {
+  colToSpawn: number;
+  colorToSpawnTo: Colors;
+}
+
+export function PromotionPopup(props: PromotionPopupProps) {
+  const { colToSpawn, colorToSpawnTo } = props;
   const game = useGameStore((state) => state.game);
   const handlePromotingPiece = usePromotionStore((state) => state.handlePromotingPiece);
+
+  const isPromotionModalOpen = usePromotionStore((state) => state.isPromotionModalOpen);
+  const positionToSpawnModal = usePromotionStore((state) => state.positionToSpawnModal);
 
   const clickOutsideRef = useOutsideClick(onClickOutside);
 
@@ -22,6 +31,10 @@ export function PromotionPopup() {
     if (!handlePromotingPiece) return;
     handlePromotingPiece(piece);
   }
+
+  const isPromotingInThisCell = false; // isPromotionModalOpen && positionToSpawnModal?.col === col && positionToSpawnModal?.row === row;
+
+  if (!isPromotingInThisCell) return null;
 
   return (
     <>

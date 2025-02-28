@@ -1,7 +1,6 @@
-import { directionToCoordinates, getDirection } from "@/shared/auxFunctions";
 import { Fen } from "@/shared/classes/Fen";
 import { Colors, Coordinates, Grid, LettersGrid, PieceIdentifier } from "@/shared/types";
-import { nameClassRelation } from "@/shared/utils";
+import { directionToCoordinates, getDirection, nameClassRelation } from "@/shared/utils";
 import { Piece } from "./Piece";
 import { Square } from "./Square";
 
@@ -50,6 +49,15 @@ export class Board {
       if (squarePiece.color === currentPlayer) {
         acc.push(squarePiece);
       }
+      return acc;
+    }, []);
+  }
+  public getAllPieces(): Piece[] {
+    return this.grid.flat().reduce<Piece[]>((acc, square) => {
+      const squarePiece = square.piece;
+      if (!squarePiece) return acc;
+
+      acc.push(squarePiece);
       return acc;
     }, []);
   }

@@ -4,6 +4,7 @@ import { Colors, Coordinates, PieceIdentifier, PieceLetter } from "@/shared/type
 export abstract class Piece {
   pieceLetter: PieceLetter;
   legalMoves: Coordinates[] = [];
+  preMoves: Coordinates[] = [];
   constructor(public color: Colors, public coordinates: Coordinates, public name: PieceIdentifier) {
     this.pieceLetter = (this.color === Colors.WHITE ? this.name.toUpperCase() : this.name.toLowerCase()) as PieceLetter;
   }
@@ -28,7 +29,7 @@ export abstract class Piece {
 
   abstract calculatePossibleMoves(board: Board): Array<Coordinates>;
 
-  abstract calculateAttackingSquares(board: Board): Array<Coordinates>;
+  abstract getAllDirectionMoves(board: Board): Array<Coordinates>;
 
   static isCapture(board: Board, to: Coordinates) {
     const target = board.getSquare({ row: to.row, col: to.col }).piece;

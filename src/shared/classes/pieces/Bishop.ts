@@ -1,7 +1,7 @@
-import { directionToCoordinates } from "@/shared/auxFunctions";
 import { Board } from "@/shared/classes/Board";
 import { Piece } from "@/shared/classes/Piece";
 import { Colors, Coordinates } from "@/shared/types";
+import { directionToCoordinates } from "@/shared/utils";
 
 export class Bishop extends Piece {
   constructor(public override color: Colors, public override coordinates: Coordinates) {
@@ -47,7 +47,7 @@ export class Bishop extends Piece {
     return moves;
   }
 
-  override calculateAttackingSquares(board: Board): Array<Coordinates> {
+  override getAllDirectionMoves(board: Board): Array<Coordinates> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions
@@ -57,9 +57,8 @@ export class Bishop extends Piece {
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
         const lineMoves: Coordinates[] = [];
 
-        while (this.isAttackingThisSquare(board, next)) {
+        while (board.isInsideBoard(next)) {
           lineMoves.push(next);
-          if (board.getSquare(next).piece) break;
 
           next = { row: next.row + direction.row, col: next.col + direction.col };
         }
@@ -69,19 +68,6 @@ export class Bishop extends Piece {
       .filter(Boolean) as Coordinates[];
 
     return moves;
-  }
-
-  private isAttackingThisSquare(board: Board, to: Coordinates): boolean {
-    const from = this.coordinates;
-
-    if (this.isSamePosition(to)) return false;
-
-    if (!board.isInsideBoard(to)) return false;
-
-    if (board.isTherePieceBetween(from, to)) return false;
-
-    if (!this.isBishopWayOfMoving(from, to)) return false;
-    return true;
   }
 
   private isBishopWayOfMoving(from: Coordinates, to: Coordinates) {

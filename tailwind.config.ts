@@ -12,6 +12,10 @@ const config: Config = {
         "white-cell": "url('../../assets/whiteCell.png')",
         "black-cell": "url('../../assets/blackCell.png')",
       },
+      colors: {
+        "legal-move-green": "var(--legal-move-green)",
+        "pre-move-gray": "var(--pre-move-gray)",
+      },
     },
   },
   plugins: [],

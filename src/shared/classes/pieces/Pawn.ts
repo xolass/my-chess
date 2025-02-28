@@ -36,21 +36,22 @@ export class Pawn extends Piece {
     return moves;
   }
 
-  override calculateAttackingSquares(board: Board): Array<Coordinates> {
+  override getAllDirectionMoves(): Array<Coordinates> {
     const moves: Coordinates[] = [];
 
     const forward = this.color === Colors.WHITE ? -1 : 1;
 
+    const forwardOne = { row: this.coordinates.row + forward, col: this.coordinates.col };
+    moves.push(forwardOne);
+
+    const forwardTwo = { row: this.coordinates.row + 2 * forward, col: this.coordinates.col };
+    moves.push(forwardTwo);
+
     const leftCapture = { row: this.coordinates.row + forward, col: this.coordinates.col - 1 };
+    moves.push(leftCapture);
+
     const rightCapture = { row: this.coordinates.row + forward, col: this.coordinates.col + 1 };
-
-    if (board.isInsideBoard(leftCapture)) {
-      moves.push(leftCapture);
-    }
-
-    if (board.isInsideBoard(leftCapture)) {
-      moves.push(rightCapture);
-    }
+    moves.push(rightCapture);
 
     return moves;
   }
