@@ -16,8 +16,6 @@ interface PieceProps {
 
 function PieceComponent({ piece }: PieceProps) {
   const { pieceLetter } = piece;
-  // const { pieceDragRelease } = useGameActions();
-  // const movingPiece = useMoveStore(({ movingPiece }) => movingPiece);
 
   const pieceToPlace = useMemo(() => {
     switch (pieceLetter) {
@@ -50,16 +48,7 @@ function PieceComponent({ piece }: PieceProps) {
     }
   }, [pieceLetter]);
 
-  // function handlePieceClick() {
-  //   if (!movingPiece) return;
-  //   pieceDragRelease(movingPiece.coordinates, piece.coordinates);
-  // }
-
-  return (
-    <DraggablePiece piece={piece}>
-      <div className="size-full">{pieceToPlace}</div>
-    </DraggablePiece>
-  );
+  return <DraggablePiece piece={piece}>{pieceToPlace}</DraggablePiece>;
 }
 
 export default React.memo(PieceComponent);
