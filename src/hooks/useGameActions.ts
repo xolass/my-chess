@@ -19,7 +19,6 @@ export function useGameActions() {
   const setGame = useGameStore((state) => state.setGame);
   const addToGameHistory = useGameStore(({ addToGameHistory }) => addToGameHistory);
 
-  const movingPiece = useMoveStore(({ movingPiece }) => movingPiece);
   const setMovingPiece = useMoveStore(({ setMovingPiece }) => setMovingPiece);
 
   function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions | null> {
@@ -43,7 +42,6 @@ export function useGameActions() {
     if (!piece) return;
 
     piece.getAllDirectionMoves(board);
-
     setMovingPiece(piece);
   };
 
@@ -51,7 +49,7 @@ export function useGameActions() {
     const flags: MoveFlags = {};
 
     if (!isCoordinateEqual(from, to)) {
-      setMovingPiece(undefined);
+      resetMovingPiece();
     }
 
     const piece = board.getSquare(from)?.piece;

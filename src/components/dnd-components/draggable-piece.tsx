@@ -21,6 +21,7 @@ export function DraggablePiece(props: DraggableProps) {
     ? {
         transform: CSS.Translate.toString(transform),
         zIndex: 999,
+        pointerEvents: "none",
       }
     : {};
 

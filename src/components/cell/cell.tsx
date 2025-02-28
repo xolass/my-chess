@@ -8,19 +8,22 @@ import { isCoordinateEqual } from "@/shared/utils";
 import { useGameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 
-import React, { useState } from "react";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 interface BoardCellProps {
   square: Square;
+  onMouseEnter: VoidFunction;
+  onMouseLeave: VoidFunction;
+  isHovered: boolean;
 }
 
+// TODO: improve to only rerender when props change
 function BoardCell(props: BoardCellProps) {
-  const { square } = props;
+  const { square, isHovered, onMouseEnter, onMouseLeave } = props;
   const { coordinates, piece } = square;
   const { row, col } = coordinates;
 
-  const [isMouseOver, setIsMouseOver] = useState(false);
   const { pieceDragRelease, resetMovingPiece } = useGameActions();
 
   const movingPiece = useMoveStore((state) => state.movingPiece);
@@ -34,18 +37,9 @@ function BoardCell(props: BoardCellProps) {
 
   const isCellWhite = (col + row) % 2;
 
-  function handleMouseMove(event: "enter" | "leave") {
-    if (!isPieceLegalMove) return;
-
-    if (event === "enter") {
-      return setIsMouseOver(true);
-    }
-
-    return setIsMouseOver(false);
-  }
-
-  function handleCellClick(e: React.MouseEvent) {
+  function handleCellClick() {
     if (!movingPiece) return;
+
     pieceDragRelease(movingPiece.coordinates, coordinates);
     resetMovingPiece();
   }
@@ -58,14 +52,14 @@ function BoardCell(props: BoardCellProps) {
           "size-24 flex justify-center items-center relative",
           isCellWhite ? "bg-black-cell" : "bg-white-cell"
         )}
-        onMouseEnter={() => handleMouseMove("enter")}
-        onMouseLeave={() => handleMouseMove("leave")}
         onClick={handleCellClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
         <BoardCellOverlay
           cellCoordinates={coordinates}
           movingPiece={movingPiece}
-          isMouseOver={isMouseOver}
+          isMouseOver={isHovered}
           isPieceLegalMove={!!isPieceLegalMove}
           isPiecePreMove={!!isPreMove}
         />

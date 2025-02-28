@@ -68,6 +68,23 @@ export const getOppositeColor = (color: Colors) => {
   return Colors.WHITE;
 };
 
-export function isCoordinateEqual(coordinate1: Coordinates, coordinate2: Coordinates) {
+export function isCoordinateEqual(coordinate1?: Coordinates, coordinate2?: Coordinates) {
+  if (!coordinate1 || !coordinate2) return false;
   return coordinate1.col === coordinate2.col && coordinate1.row === coordinate2.row;
+}
+
+export function isPieceWhite(pieceLetter: PieceLetter) {
+  return pieceLetter === pieceLetter.toUpperCase();
+}
+
+export function isPieceFromColor(pieceLetter: PieceLetter, color: Colors) {
+  if (color === Colors.WHITE && isPieceWhite(pieceLetter)) {
+    return true;
+  }
+
+  if (color === Colors.BLACK && !isPieceWhite(pieceLetter)) {
+    return true;
+  }
+
+  return false;
 }

@@ -1,8 +1,18 @@
 "use client";
 import Board from "@/components/board/board";
 import { useGameActions } from "@/hooks/useGameActions";
+import { PieceLetter } from "@/shared/types";
+import { isPieceFromColor } from "@/shared/utils";
 import { useGameStore } from "@/stores/GameContext";
-import { DndContext, DragEndEvent, DragStartEvent, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragCancelEvent,
+  DragEndEvent,
+  DragStartEvent,
+  MouseSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import { useId } from "react";
 
@@ -12,15 +22,23 @@ export default function BoardDndContext() {
 
   const id = useId();
 
+  function isClickingOnOpponentPieceOnYourTurn(pieceLetter: PieceLetter) {
+    if (isPieceFromColor(pieceLetter, game.currentPlayer)) {
+      return true;
+    }
+    return false;
+  }
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
-      // activationConstraint: {
-      //   distance: 5,
-      // },
-      // bypassActivationConstraint(props) {
-      //   console.log(props);
-      //   return false;
-      // },
+      activationConstraint: {
+        distance: 5,
+      },
+      bypassActivationConstraint(props) {
+        const clickedPieceLetter = props.activeNode.data.current?.pieceLetter;
+
+        return isClickingOnOpponentPieceOnYourTurn(clickedPieceLetter);
+      },
     })
   );
 
@@ -40,6 +58,11 @@ export default function BoardDndContext() {
     pieceDragRelease(active.data.current.coordinates, over.data.current.coordinates);
   }
 
+  function handleDragCancel(e: DragCancelEvent) {
+    // this runs when you are dragging a piece and select another one
+    resetMovingPiece();
+  }
+
   return (
     <DndContext
       id={id}
@@ -47,8 +70,7 @@ export default function BoardDndContext() {
       modifiers={[snapCenterToCursor]}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      onDragAbort={resetMovingPiece}
-      onDragCancel={resetMovingPiece}
+      onDragCancel={handleDragCancel}
     >
       <Board board={game.board} />
     </DndContext>
