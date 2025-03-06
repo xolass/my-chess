@@ -4,7 +4,11 @@ import { directionToCoordinates } from "@/shared/utils";
 import type { Piece } from "./Piece";
 
 export class Square {
-  constructor(public coordinates: Coordinates, public piece?: Piece) {}
+  color: Colors;
+  constructor(public coordinates: Coordinates, public piece?: Piece) {
+    const isWhite = (coordinates.col + coordinates.row) % 2 === 0;
+    this.color = isWhite ? Colors.WHITE : Colors.BLACK;
+  }
 
   placePiece(piece: Piece) {
     this.piece = piece;
