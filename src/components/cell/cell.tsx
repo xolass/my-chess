@@ -4,6 +4,7 @@ import PieceComponent from "@/components/pieces/piece";
 import { useGameActions } from "@/hooks/useGameActions";
 import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { Square } from "@/shared/classes/Square";
+import { Colors } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
 import { useGameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
@@ -35,8 +36,6 @@ function BoardCell(props: BoardCellProps) {
 
   const isPreMove = isMoveAPreMove && player !== currentPlayer;
 
-  const isCellWhite = (col + row) % 2;
-
   function handleCellClick() {
     if (!movingPiece) return;
 
@@ -50,7 +49,7 @@ function BoardCell(props: BoardCellProps) {
         id={MoveNotation.toCell({ row, col })}
         className={twMerge(
           "size-24 flex justify-center items-center relative",
-          isCellWhite ? "bg-black-cell" : "bg-white-cell"
+          square.color === Colors.BLACK ? "bg-black-cell" : "bg-white-cell"
         )}
         onClick={handleCellClick}
         onMouseEnter={onMouseEnter}

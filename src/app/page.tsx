@@ -1,36 +1,41 @@
 "use client";
-import BoardDndContext from "@/components/dnd-components/board-drag-context";
-import { CheckmateModal } from "@/components/modals/checkmateModal";
-import { StalemateModal } from "@/components/modals/stalemateModal";
-import { gameEventEmitter } from "@/eventEmitter";
-import { useModal } from "@/hooks/useModal";
 import { Colors } from "@/shared/types";
-import { useEffect } from "react";
+import { useGameStore } from "@/stores/GameContext";
+import { useRouter } from "next/navigation";
 
-export default function GamePage() {
-  const modal = useModal();
+export default function Home() {
+  const router = useRouter();
+  const setPlayer = useGameStore((state) => state.setPlayer);
 
-  useEffect(() => {
-    function handleStalemate() {
-      modal.open(<StalemateModal onClose={modal.close} onNewGame={modal.close} />);
-    }
+  function startGame(color: Colors) {
+    // call api create game, return id, return color, return time
+    const id = Date.now();
+    setPlayer(color);
+    router.push(`/game/${id}`);
+  }
 
-    function handleCheckmate(winner: Colors) {
-      modal.open(<CheckmateModal winner={winner} />);
-    }
+  function handleBlackClick() {
+    startGame(Colors.BLACK);
+  }
 
-    gameEventEmitter.on("stalemate", handleStalemate);
-    gameEventEmitter.on("checkmate", handleCheckmate);
-
-    return () => {
-      gameEventEmitter.off("stalemate", handleStalemate);
-      gameEventEmitter.off("checkmate", handleCheckmate);
-    };
-  }, [modal]);
+  function handleWhiteClick() {
+    startGame(Colors.WHITE);
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <BoardDndContext />
+    <main className="flex min-h-screen flex-col items-center justify-center gap-8 p-24">
+      <h1 className="text-white text-3xl font-bold">Select a color to play</h1>
+      <div className="flex justify-center gap-4">
+        <button className="bg-white rounded-lg px-6 py-2 outline outline-2 outline-black" onClick={handleWhiteClick}>
+          White
+        </button>
+        <button
+          className="bg-black rounded-lg px-6 py-2 text-white outline outline-2 outline-white"
+          onClick={handleBlackClick}
+        >
+          Black
+        </button>
+      </div>
     </main>
   );
 }

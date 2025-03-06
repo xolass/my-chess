@@ -19,11 +19,12 @@ import { useId } from "react";
 export default function BoardDndContext() {
   const { pieceDragRelease, resetMovingPiece, pieceDrag } = useGameActions();
   const game = useGameStore((state) => state.game);
+  const currentPlayer = useGameStore((state) => state.player);
 
   const id = useId();
 
   function isClickingOnOpponentPieceOnYourTurn(pieceLetter: PieceLetter) {
-    if (isPieceFromColor(pieceLetter, game.currentPlayer)) {
+    if (isPieceFromColor(pieceLetter, currentPlayer)) {
       return true;
     }
     return false;

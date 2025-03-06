@@ -20,7 +20,7 @@ const initialFen = new Fen(initialPosition);
 export const useGameStore = create<GameContextType>((set) => ({
   game: new Game(initialFen),
   setGame: (game) => set({ game }),
-  player: Colors.WHITE,
+  player: Colors.BLACK,
   setPlayer: (player) => set({ player }),
   gameHistory: [initialFen],
   addToGameHistory: (gameHistory) => set((state) => ({ ...state, gameHistory: [...state.gameHistory, gameHistory] })),
