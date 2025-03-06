@@ -1,9 +1,10 @@
+import { gameEventEmitter } from "@/eventEmitter";
 import { setupGame } from "@/main";
 import { CheckmateManager } from "@/shared/classes/CheckmateManager";
 import { PromotionManager } from "@/shared/classes/PromotionManager";
 import { StalemateManager } from "@/shared/classes/StalemateManager";
 import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
-import { isCoordinateEqual } from "@/shared/utils";
+import { getOppositeColor, isCoordinateEqual } from "@/shared/utils";
 import { useGameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
@@ -86,10 +87,12 @@ export function useGameActions() {
     setGame(game);
 
     if (CheckmateManager.isCheckMate(game.board, game.currentPlayer)) {
-      console.log("checkmate for " + game.currentPlayer);
+      const winner = getOppositeColor(game.currentPlayer);
+
+      gameEventEmitter.emit("checkmate", winner);
     }
     if (StalemateManager.isStalemate(game.board, game.currentPlayer)) {
-      console.log("stalemate for " + game.currentPlayer);
+      gameEventEmitter.emit("stalemate");
     }
   };
 
