@@ -21,7 +21,7 @@ export class Game {
   halfMoveClock: number;
   enPassantTargetSquare: Coordinates | undefined;
 
-  constructor(from?: GameConstructor) {
+  constructor(from?: GameConstructor, isCloning: boolean = false) {
     const fen = from ?? new Fen();
     this.board = new Board().from(fen.getMatrix());
     this.castleStatus = fen.castleStatus;
@@ -35,8 +35,11 @@ export class Game {
       this.enPassantTargetSquare = MoveNotation.toCoordinate(fen.enPassantTargetSquare);
     }
 
-    this.calculateLegalMoves();
-    this.calculatePreMoves();
+    if (!isCloning) {
+      // avoid an infinite recursion of cloning inside the calculateLegalMoves
+      this.calculateLegalMoves();
+      this.calculatePreMoves();
+    }
   }
 
   public toFen(): Fen {
@@ -51,7 +54,7 @@ export class Game {
   }
 
   public clone(): Game {
-    return new Game(this.toFen());
+    return new Game(this.toFen(), true);
   }
 
   public validateMove({ from, to }: Move): boolean {
