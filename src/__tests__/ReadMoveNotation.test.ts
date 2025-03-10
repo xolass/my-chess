@@ -1,4 +1,4 @@
-import MoveNotation from "@/shared/classes/MoveNotation";
+import { MoveNotation } from "@/shared/classes/MoveNotation";
 
 describe("Read move notation", () => {
   it("should desambiguate piece moves", () => {

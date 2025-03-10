@@ -4,7 +4,7 @@ import QueenPiece from "@/components/pieces/queen";
 import RookPiece from "@/components/pieces/rook";
 import { useOutsideClick } from "@/hooks/useClickOutside";
 import { Colors, PromotionOptions } from "@/shared/types";
-import { useGameStore } from "@/stores/GameContext";
+import { gameStore } from "@/stores/GameContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
 import { twMerge } from "tailwind-merge";
 
@@ -15,7 +15,7 @@ interface PromotionPopupProps {
 
 export function PromotionPopup(props: PromotionPopupProps) {
   const { colToSpawn, colorToSpawnTo } = props;
-  const game = useGameStore((state) => state.game);
+  const game = gameStore((state) => state.game);
   const handlePromotingPiece = usePromotionStore((state) => state.handlePromotingPiece);
 
   const isPromotionModalOpen = usePromotionStore((state) => state.isPromotionModalOpen);

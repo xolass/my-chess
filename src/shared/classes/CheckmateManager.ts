@@ -3,7 +3,7 @@ import { GameUtils } from "@/shared/classes/GameUtils";
 import { Colors } from "@/shared/types";
 
 export class CheckmateManager {
-  static isCheckMate(board: Board, currentPlayer: Colors) {
+  static isCheckmate(board: Board, currentPlayer: Colors) {
     const pieces = board.getPieces(currentPlayer);
 
     const totalLegalMoves = pieces.reduce((prevValue, piece) => {

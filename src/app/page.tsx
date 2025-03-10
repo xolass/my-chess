@@ -1,16 +1,15 @@
 "use client";
 import { Colors } from "@/shared/types";
-import { useGameStore } from "@/stores/GameContext";
+import { gameStore } from "@/stores/GameContext";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const setPlayer = useGameStore((state) => state.setPlayer);
 
   function startGame(color: Colors) {
     // call api create game, return id, return color, return time
     const id = Date.now();
-    setPlayer(color);
+    gameStore.setState({ player: color });
     router.push(`/game/${id}`);
   }
 

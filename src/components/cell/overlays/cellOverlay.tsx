@@ -3,7 +3,7 @@ import { DotIndicator } from "@/components/cell/overlays/move-indicator/dotIndic
 import { HoverIndicator } from "@/components/cell/overlays/move-indicator/hoverIndicator";
 import { Piece } from "@/shared/classes/Piece";
 import { Coordinates } from "@/shared/types";
-import { useGameStore } from "@/stores/GameContext";
+import { gameStore } from "@/stores/GameContext";
 
 interface CellOverlayProps {
   movingPiece: Piece | undefined;
@@ -16,8 +16,7 @@ interface CellOverlayProps {
 export function BoardCellOverlay(props: CellOverlayProps) {
   const { movingPiece, cellCoordinates, isMouseOver, isPieceLegalMove, isPiecePreMove } = props;
 
-  const game = useGameStore((state) => state.game);
-  const player = useGameStore((state) => state.player);
+  const { game, player } = gameStore.getState();
 
   const isYourPiece = movingPiece?.color === player;
 

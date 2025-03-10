@@ -1,5 +1,6 @@
 import { Fen } from "@/shared/classes/Fen";
 import { Game } from "@/shared/classes/Game";
+import { LegalMovesManager } from "@/shared/classes/LegalMovesManager";
 import { FenType } from "@/shared/types";
 import legalMovesList from "./mocks/legal_moves.json";
 
@@ -8,7 +9,7 @@ describe("Compare amount of legal moves in different positions", () => {
     Object.entries(legalMovesList).forEach(([position, legalMovesAmount]) => {
       const game = new Game(new Fen(position as FenType));
 
-      const legalMoves = game.calculateLegalMoves();
+      const legalMoves = LegalMovesManager.calculateLegalMoves(game);
 
       const calculatedLegalMoves = legalMoves.reduce((acc, curr) => {
         return acc + curr.validLegalMoves.length;
@@ -27,7 +28,7 @@ describe("Compare amount of legal moves in different positions", () => {
       const fen = new Fen(position as FenType);
       const game = new Game(fen);
 
-      const legalMoves = game.calculateLegalMoves();
+      const legalMoves = LegalMovesManager.calculateLegalMoves(game);
 
       const calculatedLegalMoves = legalMoves.reduce((acc, curr) => {
         return acc + curr.validLegalMoves.length;

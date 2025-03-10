@@ -6,8 +6,7 @@ import type { Piece } from "./Piece";
 export class Square {
   color: Colors;
   constructor(public coordinates: Coordinates, public piece?: Piece) {
-    const isWhite = (coordinates.col + coordinates.row) % 2 === 0;
-    this.color = isWhite ? Colors.WHITE : Colors.BLACK;
+    this.color = Square.getSquareColor(coordinates);
   }
 
   placePiece(piece: Piece) {
@@ -109,5 +108,12 @@ export class Square {
       .filter((piece) => piece) as Piece[];
 
     return attackingKnights;
+  }
+
+  static getSquareColor(coordinates: Coordinates) {
+    if ((coordinates.col + coordinates.row) % 2 === 0) {
+      return Colors.WHITE;
+    }
+    return Colors.BLACK;
   }
 }

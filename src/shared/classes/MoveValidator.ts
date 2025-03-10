@@ -1,24 +1,28 @@
-import { Board } from "@/shared/classes/Board";
 import { CastleManager } from "@/shared/classes/CastleManager";
-import { Colors, FenCastle, Move } from "@/shared/types";
+import { Game } from "@/shared/classes/Game";
+import { Move } from "@/shared/types";
 
 export class MoveValidator {
-  static isValidMove(board: Board, move: Move, currentPlayer: Colors, castleStatus: FenCastle): boolean {
-    const startSquare = board.getSquare(move.from);
+  public static validateMove(game: Game, move: Move): boolean {
+    const { from, to } = move;
+    const { board, currentPlayer, castleStatus } = game;
+
+    const startSquare = board.getSquare(from);
     const piece = startSquare.piece;
 
-    if (!piece || piece.color !== currentPlayer) {
-      console.info("Invalid move: Not player's turn or no piece found.");
+    if (!piece) return false;
+
+    if (piece.color !== currentPlayer) return false;
+
+    if (CastleManager.isCastleMove(from, to) && !CastleManager.canCastle(board, from, to, castleStatus)) {
       return false;
     }
 
-    if (
-      CastleManager.isCastleMove(move.from, move.to) &&
-      !CastleManager.canCastle(board, move.from, move.to, castleStatus)
-    ) {
+    if (!piece.isValidMove(board, to)) {
+      console.info("not valid move");
       return false;
     }
 
-    return piece.isValidMove(board, move.to);
+    return true;
   }
 }

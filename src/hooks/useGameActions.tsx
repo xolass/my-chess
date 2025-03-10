@@ -1,11 +1,9 @@
-import { gameEventEmitter } from "@/eventEmitter";
 import { setupGame } from "@/main";
-import { CheckmateManager } from "@/shared/classes/CheckmateManager";
+import { LegalMovesManager } from "@/shared/classes/LegalMovesManager";
 import { PromotionManager } from "@/shared/classes/PromotionManager";
-import { StalemateManager } from "@/shared/classes/StalemateManager";
 import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
-import { getOppositeColor, isCoordinateEqual } from "@/shared/utils";
-import { useGameStore } from "@/stores/GameContext";
+import { isCoordinateEqual } from "@/shared/utils";
+import { gameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
 
@@ -16,9 +14,6 @@ export function useGameActions() {
   const setPromotionModalOpen = usePromotionStore((state) => state.setPromotionModalOpen);
   const setHandlePromotingPiece = usePromotionStore((state) => state.setHandlePromotingPiece);
   const setPositionToSpawnModal = usePromotionStore((state) => state.setPositionToSpawnModal);
-
-  const setGame = useGameStore((state) => state.setGame);
-  const addToGameHistory = useGameStore(({ addToGameHistory }) => addToGameHistory);
 
   const setMovingPiece = useMoveStore(({ setMovingPiece }) => setMovingPiece);
 
@@ -76,24 +71,20 @@ export function useGameActions() {
 
     game.makeMove({ from, to, flags }); // this passes the turn
 
-    game.calculateLegalMoves(); // for the current player
-    game.clearLastTurnLegalMoves(); // for the previous player
-    game.calculatePreMoves(); // for the previous player
+    LegalMovesManager.calculateLegalMoves(game); // for the current player
+    LegalMovesManager.clearLastTurnLegalMoves(board, game.currentPlayer); // for the previous player
+    LegalMovesManager.calculatePreMoves(board, game.currentPlayer); // for the previous player
 
     window.boardState = board.getLettersGrid();
     window.game = game;
 
-    addToGameHistory(game.toFen());
-    setGame(game);
-
-    if (CheckmateManager.isCheckMate(game.board, game.currentPlayer)) {
-      const winner = getOppositeColor(game.currentPlayer);
-
-      gameEventEmitter.emit("checkmate", winner);
-    }
-    if (StalemateManager.isStalemate(game.board, game.currentPlayer)) {
-      gameEventEmitter.emit("stalemate");
-    }
+    gameStore.setState((prevState) => {
+      return {
+        ...prevState,
+        gameHistory: [...prevState.gameHistory, game.toFen()],
+      };
+    });
+    gameStore.setState({ game });
   };
 
   return {

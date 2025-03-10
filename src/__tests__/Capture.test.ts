@@ -1,4 +1,5 @@
 import { setupGame } from "@/main";
+import { MoveValidator } from "@/shared/classes/MoveValidator";
 
 describe("Capture mechanic", () => {
   it("Should not be able to capture allied pieces", () => {
@@ -14,10 +15,10 @@ describe("Capture mechanic", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const exd5 = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
-    const exf5 = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
-    const qxe4 = game.validateMove({ from: { row: 3, col: 3 }, to: { row: 4, col: 4 } });
-    const bxe4 = game.validateMove({ from: { row: 3, col: 5 }, to: { row: 4, col: 4 } });
+    const exd5 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
+    const exf5 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
+    const qxe4 = MoveValidator.validateMove(game, { from: { row: 3, col: 3 }, to: { row: 4, col: 4 } });
+    const bxe4 = MoveValidator.validateMove(game, { from: { row: 3, col: 5 }, to: { row: 4, col: 4 } });
 
     expect(exd5).toBe(false);
     expect(exf5).toBe(false);
@@ -40,8 +41,8 @@ describe("Capture mechanic", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const qxe6 = game.validateMove({ from: { row: 3, col: 3 }, to: { row: 2, col: 4 } });
-    const bxe6 = game.validateMove({ from: { row: 3, col: 5 }, to: { row: 2, col: 4 } });
+    const qxe6 = MoveValidator.validateMove(game, { from: { row: 3, col: 3 }, to: { row: 2, col: 4 } });
+    const bxe6 = MoveValidator.validateMove(game, { from: { row: 3, col: 5 }, to: { row: 2, col: 4 } });
 
     expect(qxe6).toBe(true);
     expect(bxe6).toBe(true);
@@ -61,8 +62,8 @@ describe("Capture mechanic", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const qxe6 = game.validateMove({ from: { row: 5, col: 2 }, to: { row: 2, col: 4 } });
-    const bxe6 = game.validateMove({ from: { row: 5, col: 7 }, to: { row: 2, col: 4 } });
+    const qxe6 = MoveValidator.validateMove(game, { from: { row: 5, col: 2 }, to: { row: 2, col: 4 } });
+    const bxe6 = MoveValidator.validateMove(game, { from: { row: 5, col: 7 }, to: { row: 2, col: 4 } });
 
     expect(qxe6).toBe(false);
     expect(bxe6).toBe(false);
@@ -82,8 +83,8 @@ describe("Capture mechanic", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const qxe6 = game.validateMove({ from: { row: 5, col: 2 }, to: { row: 2, col: 4 } });
-    const bxe6 = game.validateMove({ from: { row: 5, col: 7 }, to: { row: 2, col: 4 } });
+    const qxe6 = MoveValidator.validateMove(game, { from: { row: 5, col: 2 }, to: { row: 2, col: 4 } });
+    const bxe6 = MoveValidator.validateMove(game, { from: { row: 5, col: 7 }, to: { row: 2, col: 4 } });
 
     expect(qxe6).toBe(false);
     expect(bxe6).toBe(false);
