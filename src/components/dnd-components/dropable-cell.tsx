@@ -14,5 +14,5 @@ export function DroppableCell(props: DroppableBoardCellProps) {
     id: `${col} ${row}`,
     data: { coordinates },
   });
-  return <div ref={setNodeRef}>{children}</div>;
+  return <div className="size-full" ref={setNodeRef}>{children}</div>;
 }

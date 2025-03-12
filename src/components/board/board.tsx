@@ -23,10 +23,10 @@ function Board({ board }: BoardProps) {
   const grid = player === Colors.WHITE ? board.grid : invertedGrid;
 
   return (
-    <div className={twMerge("flex flex-col rounded-md cursor-pointer")}>
+    <div className={twMerge("flex flex-col rounded-md cursor-pointer size-full")}>
       {grid.map((rowValues, row) => {
         return (
-          <div key={"row" + row} className="flex flex-row">
+          <div key={"row" + row} className="flex flex-row size-full">
             {rowValues.map((square) => (
               <BoardCell
                 isHovered={isCoordinateEqual(square.coordinates, hoveredCell)}

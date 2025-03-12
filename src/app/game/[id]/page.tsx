@@ -29,7 +29,7 @@ export default function GamePage() {
   }, [modal]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="m-auto flex h-screen w-[100vh] flex-col items-center justify-between p-24">
       <BoardDndContext />
     </main>
   );

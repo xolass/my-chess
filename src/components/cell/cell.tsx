@@ -48,7 +48,7 @@ function BoardCell(props: BoardCellProps) {
       <div
         id={MoveNotation.toCell({ row, col })}
         className={twMerge(
-          "size-24 flex justify-center items-center relative",
+          "size-full flex justify-center items-center relative",
           square.color === Colors.BLACK ? "bg-black-cell" : "bg-white-cell"
         )}
         onClick={handleCellClick}
