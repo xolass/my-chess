@@ -10,6 +10,7 @@ import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { StalemateManager } from "@/shared/classes/StalemateManager";
 import { Colors, Coordinates, FenCastle, Move } from "@/shared/types";
 import { getOppositeColor } from "@/shared/utils";
+import { Piece } from "./Piece";
 
 type GameConstructor = Fen;
 
@@ -68,43 +69,52 @@ export class Game {
 
     this.checkForEndgameConditions();
 
+    this.updateCastleStatus(piece)
+
+    this.updateHalfMove(piece, targetPiece);
+
+    this.updateEnPassant(piece, from, to);
+
+    this.switchPlayer();
+  }
+
+  private checkForEndgameConditions() {
+    const enemy = getOppositeColor(this.currentPlayer);
+
+    if (InsufficientMaterialManager.isInsufficientMaterial(this.board.getAllPieces())) {
+      this.insufficientMaterial = true;
+    } else if (CheckmateManager.isCheckmate(this.board, enemy)) {
+      this.winner = this.currentPlayer;
+      this.checkmate = true;
+    } else if (StalemateManager.isStalemate(this.board, enemy)) {
+      console.log("stalemate");
+      this.stalemate = true;
+    }
+  }
+
+  private updateCastleStatus(piece: Piece) {
     if (CastleManager.shouldUpdateCastleStatus(piece.pieceLetter, this.castleStatus)) {
       this.castleStatus = CastleManager.updateCastleStatus(this.board, piece.coordinates, this.castleStatus);
     }
+  }
 
+  private updateHalfMove(piece: Piece, targetPiece?: Piece) {
     if (HalfMoveClock.shouldReset(piece, targetPiece)) {
       this.halfMoveClock = 0;
     } else {
       this.halfMoveClock++;
     }
+  }
 
+
+  private updateEnPassant(piece: Piece, from: Coordinates, to: Coordinates) {
     if (EnPassantManager.isMoveEnpassantEnabling(piece, from, to)) {
       this.enPassantTargetSquare = EnPassantManager.getEnPassantTargetSquare(to);
     } else {
       this.enPassantTargetSquare = undefined;
     }
-
-    this.switchPlayer();
-
-    return true;
   }
 
-  private checkForEndgameConditions() {
-    const enemy = getOppositeColor(this.currentPlayer);
-    if (InsufficientMaterialManager.isInsufficientMaterial(this.board.getAllPieces())) {
-      this.insufficientMaterial = true;
-    }
-
-    if (CheckmateManager.isCheckmate(this.board, enemy)) {
-      this.winner = this.currentPlayer;
-      this.checkmate = true;
-    }
-
-    if (StalemateManager.isStalemate(this.board, enemy)) {
-      console.log("stalemate");
-      this.stalemate = true;
-    }
-  }
 
   public switchPlayer() {
     if (this.currentPlayer === Colors.BLACK) {
