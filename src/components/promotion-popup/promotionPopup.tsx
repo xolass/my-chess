@@ -15,7 +15,7 @@ interface PromotionPopupProps {
 
 export function PromotionPopup(props: PromotionPopupProps) {
   const { colToSpawn, colorToSpawnTo } = props;
-  const game = gameStore((state) => state.game);
+  const { game } = gameStore.getState();
   const handlePromotingPiece = usePromotionStore((state) => state.handlePromotingPiece);
 
   const isPromotionModalOpen = usePromotionStore((state) => state.isPromotionModalOpen);

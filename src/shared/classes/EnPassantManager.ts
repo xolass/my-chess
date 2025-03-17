@@ -5,14 +5,15 @@ import { Colors, Coordinates } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
 
 export class EnPassantManager {
+
   static isMoveEnpassantEnabling(piece: Piece, from: Coordinates, to: Coordinates) {
     return piece.name === "p" && Pawn.isDoubleMove(from, to);
   }
 
-  static isEnPassant(piece: Piece, to: Coordinates, enPassantTargetCoordinates?: Coordinates) {
-    if (piece.name !== "p") return false;
-    if (!enPassantTargetCoordinates) return false;
-    return isCoordinateEqual(enPassantTargetCoordinates, to);
+  static updateEnPassantTargetSquare(piece: Piece, from: Coordinates, to: Coordinates): Coordinates | undefined {
+    if (this.isMoveEnpassantEnabling(piece, from, to)) {
+      return this.getEnPassantTargetSquare(to);
+    }
   }
 
   static getEnPassantLegalMoves(
@@ -57,12 +58,10 @@ export class EnPassantManager {
     return enPassantLegalMoves;
   }
 
-  static getEnPassantTargetSquare(to: Coordinates) {
-    const modifier = to.row === 3 ? -1 : 1;
-    return {
-      col: to.col,
-      row: to.row + modifier,
-    };
+  static isEnPassant(piece: Piece, to: Coordinates, enPassantTargetCoordinates?: Coordinates) {
+    if (piece.name !== "p") return false;
+    if (!enPassantTargetCoordinates) return false;
+    return isCoordinateEqual(enPassantTargetCoordinates, to);
   }
 
   static executeEnPassant(board: Board, from: Coordinates, to: Coordinates, currentPlayer: Colors) {
@@ -84,5 +83,13 @@ export class EnPassantManager {
 
     startSquare.removePiece();
     capturedPieceSquare.removePiece();
+  }
+
+  static getEnPassantTargetSquare(to: Coordinates) {
+    const modifier = to.row === 3 ? -1 : 1;
+    return {
+      col: to.col,
+      row: to.row + modifier,
+    };
   }
 }

@@ -16,14 +16,14 @@ describe("Queen movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const canMoveDiagRightDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
-    const canMoveDiagLeftDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
-    const canMoveDiagRightUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
-    const canMoveDiagLeftUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
-    const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
-    const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
-    const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
-    const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
+    const canMoveDiagRightDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(true);
     expect(canMoveDiagLeftDown).toBe(true);
@@ -48,14 +48,14 @@ describe("Queen movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveDiagRightDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
-    const canMoveDiagLeftDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 7 } });
-    const canMoveDiagRightUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 0 } });
-    const canMoveDiagLeftUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 1 } });
-    const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 7 } });
-    const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 0 } });
-    const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 7 } });
-    const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 0, col: 6 } });
+    const canMoveDiagRightDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
+    const canMoveDiagLeftDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 7 } });
+    const canMoveDiagRightUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 0 } });
+    const canMoveDiagLeftUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 1 } });
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 7 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 0 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 7 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 0, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);
@@ -80,14 +80,14 @@ describe("Queen movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveDiagRightDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
-    const canMoveDiagLeftDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
-    const canMoveDiagRightUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
-    const canMoveDiagLeftUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
-    const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
-    const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
-    const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
-    const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
+    const canMoveDiagRightDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);

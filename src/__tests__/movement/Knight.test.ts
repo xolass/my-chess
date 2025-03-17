@@ -15,14 +15,14 @@ describe("Knight piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const lMovement1 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
-    const lMovement2 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 3 } });
-    const lMovement3 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 5 } });
-    const lMovement4 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 3 } });
-    const lMovement5 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 6 } });
-    const lMovement6 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 2 } });
-    const lMovement7 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 6 } });
-    const lMovement8 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 2 } });
+    const lMovement1 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
+    const lMovement2 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 3 } });
+    const lMovement3 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 5 } });
+    const lMovement4 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 3 } });
+    const lMovement5 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 6 } });
+    const lMovement6 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 2 } });
+    const lMovement7 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 6 } });
+    const lMovement8 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 2 } });
 
     expect(lMovement1).toBe(true);
     expect(lMovement2).toBe(true);
@@ -47,19 +47,19 @@ describe("Knight piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
-    const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
-    const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
-    const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
-    const canMoveDiagRightDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 5 } });
-    const canMoveDiagRightUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
-    const canMoveDiagLeftDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 3 } });
-    const canMoveDiagLeftUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
-    const canMoveRandomLocation1 = MoveValidator.validateMove(game, {
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveDiagRightDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 5 } });
+    const canMoveDiagRightUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 5 } });
+    const canMoveDiagLeftDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 3 } });
+    const canMoveDiagLeftUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 3 } });
+    const canMoveRandomLocation1 = MoveValidator.validateMove(game.currentTurn, {
       from: { row: 4, col: 4 },
       to: { row: 0, col: 7 },
     });
-    const canMoveRandomLocation2 = MoveValidator.validateMove(game, {
+    const canMoveRandomLocation2 = MoveValidator.validateMove(game.currentTurn, {
       from: { row: 4, col: 4 },
       to: { row: 7, col: 7 },
     });
@@ -91,14 +91,14 @@ describe("Knight piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const lMovement1 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
-    const lMovement2 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 3 } });
-    const lMovement3 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 5 } });
-    const lMovement4 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 3 } });
-    const lMovement5 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 6 } });
-    const lMovement6 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 2 } });
-    const lMovement7 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 6 } });
-    const lMovement8 = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 2 } });
+    const lMovement1 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 5 } });
+    const lMovement2 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 6, col: 3 } });
+    const lMovement3 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 5 } });
+    const lMovement4 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 2, col: 3 } });
+    const lMovement5 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 6 } });
+    const lMovement6 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 2 } });
+    const lMovement7 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 6 } });
+    const lMovement8 = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 2 } });
 
     expect(lMovement1).toBe(true);
     expect(lMovement2).toBe(true);

@@ -1,7 +1,8 @@
 import { Board } from "@/shared/classes/Board";
-import { Game } from "@/shared/classes/Game";
 import { Piece } from "@/shared/classes/Piece";
 import { Colors, Coordinates, Move } from "@/shared/types";
+import { Turn } from "./Turn";
+import { MoveExecutor } from "./MoveExecutor";
 
 export class GameUtils {
   static isPieceBeingAttacked(board: Board, piece?: Piece): boolean {
@@ -20,17 +21,17 @@ export class GameUtils {
     if (currentPlayer === Colors.BLACK) return !!square.getWhiteAttackingPieces(board).length;
   }
 
-  static doesMoveRemoveCheck(game: Game, move: Move): boolean {
-    const simulatedGame = game.clone();
+  static doesMoveRemoveCheck(turn: Turn, move: Move): boolean {
+    const clonedTurn = turn.clone();
     // when we makeMove it dont change
-    const playerLeavingCheck = simulatedGame.currentPlayer;
+    const playerLeavingCheck = clonedTurn.currentPlayer;
 
-    simulatedGame.makeMove({ from: move.from, to: move.to });
+    MoveExecutor.executeMove(clonedTurn, move.from, move.to, move.flags);
 
-    const [king] = simulatedGame.board.getPiecesOfAKind("k", playerLeavingCheck);
+    const [king] = clonedTurn.board.getPiecesOfAKind("k", playerLeavingCheck);
     if (!king) return false;
 
-    const isKingStillBeingAttacked = GameUtils.isPieceBeingAttacked(simulatedGame.board, king);
+    const isKingStillBeingAttacked = GameUtils.isPieceBeingAttacked(clonedTurn.board, king);
 
     // Check if the king is still in check after the move
     return !isKingStillBeingAttacked;

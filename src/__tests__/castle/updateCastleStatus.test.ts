@@ -1,5 +1,4 @@
 import { setupGame } from "@/main";
-import { CastleManager } from "@/shared/classes/CastleManager";
 import { LettersGrid } from "@/shared/types";
 
 describe("Update castle status test suite", () => {
@@ -13,17 +12,15 @@ describe("Update castle status test suite", () => {
     [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ["R", undefined, undefined, undefined, "K", undefined, undefined, "R"],
   ];
-  const initialCastleStatus = "KQkq";
 
   it("should cancel castle rights on black king move", () => {
     const { game } = setupGame();
     const { board } = game;
     const kingInitialPosition = { row: 0, col: 4 };
 
-    const newCastleStatusAfterKingMove = CastleManager.updateCastleStatus(
+    const newCastleStatusAfterKingMove = game.castle.updateCastleStatus(
       board.from(castleBoard),
       kingInitialPosition,
-      initialCastleStatus
     );
 
     expect(newCastleStatusAfterKingMove).toEqual("KQ");
@@ -34,10 +31,9 @@ describe("Update castle status test suite", () => {
     const { board } = game;
     const rookInitialPosition = { row: 0, col: 7 };
 
-    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
+    const newCastleStatusAfterRookMove = game.castle.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
-      initialCastleStatus
     );
 
     expect(newCastleStatusAfterRookMove).toEqual("KQq");
@@ -47,10 +43,9 @@ describe("Update castle status test suite", () => {
     const { board } = game;
     const rookInitialPosition = { row: 0, col: 0 };
 
-    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
+    const newCastleStatusAfterRookMove = game.castle.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
-      initialCastleStatus
     );
 
     expect(newCastleStatusAfterRookMove).toEqual("KQk");
@@ -60,10 +55,9 @@ describe("Update castle status test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     const kingInitialPosition = { row: 7, col: 4 };
-    const newCastleStatusAfterKingMove = CastleManager.updateCastleStatus(
+    const newCastleStatusAfterKingMove = game.castle.updateCastleStatus(
       board.from(castleBoard),
       kingInitialPosition,
-      initialCastleStatus
     );
 
     expect(newCastleStatusAfterKingMove).toEqual("kq");
@@ -73,10 +67,9 @@ describe("Update castle status test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     const rookInitialPosition = { row: 7, col: 7 };
-    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
+    const newCastleStatusAfterRookMove = game.castle.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
-      initialCastleStatus
     );
 
     expect(newCastleStatusAfterRookMove).toEqual("Qkq");
@@ -86,10 +79,9 @@ describe("Update castle status test suite", () => {
     const { game } = setupGame();
     const { board } = game;
     const rookInitialPosition = { row: 7, col: 0 };
-    const newCastleStatusAfterRookMove = CastleManager.updateCastleStatus(
+    const newCastleStatusAfterRookMove = game.castle.updateCastleStatus(
       board.from(castleBoard),
       rookInitialPosition,
-      initialCastleStatus
     );
 
     expect(newCastleStatusAfterRookMove).toEqual("Kkq");

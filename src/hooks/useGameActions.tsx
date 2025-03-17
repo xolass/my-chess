@@ -2,7 +2,7 @@ import { setupGame } from "@/main";
 import { LegalMovesManager } from "@/shared/classes/LegalMovesManager";
 import { PromotionManager } from "@/shared/classes/PromotionManager";
 import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
-import { isCoordinateEqual } from "@/shared/utils";
+import { getOppositeColor, isCoordinateEqual } from "@/shared/utils";
 import { gameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
@@ -71,19 +71,9 @@ export function useGameActions() {
 
     game.makeMove({ from, to, flags }); // this passes the turn
 
-    LegalMovesManager.calculateLegalMoves(game); // for the current player
-    LegalMovesManager.clearLastTurnLegalMoves(board, game.currentPlayer); // for the previous player
-    LegalMovesManager.calculatePreMoves(board, game.currentPlayer); // for the previous player
-
     window.boardState = board.getLettersGrid();
     window.game = game;
 
-    gameStore.setState((prevState) => {
-      return {
-        ...prevState,
-        gameHistory: [...prevState.gameHistory, game.toFen()],
-      };
-    });
     gameStore.setState({ game });
   };
 
