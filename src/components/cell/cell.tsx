@@ -6,7 +6,7 @@ import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { Square } from "@/shared/classes/Square";
 import { Colors } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
-import { useGameStore } from "@/stores/GameContext";
+import { gameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 
 import React from "react";
@@ -28,8 +28,10 @@ function BoardCell(props: BoardCellProps) {
   const { pieceDragRelease, resetMovingPiece } = useGameActions();
 
   const movingPiece = useMoveStore((state) => state.movingPiece);
-  const { currentPlayer } = useGameStore((state) => state.game);
-  const player = useGameStore((state) => state.player);
+  const {
+    player,
+    game: { currentPlayer },
+  } = gameStore.getState();
 
   const isPieceLegalMove = movingPiece?.legalMoves.find((lmCoord) => isCoordinateEqual(lmCoord, coordinates));
   const isMoveAPreMove = movingPiece?.preMoves.find((pmCoord) => isCoordinateEqual(pmCoord, coordinates));

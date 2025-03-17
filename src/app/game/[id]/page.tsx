@@ -2,31 +2,25 @@
 import BoardDndContext from "@/components/dnd-components/board-drag-context";
 import { CheckmateModal } from "@/components/modals/checkmateModal";
 import { StalemateModal } from "@/components/modals/stalemateModal";
-import { gameEventEmitter } from "@/eventEmitter";
 import { useModal } from "@/hooks/useModal";
-import { Colors } from "@/shared/types";
-import { useEffect } from "react";
+import { gameStore } from "@/stores/GameContext";
 
 export default function GamePage() {
   const modal = useModal();
+  gameStore.subscribe(({ game }) => {
+    const { insufficientMaterial, stalemate, checkmate, winner } = game;
 
-  useEffect(() => {
-    function handleStalemate() {
+    if (insufficientMaterial) {
+      modal.open(<StalemateModal onClose={modal.close} onNewGame={modal.close} title="Insufficient material" />);
+    }
+    if (stalemate) {
       modal.open(<StalemateModal onClose={modal.close} onNewGame={modal.close} />);
     }
-
-    function handleCheckmate(winner: Colors) {
+    if (checkmate) {
+      if (!winner) throw new Error("winner not found");
       modal.open(<CheckmateModal winner={winner} />);
     }
-
-    gameEventEmitter.on("stalemate", handleStalemate);
-    gameEventEmitter.on("checkmate", handleCheckmate);
-
-    return () => {
-      gameEventEmitter.off("stalemate", handleStalemate);
-      gameEventEmitter.off("checkmate", handleCheckmate);
-    };
-  }, [modal]);
+  });
 
   return (
     <main className="m-auto flex h-screen w-[100vh] flex-col items-center justify-between p-24">

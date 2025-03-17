@@ -9,7 +9,7 @@ export function StalemateIcon() {
         <polygon points="50,50 55,0 0,55" />
       </clipPath>
 
-      <g clip-path="url(#leftClip)">
+      <g clipPath="url(#leftClip)">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fillRule="evenodd"
@@ -34,7 +34,7 @@ export function StalemateIcon() {
         </svg>
       </g>
 
-      <g clip-path="url(#rightClip)">
+      <g clipPath="url(#rightClip)">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fillRule="evenodd"

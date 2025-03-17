@@ -1,11 +1,12 @@
 import { StalemateIcon } from "assets/StalemateIcon";
 
 interface StalemateModalProps {
+  title?: string;
   onNewGame?: () => void;
   onClose?: () => void;
 }
 
-export function StalemateModal({ onNewGame, onClose }: StalemateModalProps) {
+export function StalemateModal({ onNewGame, onClose, title = "Stalemate!" }: StalemateModalProps) {
   return (
     <div className="text-center h-96 w-96 flex justify-center items-center flex-col rounded-md">
       <div className="mb-4">
@@ -18,7 +19,7 @@ export function StalemateModal({ onNewGame, onClose }: StalemateModalProps) {
         </div>
       </div>
 
-      <h2 className="text-2xl font-bold mb-2">Stalemate!</h2>
+      <h2 className="text-2xl font-bold mb-2">{title}</h2>
       <p className="text-lg mb-4">The game has ended in a draw.</p>
 
       <div className="mt-6 flex justify-center gap-4">

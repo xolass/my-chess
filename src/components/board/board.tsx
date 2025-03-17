@@ -2,7 +2,7 @@
 import { Board as BoardClass } from "@/shared/classes/Board";
 import { Colors, Coordinates } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
-import { useGameStore } from "@/stores/GameContext";
+import { gameStore } from "@/stores/GameContext";
 import { useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import BoardCell from "../cell/cell";
@@ -12,7 +12,7 @@ interface BoardProps {
 }
 
 function Board({ board }: BoardProps) {
-  const player = useGameStore((state) => state.player);
+  const { player } = gameStore.getState();
 
   const [hoveredCell, setHoveredCell] = useState<Coordinates>();
 

@@ -1,4 +1,5 @@
 import { setupGame } from "@/main";
+import { MoveValidator } from "@/shared/classes/MoveValidator";
 
 describe("Bishop piece actions", () => {
   it("should be able to move upRight multiple squares", () => {
@@ -14,7 +15,7 @@ describe("Bishop piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveDiagUpRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagUpRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
 
     expect(canMoveDiagUpRight).toBe(true);
   });
@@ -32,7 +33,7 @@ describe("Bishop piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveDiagDownRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagDownRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
 
     expect(canMoveDiagDownRight).toBe(true);
   });
@@ -49,7 +50,7 @@ describe("Bishop piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveDiagUpLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveDiagUpLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
 
     expect(canMoveDiagUpLeft).toBe(true);
   });
@@ -66,7 +67,7 @@ describe("Bishop piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagLeftDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
 
     expect(canMoveDiagLeftDown).toBe(true);
   });
@@ -84,10 +85,10 @@ describe("Bishop piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    const canMoveRight = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
-    const canMoveLeft = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
-    const canMoveUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
-    const canMoveDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
+    const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 6 } });
+    const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 2 } });
+    const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 4 } });
 
     expect(canMoveRight).toBe(false);
     expect(canMoveLeft).toBe(false);
@@ -109,10 +110,10 @@ describe("Bishop piece actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    const canMoveDiagRightDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
-    const canMoveDiagLeftDown = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
-    const canMoveDiagRightUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
-    const canMoveDiagLeftUp = game.validateMove({ from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
+    const canMoveDiagRightDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 6 } });
+    const canMoveDiagLeftDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 6, col: 2 } });
+    const canMoveDiagRightUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 6 } });
+    const canMoveDiagLeftUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 2, col: 2 } });
 
     expect(canMoveDiagRightDown).toBe(false);
     expect(canMoveDiagLeftDown).toBe(false);
