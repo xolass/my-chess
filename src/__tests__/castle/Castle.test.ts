@@ -48,7 +48,7 @@ describe("Castle test suite", () => {
     const { board } = game;
 
     board.from(getCastleBoard());
-    game.currentPlayer = Colors.BLACK;
+    game.currentTurn.currentPlayer = Colors.BLACK;
 
     CastleManager.performCastleMove(board, game.currentPlayer, true);
 
@@ -69,7 +69,7 @@ describe("Castle test suite", () => {
     const { board } = game;
 
     board.from(getCastleBoard());
-    game.currentPlayer = Colors.BLACK;
+    game.currentTurn.currentPlayer = Colors.BLACK;
 
     CastleManager.performCastleMove(board, game.currentPlayer, false);
 

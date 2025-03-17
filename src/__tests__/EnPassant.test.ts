@@ -53,7 +53,7 @@ describe("En passant mechanics", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    game.enPassantTargetSquare = { row: 2, col: 5 };
+    game.currentTurn.enPassantTargetSquare = { row: 2, col: 5 };
 
     game.makeMove({
       from: { row: 3, col: 4 },
@@ -71,7 +71,7 @@ describe("En passant mechanics", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    game.enPassantTargetSquare = { row: 5, col: 0 };
+    game.currentTurn.enPassantTargetSquare = { row: 5, col: 0 };
 
     game.makeMove({
       from: { row: 4, col: 1 },

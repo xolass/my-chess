@@ -12,7 +12,7 @@ describe("Half Move Clock test suite", () => {
       to: { col: 5, row: 2 },
     });
 
-    expect(game.halfMoveClock).toBe(1);
+    expect(game.halfMoveClock.count).toBe(1);
 
     game.makeMove({
       // another knight move
@@ -20,7 +20,7 @@ describe("Half Move Clock test suite", () => {
       to: { col: 5, row: 5 },
     });
 
-    expect(game.halfMoveClock).toBe(2);
+    expect(game.halfMoveClock.count).toBe(2);
   });
 
   it("Should reset half clock moves on pawn moves", () => {
@@ -32,7 +32,7 @@ describe("Half Move Clock test suite", () => {
       to: { col: 5, row: 2 },
     });
 
-    expect(game.halfMoveClock).toBe(1);
+    expect(game.halfMoveClock.count).toBe(1);
 
     game.makeMove({
       // pawn move
@@ -40,7 +40,7 @@ describe("Half Move Clock test suite", () => {
       to: { col: 4, row: 4 },
     });
 
-    expect(game.halfMoveClock).toBe(0);
+    expect(game.halfMoveClock.count).toBe(0);
   });
 
   it("Should reset half clock moves on captures", () => {
@@ -52,7 +52,7 @@ describe("Half Move Clock test suite", () => {
       to: { col: 5, row: 2 },
     });
 
-    expect(game.halfMoveClock).toBe(1);
+    expect(game.halfMoveClock.count).toBe(1);
 
     game.makeMove({
       // pawn move
@@ -60,6 +60,6 @@ describe("Half Move Clock test suite", () => {
       to: { col: 4, row: 4 },
     });
 
-    expect(game.halfMoveClock).toBe(0);
+    expect(game.halfMoveClock.count).toBe(0);
   });
 });

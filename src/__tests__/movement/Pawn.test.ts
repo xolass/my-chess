@@ -17,10 +17,17 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+<<<<<<< Updated upstream
     const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
     const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
     const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
     const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
+=======
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
+>>>>>>> Stashed changes
 
     expect(canMoveUp).toBe(true);
     expect(canMoveDown).toBe(false);
@@ -41,12 +48,19 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
-    game.currentPlayer = Colors.BLACK;
+    game.currentTurn.currentPlayer = Colors.BLACK;
 
+<<<<<<< Updated upstream
     const canMoveUp = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
     const canMoveDown = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
     const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
     const canMoveRight = MoveValidator.validateMove(game, { from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
+=======
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 5, col: 4 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 3 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 4, col: 4 }, to: { row: 4, col: 5 } });
+>>>>>>> Stashed changes
 
     expect(canMoveUp).toBe(false);
     expect(canMoveDown).toBe(true);
@@ -68,10 +82,17 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+<<<<<<< Updated upstream
     const canMoveUp = MoveValidator.validateMove(game, { from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
     const canMoveDown = MoveValidator.validateMove(game, { from: { row: 6, col: 4 }, to: { row: 7, col: 4 } });
     const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 6, col: 4 }, to: { row: 6, col: 3 } });
     const canMoveRight = MoveValidator.validateMove(game, { from: { row: 6, col: 4 }, to: { row: 6, col: 5 } });
+=======
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 6, col: 4 }, to: { row: 7, col: 4 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 6, col: 4 }, to: { row: 6, col: 3 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 6, col: 4 }, to: { row: 6, col: 5 } });
+>>>>>>> Stashed changes
 
     expect(canMoveUp).toBe(true);
     expect(canMoveDown).toBe(false);
@@ -93,12 +114,19 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
-    game.currentPlayer = Colors.BLACK;
+    game.currentTurn.currentPlayer = Colors.BLACK;
 
+<<<<<<< Updated upstream
     const canMoveDown = MoveValidator.validateMove(game, { from: { row: 1, col: 4 }, to: { row: 3, col: 4 } });
     const canMoveUp = MoveValidator.validateMove(game, { from: { row: 1, col: 4 }, to: { row: 0, col: 4 } });
     const canMoveLeft = MoveValidator.validateMove(game, { from: { row: 1, col: 4 }, to: { row: 1, col: 3 } });
     const canMoveRight = MoveValidator.validateMove(game, { from: { row: 1, col: 4 }, to: { row: 1, col: 5 } });
+=======
+    const canMoveDown = MoveValidator.validateMove(game.currentTurn, { from: { row: 1, col: 4 }, to: { row: 3, col: 4 } });
+    const canMoveUp = MoveValidator.validateMove(game.currentTurn, { from: { row: 1, col: 4 }, to: { row: 0, col: 4 } });
+    const canMoveLeft = MoveValidator.validateMove(game.currentTurn, { from: { row: 1, col: 4 }, to: { row: 1, col: 3 } });
+    const canMoveRight = MoveValidator.validateMove(game.currentTurn, { from: { row: 1, col: 4 }, to: { row: 1, col: 5 } });
+>>>>>>> Stashed changes
 
     expect(canMoveDown).toBe(true);
     expect(canMoveUp).toBe(false);
@@ -120,8 +148,13 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+<<<<<<< Updated upstream
     const canMove2Up = MoveValidator.validateMove(game, { from: { row: 5, col: 4 }, to: { row: 3, col: 4 } });
     const canMove3Up = MoveValidator.validateMove(game, { from: { row: 5, col: 4 }, to: { row: 2, col: 4 } });
+=======
+    const canMove2Up = MoveValidator.validateMove(game.currentTurn, { from: { row: 5, col: 4 }, to: { row: 3, col: 4 } });
+    const canMove3Up = MoveValidator.validateMove(game.currentTurn, { from: { row: 5, col: 4 }, to: { row: 2, col: 4 } });
+>>>>>>> Stashed changes
 
     expect(canMove2Up).toBe(false);
     expect(canMove3Up).toBe(false);
@@ -142,8 +175,13 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+<<<<<<< Updated upstream
     const canMove2Up = MoveValidator.validateMove(game, { from: { row: 2, col: 4 }, to: { row: 4, col: 4 } });
     const canMove3Up = MoveValidator.validateMove(game, { from: { row: 2, col: 4 }, to: { row: 5, col: 4 } });
+=======
+    const canMove2Up = MoveValidator.validateMove(game.currentTurn, { from: { row: 2, col: 4 }, to: { row: 4, col: 4 } });
+    const canMove3Up = MoveValidator.validateMove(game.currentTurn, { from: { row: 2, col: 4 }, to: { row: 5, col: 4 } });
+>>>>>>> Stashed changes
 
     expect(canMove2Up).toBe(false);
     expect(canMove3Up).toBe(false);
@@ -163,7 +201,11 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+<<<<<<< Updated upstream
     const captureForwards2 = MoveValidator.validateMove(game, { from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
+=======
+    const captureForwards2 = MoveValidator.validateMove(game.currentTurn, { from: { row: 6, col: 4 }, to: { row: 4, col: 4 } });
+>>>>>>> Stashed changes
 
     expect(captureForwards2).toBe(false);
   });
@@ -183,7 +225,11 @@ describe("Pawn movement actions", () => {
       [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined],
     ]);
 
+<<<<<<< Updated upstream
     const captureForwards1 = MoveValidator.validateMove(game, { from: { row: 2, col: 4 }, to: { row: 3, col: 4 } });
+=======
+    const captureForwards1 = MoveValidator.validateMove(game.currentTurn, { from: { row: 2, col: 4 }, to: { row: 3, col: 4 } });
+>>>>>>> Stashed changes
 
     expect(captureForwards1).toBe(false);
   });

@@ -81,4 +81,5 @@ export type Castle = {
 
 export type MoveFlags = {
   promotion?: Promotion;
+  enPassantTargetSquare?: Coordinates;
 };

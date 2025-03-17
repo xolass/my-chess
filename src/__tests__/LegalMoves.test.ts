@@ -9,7 +9,7 @@ describe("Compare amount of legal moves in different positions", () => {
     Object.entries(legalMovesList).forEach(([position, legalMovesAmount]) => {
       const game = new Game(new Fen(position as FenType));
 
-      const legalMoves = LegalMovesManager.calculateLegalMoves(game);
+      const legalMoves = LegalMovesManager.calculateLegalMoves(game.currentTurn);
 
       const calculatedLegalMoves = legalMoves.reduce((acc, curr) => {
         return acc + curr.validLegalMoves.length;
@@ -22,13 +22,13 @@ describe("Compare amount of legal moves in different positions", () => {
   });
 
   it("single position", () => {
-    const singlePosition = { "rnbqkbnr/ppp2ppp/8/3Pp3/8/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 3": 31 };
+    const singlePosition = { "8/8/8/8/8/1K6/8/kQ6 b - - 0 1": 1 };
 
     Object.entries(singlePosition).forEach(([position, legalMovesAmount]) => {
       const fen = new Fen(position as FenType);
       const game = new Game(fen);
 
-      const legalMoves = LegalMovesManager.calculateLegalMoves(game);
+      const legalMoves = LegalMovesManager.calculateLegalMoves(game.currentTurn);
 
       const calculatedLegalMoves = legalMoves.reduce((acc, curr) => {
         return acc + curr.validLegalMoves.length;

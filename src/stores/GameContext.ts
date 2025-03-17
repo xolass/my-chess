@@ -15,4 +15,8 @@ export const gameStore = createStore<GameContextType>(() => ({
   game: new Game(),
   player: Colors.WHITE,
   gameHistory: [],
+<<<<<<< Updated upstream
 }));
+=======
+}));
+>>>>>>> Stashed changes
