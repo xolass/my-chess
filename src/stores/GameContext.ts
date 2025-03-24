@@ -1,7 +1,8 @@
+import { initialPosition } from "@/main";
 import { Fen } from "@/shared/classes/Fen";
 import { Game } from "@/shared/classes/Game";
 import { Colors, PromotionOptions } from "@/shared/types";
-import { createStore } from "zustand/vanilla";
+import { create } from "zustand";
 
 export type HandlePromotingPiece = (promotingPiece: PromotionOptions | null) => void;
 
@@ -11,8 +12,8 @@ export interface GameContextType {
   gameHistory: Fen[];
 }
 
-export const gameStore = createStore<GameContextType>(() => ({
-  game: new Game(),
+export const gameStore = create<GameContextType>(() => ({
+  game: new Game(new Fen(initialPosition)),
   player: Colors.WHITE,
   gameHistory: [],
 }));

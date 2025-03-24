@@ -62,4 +62,120 @@ describe("Half Move Clock test suite", () => {
 
     expect(game.halfMoveClock.count).toBe(0);
   });
+
+  it("should end the game after 50 turns", () => {
+    const game = new Game(new Fen(baseFenBoard));
+
+    // e4
+    game.makeMove({
+      from: { col: 4, row: 6 },
+      to: { col: 4, row: 4 },
+    });
+
+    // e5
+    game.makeMove({
+      from: { col: 4, row: 1 },
+      to: { col: 4, row: 3 },
+    });
+
+    expect(game.halfMoveClock.count).toBe(0);
+
+    for (let i = 1; i <= 25; i++) {
+      //go back and forth
+
+      // be2
+      game.makeMove({
+        from: { col: 5, row: 7 },
+        to: { col: 4, row: 6 },
+      });
+
+      // be7
+      game.makeMove({
+        from: { col: 5, row: 0 },
+        to: { col: 4, row: 1 },
+      });
+
+      // bf1
+      game.makeMove({
+        from: { col: 4, row: 6 },
+        to: { col: 5, row: 7 },
+      });
+
+      // bf7
+      game.makeMove({
+        from: { col: 4, row: 1 },
+        to: { col: 5, row: 0 },
+      });
+
+      expect(game.halfMoveClock.count).toBe(i * 2);
+    }
+    expect(game.halfMoveClock.count).toBe(50);
+    expect(game.gameEnded).toBe(false);
+    expect(game.halfMoveClockDraw).toBe(false);
+
+    game.makeMove({
+      from: { col: 5, row: 7 },
+      to: { col: 4, row: 6 },
+    });
+
+    expect(game.gameEnded).toBe(true);
+    expect(game.halfMoveClockDraw).toBe(true);
+  });
+  it("should NOT end the game after 49.5 turns", () => {
+    const game = new Game(new Fen(baseFenBoard));
+
+    // e4
+    game.makeMove({
+      from: { col: 4, row: 6 },
+      to: { col: 4, row: 4 },
+    });
+
+    // e5
+    game.makeMove({
+      from: { col: 4, row: 1 },
+      to: { col: 4, row: 3 },
+    });
+
+    expect(game.halfMoveClock.count).toBe(0);
+
+    for (let i = 1; i <= 49; i++) {
+      //go back and forth
+
+      // be2
+      game.makeMove({
+        from: { col: 5, row: 7 },
+        to: { col: 4, row: 6 },
+      });
+
+      // be7
+      game.makeMove({
+        from: { col: 5, row: 0 },
+        to: { col: 4, row: 1 },
+      });
+
+      // bf1
+      game.makeMove({
+        from: { col: 4, row: 6 },
+        to: { col: 5, row: 7 },
+      });
+
+      // bf7
+      game.makeMove({
+        from: { col: 4, row: 1 },
+        to: { col: 5, row: 0 },
+      });
+
+      expect(game.halfMoveClock.count).toBe(i * 2);
+    }
+
+    // be2
+    game.makeMove({
+      from: { col: 5, row: 7 },
+      to: { col: 4, row: 6 },
+    });
+
+    expect(game.gameEnded).toBe(false);
+    expect(game.halfMoveClock.count).toBe(49);
+    expect(game.halfMoveClockDraw).toBe(false);
+  });
 });
