@@ -4,15 +4,18 @@ export class HalfMoveClock {
   count = 0;
 
   public updateHalfClockMove(piece: Piece, targetPiece?: Piece) {
+    const isBlackMoving = piece.color === "b";
     if (this.shouldReset(piece, targetPiece)) {
       this.count = 0;
     } else {
-      this.count += 1;
+      if (isBlackMoving) {
+        this.count += 1;
+      }
     }
   }
 
   public isGameOverForHalfClockMoveRule() {
-    return this.count >= 50
+    return this.count === 50;
   }
 
   private shouldReset(piece: Piece, targetPiece?: Piece) {

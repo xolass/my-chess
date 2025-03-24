@@ -1,5 +1,4 @@
 "use client";
-import Board from "@/components/board/board";
 import { useGameActions } from "@/hooks/useGameActions";
 import { PieceLetter } from "@/shared/types";
 import { isPieceFromColor } from "@/shared/utils";
@@ -16,9 +15,9 @@ import {
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import { useId } from "react";
 
-export default function BoardDndContext() {
+export default function BoardDndContext({ children }: { children: React.ReactNode }) {
   const { pieceDragRelease, resetMovingPiece, pieceDrag } = useGameActions();
-  const { game, player: currentPlayer } = gameStore.getState();
+  const { player: currentPlayer } = gameStore.getState();
 
   const id = useId();
 
@@ -72,7 +71,7 @@ export default function BoardDndContext() {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
     >
-      <Board board={game.board} />
+      {children}
     </DndContext>
   );
 }
