@@ -1,10 +1,9 @@
-import { Board } from "@/shared/classes/Board";
 import { EnPassantManager } from "@/shared/classes/EnPassantManager";
 import { GameUtils } from "@/shared/classes/GameUtils";
 import { MoveValidator } from "@/shared/classes/MoveValidator";
 import { King } from "@/shared/classes/pieces/King";
 import { Pawn } from "@/shared/classes/pieces/Pawn";
-import { Colors, Move } from "@/shared/types";
+import { Move } from "@/shared/types";
 import { getOppositeColor } from "@/shared/utils";
 import { Turn } from "./Turn";
 
@@ -60,15 +59,8 @@ export class LegalMovesManager {
     return legalMoves;
   }
 
-  public static clearLastTurnLegalMoves(board: Board, currentPlayer: Colors) {
-    const lastTurnColorPieces = board.getPieces(getOppositeColor(currentPlayer));
-
-    lastTurnColorPieces.forEach((piece) => {
-      piece.legalMoves = [];
-    });
-  }
-
-  public static calculatePreMoves(board: Board, currentPlayer: Colors) {
+  public static calculatePreMoves(turn: Turn) {
+    const { board, currentPlayer, castleStatus } = turn;
     const colorPieces = board.getPieces(currentPlayer);
     const oppositeColorPieces = board.getPieces(getOppositeColor(currentPlayer));
 
@@ -77,7 +69,22 @@ export class LegalMovesManager {
     allPieces.forEach((piece) => {
       const possiblePreMoves = piece.getAllDirectionMoves(board);
 
+      if (piece instanceof King) {
+        const kingCastleMoves = piece.getCastlePossibleMoves(board, castleStatus);
+
+        possiblePreMoves.push(...kingCastleMoves);
+      }
+
       piece.preMoves = possiblePreMoves;
+    });
+  }
+
+  public static clearLastTurnLegalMoves(turn: Turn) {
+    const { board, currentPlayer } = turn;
+    const lastTurnColorPieces = board.getPieces(getOppositeColor(currentPlayer));
+
+    lastTurnColorPieces.forEach((piece) => {
+      piece.legalMoves = [];
     });
   }
 }
