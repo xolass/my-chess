@@ -14,6 +14,8 @@ export class MoveNotation {
   piece: PieceIdentifier;
 
   constructor(private move: string) {
+    this.validateChessMove(move);
+
     this.isPawnMove = this.getIsPawnMove();
     this.promotion = this.getPromotion();
     this.piece = this.getPiece();
@@ -25,6 +27,15 @@ export class MoveNotation {
     this.isLongCastle = this.getIsLongCastle();
     this.isPieceMove = this.getIsPieceMove();
     this.to = this.getTo();
+  }
+
+  private validateChessMove(move: string): void {
+    const movePattern = /^([PNBRQK]?)([a-h]?[1-8]?)(x?)([a-h][1-8])(=[NBRQ])?([+#]?)$/;
+    const castlingPattern = /^(O-O(-O)?)([+#]?)$/; // Matches O-O and O-O-O, with optional check or checkmate
+
+    if (!movePattern.test(move) && !castlingPattern.test(move)) {
+      throw new Error(`Invalid chess move: "${move}"`);
+    }
   }
 
   static getColumFromFile(file: string): number {

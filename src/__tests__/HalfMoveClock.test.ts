@@ -6,8 +6,18 @@ describe("Half Move Clock test suite", () => {
   it("Should count half clock moves", () => {
     const game = new Game(new Fen(baseFenBoard));
 
+    expect(game.halfMoveClock.count).toBe(0);
+
     game.makeMove({
-      // knight move
+      // white knight move
+      from: { col: 6, row: 7 },
+      to: { col: 5, row: 5 },
+    });
+
+    expect(game.halfMoveClock.count).toBe(0);
+
+    game.makeMove({
+      // black knight move
       from: { col: 6, row: 0 },
       to: { col: 5, row: 2 },
     });
@@ -15,9 +25,17 @@ describe("Half Move Clock test suite", () => {
     expect(game.halfMoveClock.count).toBe(1);
 
     game.makeMove({
-      // another knight move
-      from: { col: 6, row: 7 },
-      to: { col: 5, row: 5 },
+      // white knight move
+      from: { col: 5, row: 5 },
+      to: { col: 6, row: 7 },
+    });
+
+    expect(game.halfMoveClock.count).toBe(1);
+
+    game.makeMove({
+      // black knight move
+      from: { col: 5, row: 2 },
+      to: { col: 6, row: 0 },
     });
 
     expect(game.halfMoveClock.count).toBe(2);
@@ -80,7 +98,7 @@ describe("Half Move Clock test suite", () => {
 
     expect(game.halfMoveClock.count).toBe(0);
 
-    for (let i = 1; i <= 25; i++) {
+    for (let i = 1; i <= 24; i++) {
       //go back and forth
 
       // be2
@@ -109,15 +127,40 @@ describe("Half Move Clock test suite", () => {
 
       expect(game.halfMoveClock.count).toBe(i * 2);
     }
-    expect(game.halfMoveClock.count).toBe(50);
+
+    expect(game.halfMoveClock.count).toBe(48);
     expect(game.gameEnded).toBe(false);
     expect(game.halfMoveClockDraw).toBe(false);
 
     game.makeMove({
+      // be2
       from: { col: 5, row: 7 },
       to: { col: 4, row: 6 },
     });
 
+    // be7
+    game.makeMove({
+      from: { col: 5, row: 0 },
+      to: { col: 4, row: 1 },
+    });
+
+    expect(game.halfMoveClock.count).toBe(49);
+    expect(game.gameEnded).toBe(false);
+    expect(game.halfMoveClockDraw).toBe(false);
+
+    // bf1
+    game.makeMove({
+      from: { col: 4, row: 6 },
+      to: { col: 5, row: 7 },
+    });
+
+    // bf7
+    game.makeMove({
+      from: { col: 4, row: 1 },
+      to: { col: 5, row: 0 },
+    });
+
+    expect(game.halfMoveClock.count).toBe(50);
     expect(game.gameEnded).toBe(true);
     expect(game.halfMoveClockDraw).toBe(true);
   });
@@ -138,7 +181,7 @@ describe("Half Move Clock test suite", () => {
 
     expect(game.halfMoveClock.count).toBe(0);
 
-    for (let i = 1; i <= 49; i++) {
+    for (let i = 1; i <= 24; i++) {
       //go back and forth
 
       // be2
@@ -167,6 +210,18 @@ describe("Half Move Clock test suite", () => {
 
       expect(game.halfMoveClock.count).toBe(i * 2);
     }
+
+    // be2
+    game.makeMove({
+      from: { col: 5, row: 7 },
+      to: { col: 4, row: 6 },
+    });
+
+    // be7
+    game.makeMove({
+      from: { col: 5, row: 0 },
+      to: { col: 4, row: 1 },
+    });
 
     // be2
     game.makeMove({

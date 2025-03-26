@@ -1,5 +1,7 @@
 import { setupGame } from "@/main";
 import { EnPassantManager } from "@/shared/classes/EnPassantManager";
+import { Fen } from "@/shared/classes/Fen";
+import { Game } from "@/shared/classes/Game";
 
 describe("En passant mechanics", () => {
   it("Should detect if a movement is an en passant", () => {
@@ -90,7 +92,7 @@ describe("En passant mechanics", () => {
     ]);
   });
   it("Should check if a move enables en passant", () => {
-    const { game } = setupGame();
+    const game = new Game(new Fen());
 
     const from = { row: 6, col: 4 };
     const doubleMove = { row: 4, col: 4 };

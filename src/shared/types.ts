@@ -58,7 +58,7 @@ export type Move = {
   flags?: MoveFlags;
 };
 export type ReturnFromGetMovesFromPGN = {
-  moves: Array<Move | "castle">;
+  moves: Array<Move>;
 };
 
 export type FenPiecesSection = `${string}/${string}/${string}/${string}/${string}/${string}/${string}/${string}`;
@@ -81,5 +81,5 @@ export type Castle = {
 
 export type MoveFlags = {
   promotion?: Promotion;
-  enPassantTargetSquare?: Coordinates;
+  castle?: Castle;
 };
