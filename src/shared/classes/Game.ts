@@ -108,8 +108,8 @@ export class Game {
     if (this.gameEnded) return;
 
     LegalMovesManager.calculateLegalMoves(turn); // for the current player
-    LegalMovesManager.clearLastTurnLegalMoves(turn.board, turn.currentPlayer); // for the previous player
-    LegalMovesManager.calculatePreMoves(turn.board, turn.currentPlayer); // for the previous player
+    LegalMovesManager.clearLastTurnLegalMoves(turn); // for the previous player
+    LegalMovesManager.calculatePreMoves(turn); // for the previous player
   }
 
   private startNewTurn() {
