@@ -32,7 +32,6 @@ export class Game {
 
   constructor(from: Fen = new Fen()) {
     this.listeners.onTurnStartListener.push((turn) => {
-      console.log(`Turn ${turn.turnCount} started`);
       this.calculateLegalMoves(turn);
 
       if (this.gameEnded) return;
@@ -48,8 +47,6 @@ export class Game {
     });
 
     this.listeners.onTurnEndListener.push((turn) => {
-      console.log(`Turn ${turn.turnCount} ended`);
-
       if (this.gameEnded) return;
 
       if (InsufficientMaterialManager.isInsufficientMaterial(turn.board.getAllPieces())) {
@@ -104,11 +101,10 @@ export class Game {
     this.enPassantTargetSquare = EnPassantManager.updateEnPassantTargetSquare(piece, from, to);
     this.halfMoveClock.updateHalfClockMove(piece, targetPiece);
 
-    this.currentTurn.endTurn({ from, to, flags: { ...flags, enPassantTargetSquare: this.enPassantTargetSquare } });
+    this.currentTurn.endTurn({ from, to, flags: { ...flags } }, this.enPassantTargetSquare);
   }
 
   private calculateLegalMoves(turn: Turn) {
-    console.log("calculating legal moves", this);
     if (this.gameEnded) return;
 
     LegalMovesManager.calculateLegalMoves(turn); // for the current player

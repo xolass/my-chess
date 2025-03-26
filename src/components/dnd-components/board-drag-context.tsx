@@ -42,7 +42,6 @@ export default function BoardDndContext({ children }: { children: React.ReactNod
   );
 
   function handleDragStart(event: DragStartEvent) {
-    console.log("drag start");
     const { active } = event;
     const { current } = active.data;
     if (!current) return;

@@ -1,11 +1,10 @@
-import { CastleManager } from "@/shared/classes/CastleManager";
 import { Move } from "@/shared/types";
 import { Turn } from "./Turn";
 
 export class MoveValidator {
   public static validateMove(turn: Turn, move: Move): boolean {
     const { from, to } = move;
-    const { board, currentPlayer, castleStatus } = turn;
+    const { board, currentPlayer } = turn;
 
     const startSquare = board.getSquare(from);
     const piece = startSquare.piece;
@@ -13,7 +12,6 @@ export class MoveValidator {
     if (!piece) return false;
 
     if (piece.color !== currentPlayer) return false;
-
 
     if (!piece.isValidMove(board, to)) {
       console.info("not valid move");
