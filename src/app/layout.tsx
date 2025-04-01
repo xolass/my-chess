@@ -1,4 +1,5 @@
 import { Modal } from "@/components/modals/modal";
+import { Providers } from "@/components/providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -18,8 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Modal />
-        {children}
+        <Providers>
+          <Modal />
+          {children}
+        </Providers>
       </body>
     </html>
   );

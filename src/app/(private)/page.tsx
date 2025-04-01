@@ -1,11 +1,14 @@
 "use client";
 import { Colors } from "@/shared/types";
 import { gameStore } from "@/stores/GameContext";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  const session = useSession();
 
+  console.log(session);
   function startGame(color: Colors) {
     // call api create game, return id, return color, return time
     const id = Date.now();
