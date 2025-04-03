@@ -1,32 +1,54 @@
-import withAuth from "next-auth/middleware";
-import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-const publicRoutes = [
-  { path: "/sign-in", whenAuthenticated: "redirect" },
-  { path: "/pricing", whenAuthenticated: "next" },
-] as const;
+const publicRoutes = new Map([
+  ["/login", { whenAuthenticated: "redirect" }],
+  ["/signup", { whenAuthenticated: "redirect" }],
+]);
 
-export default withAuth({
-  pages: {
-    signIn: "/login",
-  },
-});
+const REDIRECT_WHEN_AUTHENTICATED = "/";
+const REDIRECT_WHEN_NOT_AUTHENTICATED = "/login";
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  return NextResponse.next();
+export default withAuth(
+  function middleware(request) {
+    const { pathname } = request.nextUrl;
 
-  const publicRoute = publicRoutes.find((route) => pathname === route.path);
+    const publicRoute = publicRoutes.get(pathname);
 
-  if (!publicRoute) {
+    const isAutheticated = request.nextauth?.token;
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/sign-in";
 
-    return NextResponse.redirect(redirectUrl);
+    if (!publicRoute && !isAutheticated) {
+      redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
+
+      return NextResponse.redirect(redirectUrl);
+    }
+
+    if (publicRoute && isAutheticated) {
+      switch (publicRoute.whenAuthenticated) {
+        case "redirect": {
+          redirectUrl.pathname = REDIRECT_WHEN_AUTHENTICATED;
+
+          return NextResponse.redirect(redirectUrl);
+        }
+        default: {
+          throw new Error("create new whenAuthenticated case");
+        }
+      }
+    }
+
+    return NextResponse.next();
+  },
+  {
+    pages: {
+      signIn: REDIRECT_WHEN_NOT_AUTHENTICATED,
+    },
+    callbacks: {
+      // This ensures the middleware runs even for public routes
+      authorized: () => true,
+    },
   }
-
-  return NextResponse.next();
-}
+);
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],

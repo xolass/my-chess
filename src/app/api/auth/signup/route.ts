@@ -45,7 +45,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ message: "User registered successfully." }, { status: 201 });
+    return NextResponse.json({ message: "User registered successfully.", id: user.id }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: "Internal server error." }, { status: 500 });
   }
