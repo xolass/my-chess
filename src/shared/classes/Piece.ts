@@ -1,10 +1,12 @@
 import { Board } from "@/shared/classes/Board";
+import { Move } from "@/shared/classes/Move";
 import { Colors, Coordinates, PieceIdentifier, PieceLetter } from "@/shared/types";
 
 export abstract class Piece {
   pieceLetter: PieceLetter;
-  legalMoves: Coordinates[] = [];
-  preMoves: Coordinates[] = [];
+  legalMoves: Move[] = [];
+  preMoves: Move[] = [];
+
   constructor(public color: Colors, public coordinates: Coordinates, public name: PieceIdentifier) {
     this.pieceLetter = (this.color === Colors.WHITE ? this.name.toUpperCase() : this.name.toLowerCase()) as PieceLetter;
   }
@@ -27,9 +29,9 @@ export abstract class Piece {
 
   abstract isValidMove(board: Board, to: Coordinates): boolean;
 
-  abstract calculatePossibleMoves(board: Board): Array<Coordinates>;
+  abstract calculatePossibleMoves(board: Board): Array<Move>;
 
-  abstract getAllDirectionMoves(board: Board): Array<Coordinates>;
+  abstract getAllDirectionMoves(board: Board): Array<Move>;
 
   static isCapture(board: Board, to: Coordinates) {
     const target = board.getSquare({ row: to.row, col: to.col }).piece;

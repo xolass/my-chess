@@ -1,9 +1,9 @@
 import { EnPassantManager } from "@/shared/classes/EnPassantManager";
 import { GameUtils } from "@/shared/classes/GameUtils";
+import { Move } from "@/shared/classes/Move";
 import { MoveValidator } from "@/shared/classes/MoveValidator";
 import { King } from "@/shared/classes/pieces/King";
 import { Pawn } from "@/shared/classes/pieces/Pawn";
-import { Move } from "@/shared/types";
 import { getOppositeColor } from "@/shared/utils";
 import { Turn } from "./Turn";
 
@@ -22,7 +22,7 @@ export class LegalMovesManager {
       const possibleMoves = piece.calculatePossibleMoves(board);
 
       // Filter moves that are valid and don't leave the king in check
-      const validLegalMoves = possibleMoves.filter((to) => {
+      const validLegalMoves: Move[] = possibleMoves.filter(({ to }) => {
         const move: Move = { from: piece.coordinates, to };
 
         if (!MoveValidator.validateMove(turn, move)) return false;
@@ -42,12 +42,13 @@ export class LegalMovesManager {
           enPassantTargetSquare
         );
 
-        validLegalMoves.push(...enPassantLegalMoves);
+        if (enPassantLegalMoves) {
+          validLegalMoves.push(enPassantLegalMoves);
+        }
       }
 
       if (piece instanceof King) {
         const kingCastleMoves = piece.getCastlePossibleMoves(board, castleStatus);
-
         validLegalMoves.push(...kingCastleMoves);
       }
 

@@ -1,4 +1,4 @@
-import { Move } from "../types";
+import { Move } from "@/shared/classes/Move";
 import { Turn } from "./Turn";
 
 type TurnFunction = (turn: Turn) => void;

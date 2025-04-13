@@ -1,11 +1,11 @@
 import { Board } from "@/shared/classes/Board";
+import { Move } from "@/shared/classes/Move";
 import { Piece } from "@/shared/classes/Piece";
 import { Pawn } from "@/shared/classes/pieces/Pawn";
 import { Colors, Coordinates } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
 
 export class EnPassantManager {
-
   static isMoveEnpassantEnabling(piece: Piece, from: Coordinates, to: Coordinates) {
     return piece.name === "p" && Pawn.isDoubleMove(from, to);
   }
@@ -21,11 +21,9 @@ export class EnPassantManager {
     piece: Piece,
     currentPlayer: Colors,
     enPassantTargetCoordinates?: Coordinates
-  ) {
-    if (!enPassantTargetCoordinates) return [];
-    if (piece.name !== "p") return [];
-
-    const enPassantLegalMoves: Array<Coordinates> = [];
+  ): Move | undefined {
+    if (!enPassantTargetCoordinates) return;
+    if (piece.name !== "p") return;
 
     const colorModifier = currentPlayer === Colors.WHITE ? 1 : -1;
 
@@ -43,7 +41,7 @@ export class EnPassantManager {
       const leftSquarePiece = board.getSquare(leftSquareCoordinates)?.piece;
 
       if (leftSquarePiece === piece) {
-        enPassantLegalMoves.push(enPassantTargetCoordinates);
+        return new Move(piece.coordinates, enPassantTargetCoordinates);
       }
     }
 
@@ -51,11 +49,9 @@ export class EnPassantManager {
       const rightSquarePiece = board.getSquare(rightSquareCoordinates)?.piece;
 
       if (rightSquarePiece === piece) {
-        enPassantLegalMoves.push(enPassantTargetCoordinates);
+        return new Move(piece.coordinates, enPassantTargetCoordinates);
       }
     }
-
-    return enPassantLegalMoves;
   }
 
   static isEnPassant(piece: Piece, to: Coordinates, enPassantTargetCoordinates?: Coordinates) {
