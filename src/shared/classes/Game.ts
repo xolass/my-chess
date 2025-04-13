@@ -5,10 +5,11 @@ import { EnPassantManager } from "@/shared/classes/EnPassantManager";
 import { Fen } from "@/shared/classes/Fen";
 import { HalfMoveClock } from "@/shared/classes/HalfMoveClock";
 import { InsufficientMaterialManager } from "@/shared/classes/InsufficientMaterialManager";
+import { Move } from "@/shared/classes/Move";
 import { MoveExecutor } from "@/shared/classes/MoveExecutor";
 import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { StalemateManager } from "@/shared/classes/StalemateManager";
-import { Colors, Coordinates, FenCastle, Move } from "@/shared/types";
+import { Colors, Coordinates, FenCastle } from "@/shared/types";
 import { getOppositeColor } from "../utils";
 import { LegalMovesManager } from "./LegalMovesManager";
 import { Listeners } from "./Listeners";
@@ -97,7 +98,7 @@ export class Game {
 
     MoveExecutor.executeMove(this.currentTurn, from, to, flags);
 
-    this.castle.updateCastleStatus(this.currentTurn.board, from);
+    this.castle.updateCastleStatus(this, { from, to, flags });
     this.enPassantTargetSquare = EnPassantManager.updateEnPassantTargetSquare(piece, from, to);
     this.halfMoveClock.updateHalfClockMove(piece, targetPiece);
 
@@ -157,7 +158,7 @@ export class Game {
     return this.currentTurn.currentPlayer;
   }
   get castleStatus(): FenCastle {
-    return this.currentTurn.castleStatus;
+    return this.castle.castleStatus;
   }
   get turnsCount(): number {
     return this.fullTurns.length;

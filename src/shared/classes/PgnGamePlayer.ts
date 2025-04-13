@@ -1,8 +1,9 @@
 import { CastleManager } from "@/shared/classes/CastleManager";
 import { Game } from "@/shared/classes/Game";
+import { Move } from "@/shared/classes/Move";
 import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { Piece } from "@/shared/classes/Piece";
-import { Cell, Move, ReturnFromGetMovesFromPGN } from "@/shared/types";
+import { Cell, ReturnFromGetMovesFromPGN } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
 
 export class PgnGamePlayer {
@@ -43,11 +44,7 @@ export class PgnGamePlayer {
           })
       );
 
-    return {
-      from,
-      to,
-      flags,
-    };
+    return new Move(from, to, flags);
   }
 
   public playGameFromGameNotation(notation: string): ReturnFromGetMovesFromPGN {
@@ -79,7 +76,7 @@ export class PgnGamePlayer {
 
     // Filter pieces that can legally move to the target square
     const validPieces = possiblePieces.filter((piece) => {
-      return piece.legalMoves.find((coordinate) => isCoordinateEqual(coordinate, move.to));
+      return piece.legalMoves.find((coordinate) => isCoordinateEqual(coordinate.to, move.to));
     });
 
     if (validPieces.length > 1) {

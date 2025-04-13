@@ -1,6 +1,7 @@
 import { Colors, Coordinates } from "@/shared/types";
 
 import { Board } from "@/shared/classes/Board";
+import { Move } from "@/shared/classes/Move";
 import { Piece } from "@/shared/classes/Piece";
 import { directionToCoordinates } from "@/shared/utils";
 
@@ -9,7 +10,7 @@ export class Queen extends Piece {
     super(color, coordinates, "q");
   }
 
-  override calculatePossibleMoves(board: Board): Array<Coordinates> {
+  override calculatePossibleMoves(board: Board): Array<Move> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions
@@ -17,10 +18,12 @@ export class Queen extends Piece {
         if (!direction.pieces.includes(this.pieceLetter)) return;
 
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
-        const lineMoves: Coordinates[] = [];
+        const lineMoves: Move[] = [];
 
         while (board.isInsideBoard(next) && this.isValidMove(board, next)) {
-          lineMoves.push(next);
+          const move = new Move(this.coordinates, next);
+
+          lineMoves.push(move);
           if (board.getSquare(next).piece) break;
 
           next = { row: next.row + direction.row, col: next.col + direction.col };
@@ -28,12 +31,12 @@ export class Queen extends Piece {
         return lineMoves;
       })
       .flat()
-      .filter(Boolean) as Coordinates[];
+      .filter(Boolean) as Move[];
 
     return moves;
   }
 
-  override getAllDirectionMoves(board: Board): Array<Coordinates> {
+  override getAllDirectionMoves(board: Board): Array<Move> {
     const directions = Object.values(directionToCoordinates);
 
     const moves = directions
@@ -41,17 +44,19 @@ export class Queen extends Piece {
         if (!direction.pieces.includes(this.pieceLetter)) return;
 
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
-        const lineMoves: Coordinates[] = [];
+        const lineMoves: Move[] = [];
 
         while (board.isInsideBoard(next)) {
-          lineMoves.push(next);
+          const move = new Move(this.coordinates, next);
+
+          lineMoves.push(move);
 
           next = { row: next.row + direction.row, col: next.col + direction.col };
         }
         return lineMoves;
       })
       .flat()
-      .filter(Boolean) as Coordinates[];
+      .filter(Boolean) as Move[];
 
     return moves;
   }

@@ -1,8 +1,8 @@
 import { setupGame } from "@/main";
-import { LegalMovesManager } from "@/shared/classes/LegalMovesManager";
+import { King } from "@/shared/classes/pieces/King";
 import { PromotionManager } from "@/shared/classes/PromotionManager";
 import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
-import { getOppositeColor, isCoordinateEqual } from "@/shared/utils";
+import { isCoordinateEqual } from "@/shared/utils";
 import { gameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
 import { usePromotionStore } from "@/stores/PromotionContext";
@@ -53,7 +53,13 @@ export function useGameActions() {
 
     if (game.currentPlayer !== piece.color) return;
 
-    const isLegalMove = piece.legalMoves.find((pieceCoordinate) => isCoordinateEqual(pieceCoordinate, to));
+    const possibleLegalMoves = piece.legalMoves;
+
+    if (piece instanceof King) {
+      possibleLegalMoves.push(...piece.castleLegalMoves);
+    }
+
+    const isLegalMove = possibleLegalMoves.find((pieceMove) => isCoordinateEqual(pieceMove.to, to));
 
     if (!isLegalMove) return;
 

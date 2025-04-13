@@ -1,4 +1,4 @@
-import { Move } from "@/shared/types";
+import { Move } from "@/shared/classes/Move";
 import { Turn } from "./Turn";
 
 export class MoveValidator {

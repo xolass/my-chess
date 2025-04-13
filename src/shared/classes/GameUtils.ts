@@ -1,8 +1,9 @@
 import { Board } from "@/shared/classes/Board";
+import { Move } from "@/shared/classes/Move";
 import { Piece } from "@/shared/classes/Piece";
-import { Colors, Coordinates, Move } from "@/shared/types";
-import { Turn } from "./Turn";
+import { Colors, Coordinates } from "@/shared/types";
 import { MoveExecutor } from "./MoveExecutor";
+import { Turn } from "./Turn";
 
 export class GameUtils {
   static isPieceBeingAttacked(board: Board, piece?: Piece): boolean {

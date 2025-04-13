@@ -1,6 +1,7 @@
 import { Colors, Coordinates } from "@/shared/types";
 
 import { Board } from "@/shared/classes/Board";
+import { Move } from "@/shared/classes/Move";
 import { Piece } from "@/shared/classes/Piece";
 
 export class Pawn extends Piece {
@@ -8,50 +9,51 @@ export class Pawn extends Piece {
     super(color, coordinates, "p");
   }
 
-  override calculatePossibleMoves(board: Board): Array<Coordinates> {
-    const moves: Coordinates[] = [];
+  override calculatePossibleMoves(board: Board): Array<Move> {
+    const moves: Move[] = [];
 
     const forward = this.color === Colors.WHITE ? -1 : 1;
 
     const forwardOne = { row: this.coordinates.row + forward, col: this.coordinates.col };
     if (this.isValidMove(board, forwardOne)) {
-      moves.push(forwardOne);
+      moves.push(new Move(this.coordinates, forwardOne));
     }
 
     const forwardTwo = { row: this.coordinates.row + 2 * forward, col: this.coordinates.col };
     if (this.isValidMove(board, forwardTwo)) {
-      moves.push(forwardTwo);
+      moves.push(new Move(this.coordinates, forwardTwo));
     }
 
     const leftCapture = { row: this.coordinates.row + forward, col: this.coordinates.col - 1 };
     if (this.isValidMove(board, leftCapture)) {
-      moves.push(leftCapture);
+      moves.push(new Move(this.coordinates, leftCapture));
     }
 
     const rightCapture = { row: this.coordinates.row + forward, col: this.coordinates.col + 1 };
     if (this.isValidMove(board, rightCapture)) {
-      moves.push(rightCapture);
+      moves.push(new Move(this.coordinates, rightCapture));
     }
 
     return moves;
   }
 
-  override getAllDirectionMoves(): Array<Coordinates> {
-    const moves: Coordinates[] = [];
+  override getAllDirectionMoves(): Array<Move> {
+    const from = this.coordinates;
+    const moves: Move[] = [];
 
     const forward = this.color === Colors.WHITE ? -1 : 1;
 
-    const forwardOne = { row: this.coordinates.row + forward, col: this.coordinates.col };
-    moves.push(forwardOne);
+    const forwardOne = { row: from.row + forward, col: from.col };
+    moves.push(new Move(from, forwardOne));
 
-    const forwardTwo = { row: this.coordinates.row + 2 * forward, col: this.coordinates.col };
-    moves.push(forwardTwo);
+    const forwardTwo = { row: from.row + 2 * forward, col: from.col };
+    moves.push(new Move(from, forwardTwo));
 
-    const leftCapture = { row: this.coordinates.row + forward, col: this.coordinates.col - 1 };
-    moves.push(leftCapture);
+    const leftCapture = { row: from.row + forward, col: from.col - 1 };
+    moves.push(new Move(from, leftCapture));
 
-    const rightCapture = { row: this.coordinates.row + forward, col: this.coordinates.col + 1 };
-    moves.push(rightCapture);
+    const rightCapture = { row: from.row + forward, col: from.col + 1 };
+    moves.push(new Move(from, rightCapture));
 
     return moves;
   }

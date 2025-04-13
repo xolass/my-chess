@@ -1,9 +1,10 @@
 import { Board } from "@/shared/classes/Board";
+import { Game } from "@/shared/classes/Game";
+import { Move } from "@/shared/classes/Move";
 import { King } from "@/shared/classes/pieces/King";
 import { Colors, Coordinates, FenCastle, PieceLetter } from "@/shared/types";
 
 export class CastleManager {
-
   castleStatus: FenCastle = "KQkq";
 
   static WHITE_SHORT_ROOK_COORDINATES = { row: 7, col: 7 };
@@ -25,7 +26,6 @@ export class CastleManager {
 
     return true;
   }
-
 
   static canCastle(board: Board, from: Coordinates, to: Coordinates, castleStatus: FenCastle): boolean {
     const isWhiteCastling = CastleManager.isWhiteCastle(from, to);
@@ -56,7 +56,8 @@ export class CastleManager {
 
   private static canWhiteShortCastle(board: Board, castleStatus: FenCastle) {
     const isKingInTheRightPlace = board.getSquare(CastleManager.WHITE_KING_COORDINATES).piece?.pieceLetter === "K";
-    const isRookInTheRightPlace = board.getSquare(CastleManager.WHITE_SHORT_ROOK_COORDINATES).piece?.pieceLetter === "R";
+    const isRookInTheRightPlace =
+      board.getSquare(CastleManager.WHITE_SHORT_ROOK_COORDINATES).piece?.pieceLetter === "R";
     const isTherePieceBetween = board.isTherePieceBetween(
       CastleManager.WHITE_KING_COORDINATES,
       CastleManager.WHITE_SHORT_ROOK_COORDINATES
@@ -86,7 +87,8 @@ export class CastleManager {
 
   private static canBlackShortCastle(board: Board, castleStatus: FenCastle) {
     const isKingInTheRightPlace = board.getSquare(CastleManager.BLACK_KING_COORDINATES).piece?.pieceLetter === "k";
-    const isRookInTheRightPlace = board.getSquare(CastleManager.BLACK_SHORT_ROOK_COORDINATES).piece?.pieceLetter === "r";
+    const isRookInTheRightPlace =
+      board.getSquare(CastleManager.BLACK_SHORT_ROOK_COORDINATES).piece?.pieceLetter === "r";
     const isTherePieceBetween = board.isTherePieceBetween(
       CastleManager.BLACK_KING_COORDINATES,
       CastleManager.BLACK_SHORT_ROOK_COORDINATES
@@ -154,35 +156,37 @@ export class CastleManager {
     kingSquare.removePiece();
   }
 
-  public updateCastleStatus(board: Board, from: Coordinates): FenCastle {
-    const piece = board.getSquare({ row: from.row, col: from.col }).piece;
+  public updateCastleStatus(game: Game, move: Move): undefined {
+    const { from } = move;
+    const piece = game.board.getSquare(from).piece;
 
-    if (!piece) return this.castleStatus;
+    if (!piece) return;
 
-    if (this.castleStatus === "-") return "-";
+    if (this.castleStatus === "-") return;
 
-    if (piece.pieceLetter === "k") {
-      return this.castleStatus.replace("k", "").replace("q", "") as FenCastle;
-    } else if (piece.pieceLetter === "K") {
-      return this.castleStatus.replace("K", "").replace("Q", "") as FenCastle;
-    } else if (piece.pieceLetter === "r" && from.row === 0 && from.col === 0) {
-      return this.castleStatus.replace("q", "") as FenCastle;
-    } else if (piece.pieceLetter === "R" && from.row === 7 && from.col === 0) {
-      return this.castleStatus.replace("Q", "") as FenCastle;
-    } else if (piece.pieceLetter === "r" && from.row === 0 && from.col === 7) {
-      return this.castleStatus.replace("k", "") as FenCastle;
-    } else if (piece.pieceLetter === "R" && from.row === 7 && from.col === 7) {
-      return this.castleStatus.replace("K", "") as FenCastle;
+    if (move.flags?.castle) {
+      this.castleStatus = "-";
     }
 
-    return this.castleStatus;
+    if (piece.pieceLetter === "k") {
+      this.castleStatus = this.castleStatus.replace("k", "").replace("q", "") as FenCastle;
+    } else if (piece.pieceLetter === "K") {
+      this.castleStatus = this.castleStatus.replace("K", "").replace("Q", "") as FenCastle;
+    } else if (piece.pieceLetter === "r" && from.row === 0 && from.col === 0) {
+      this.castleStatus = this.castleStatus.replace("q", "") as FenCastle;
+    } else if (piece.pieceLetter === "R" && from.row === 7 && from.col === 0) {
+      this.castleStatus = this.castleStatus.replace("Q", "") as FenCastle;
+    } else if (piece.pieceLetter === "r" && from.row === 0 && from.col === 7) {
+      this.castleStatus = this.castleStatus.replace("k", "") as FenCastle;
+    } else if (piece.pieceLetter === "R" && from.row === 7 && from.col === 7) {
+      this.castleStatus = this.castleStatus.replace("K", "") as FenCastle;
+    }
   }
 
   private static isBlackCastle(from: Coordinates, to: Coordinates): boolean {
     return from.row === 0 && to.row === 0;
   }
   private static isWhiteCastle(from: Coordinates, to: Coordinates): boolean {
-    // allow castle for dragging king to the rook or to its future position
     return from.row === 7 && to.row === 7;
   }
   static isShortCastle(from: Coordinates, to: Coordinates): boolean {

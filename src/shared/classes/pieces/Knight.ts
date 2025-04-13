@@ -1,6 +1,7 @@
 import { Coordinates } from "@/shared/types";
 
 import { Board } from "@/shared/classes/Board";
+import { Move } from "@/shared/classes/Move";
 import { Piece } from "@/shared/classes/Piece";
 import { Colors } from "@/shared/types";
 
@@ -23,7 +24,7 @@ export class Knight extends Piece {
     return true;
   }
 
-  override calculatePossibleMoves(board: Board): Array<Coordinates> {
+  override calculatePossibleMoves(board: Board): Array<Move> {
     const directions = [
       { row: -1, col: -2 },
       { row: -1, col: 2 },
@@ -39,15 +40,15 @@ export class Knight extends Piece {
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
 
         if (board.isInsideBoard(next) && this.isValidMove(board, next)) {
-          return next;
+          return new Move(this.coordinates, next);
         }
       })
-      .filter(Boolean) as Coordinates[];
+      .filter(Boolean) as Move[];
 
     return moves;
   }
 
-  override getAllDirectionMoves(board: Board): Array<Coordinates> {
+  override getAllDirectionMoves(board: Board): Array<Move> {
     const directions = [
       { row: -1, col: -2 },
       { row: -1, col: 2 },
@@ -63,10 +64,10 @@ export class Knight extends Piece {
         let next = { row: this.coordinates.row + direction.row, col: this.coordinates.col + direction.col };
 
         if (board.isInsideBoard(next)) {
-          return next;
+          return new Move(this.coordinates, next);
         }
       })
-      .filter(Boolean) as Coordinates[];
+      .filter(Boolean) as Move[];
 
     return moves;
   }

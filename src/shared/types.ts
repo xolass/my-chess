@@ -1,3 +1,4 @@
+import { Move } from "@/shared/classes/Move";
 import { Square } from "@/shared/classes/Square";
 
 export type OnlyOneOf<T> = {
@@ -52,11 +53,6 @@ export type FenCastle =
   | "q"
   | "-";
 
-export type Move = {
-  from: Coordinates;
-  to: Coordinates;
-  flags?: MoveFlags;
-};
 export type ReturnFromGetMovesFromPGN = {
   moves: Array<Move>;
 };
