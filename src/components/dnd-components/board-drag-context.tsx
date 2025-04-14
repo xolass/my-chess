@@ -3,21 +3,15 @@ import { useGameActions } from "@/hooks/useGameActions";
 import { PieceLetter } from "@/shared/types";
 import { isPieceFromColor } from "@/shared/utils";
 import { gameStore } from "@/stores/GameContext";
-import {
-  DndContext,
-  DragCancelEvent,
-  DragEndEvent,
-  DragStartEvent,
-  MouseSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+import { useMoveStore } from "@/stores/MoveContext";
+import { DndContext, DragEndEvent, DragStartEvent, MouseSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import { useId } from "react";
 
 export default function BoardDndContext({ children }: { children: React.ReactNode }) {
   const { pieceDragRelease, resetMovingPiece, pieceDrag } = useGameActions();
   const { player: currentPlayer } = gameStore.getState();
+  const { movingPiece } = useMoveStore();
 
   const id = useId();
 
@@ -28,6 +22,14 @@ export default function BoardDndContext({ children }: { children: React.ReactNod
     return false;
   }
 
+  function isClickRookForCastle(pieceLetter: PieceLetter) {
+    if (!movingPiece) return false;
+    if (movingPiece.name !== "k") return false;
+    if (pieceLetter.toLocaleLowerCase() !== "r") return false;
+
+    return true;
+  }
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -35,8 +37,16 @@ export default function BoardDndContext({ children }: { children: React.ReactNod
       },
       bypassActivationConstraint(props) {
         const clickedPieceLetter = props.activeNode.data.current?.pieceLetter;
+        if (!isClickingOnOpponentPieceOnYourTurn(clickedPieceLetter)) {
+          console.log("is clicking on opponent piece");
+          return false;
+        }
 
-        return isClickingOnOpponentPieceOnYourTurn(clickedPieceLetter);
+        if (isClickRookForCastle(clickedPieceLetter)) {
+          console.log("is clicking on rook");
+          return false;
+        }
+        return true;
       },
     })
   );
@@ -45,6 +55,7 @@ export default function BoardDndContext({ children }: { children: React.ReactNod
     const { active } = event;
     const { current } = active.data;
     if (!current) return;
+    console.log("drag start", event);
     pieceDrag(current.coordinates);
   }
 
@@ -56,7 +67,7 @@ export default function BoardDndContext({ children }: { children: React.ReactNod
     pieceDragRelease(active.data.current.coordinates, over.data.current.coordinates);
   }
 
-  function handleDragCancel(e: DragCancelEvent) {
+  function handleDragCancel() {
     // this runs when you are dragging a piece and select another one
     resetMovingPiece();
   }

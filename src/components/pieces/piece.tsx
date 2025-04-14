@@ -51,4 +51,6 @@ function PieceComponent({ piece }: PieceProps) {
   return <DraggablePiece piece={piece}>{pieceToPlace}</DraggablePiece>;
 }
 
-export default React.memo(PieceComponent);
+export default React.memo(PieceComponent, (prevProps, nextProps) => {
+  return prevProps.piece.coordinates === nextProps.piece.coordinates;
+});
