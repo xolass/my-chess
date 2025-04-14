@@ -11,9 +11,7 @@ export class MoveExecutor {
     const piece = board.getSquare(from).piece;
     if (!piece) throw new Error("Invalid move: no piece at this position.");
 
-    console.log("castleMove", from, to);
     if (CastleManager.isCastleMove(from, to)) {
-      console.log("castleMove");
       const isShortCastle = CastleManager.isShortCastle(from, to);
       CastleManager.performCastleMove(board, turn.currentPlayer, isShortCastle);
     } else if (EnPassantManager.isEnPassant(piece, to, turn.enPassantTargetSquare)) {
