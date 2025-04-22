@@ -1,5 +1,6 @@
 import { Move } from "@/shared/classes/Move";
 import { Square } from "@/shared/classes/Square";
+import { ClassNameValue } from "tailwind-merge";
 
 export type OnlyOneOf<T> = {
   [K in keyof T]: Pick<T, K> & Partial<Record<Exclude<keyof T, K>, never>>;
@@ -63,6 +64,7 @@ export type FenType = `${string} ${string} ${string} ${string} ${string} ${strin
 
 export interface GenericPiece {
   color: FenColors;
+  className?: ClassNameValue;
 }
 
 export interface GenericPieceAsset {

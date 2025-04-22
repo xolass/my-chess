@@ -5,27 +5,28 @@ import { Coordinates, MoveFlags, PromotionOptions } from "@/shared/types";
 import { isCoordinateEqual } from "@/shared/utils";
 import { gameStore } from "@/stores/GameContext";
 import { useMoveStore } from "@/stores/MoveContext";
-import { usePromotionStore } from "@/stores/PromotionContext";
+import { promotionStore } from "@/stores/PromotionContext";
 
 const { game } = setupGame();
 const { board } = game;
 
 export function useGameActions() {
-  const setPromotionModalOpen = usePromotionStore((state) => state.setPromotionModalOpen);
-  const setHandlePromotingPiece = usePromotionStore((state) => state.setHandlePromotingPiece);
-  const setPositionToSpawnModal = usePromotionStore((state) => state.setPositionToSpawnModal);
-
   const setMovingPiece = useMoveStore(({ setMovingPiece }) => setMovingPiece);
 
   function getPromotionPiece(coordinatesToRenderModalOn: Coordinates): Promise<PromotionOptions | null> {
-    return new Promise((resolve) => {
-      setPromotionModalOpen(true);
-      setPositionToSpawnModal(coordinatesToRenderModalOn);
+    function resetPromotion() {
+      promotionStore.setState(promotionStore.getInitialState);
+    }
 
-      setHandlePromotingPiece((piece: PromotionOptions | null) => {
-        setPromotionModalOpen(false);
-        return resolve(piece);
-      });
+    return new Promise((resolve) => {
+      promotionStore.setState(() => ({
+        isPromotionModalOpen: true,
+        positionToSpawnModal: coordinatesToRenderModalOn,
+        handlePromotingPiece: (piece: PromotionOptions | null) => {
+          resetPromotion();
+          return resolve(piece);
+        },
+      }));
     });
   }
 
@@ -64,6 +65,8 @@ export function useGameActions() {
     if (!isLegalMove) return;
 
     const isPromotion = PromotionManager.isPromotion(board, from, to);
+
+    console.log({ isPromotion });
 
     if (isPromotion) {
       const promotionPiece = await getPromotionPiece(to);

@@ -3,9 +3,9 @@ import { WhitePawnAsset } from "assets/whitePawn";
 import { twMerge } from "tailwind-merge";
 import { Colors, GenericPiece } from "../../shared/types";
 
-function PawnPiece({ color }: GenericPiece) {
+function PawnPiece({ color, className }: GenericPiece) {
   return (
-    <div className={twMerge("size-full absolute bg-contain z-20")}>
+    <div className={twMerge("size-full absolute bg-contain z-20", className)}>
       {color === Colors.WHITE ? <WhitePawnAsset /> : <BlackPawnAsset />}
     </div>
   );

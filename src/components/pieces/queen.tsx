@@ -4,9 +4,9 @@ import { BlackQueenAsset } from "assets/blackQueen";
 import { WhiteQueenAsset } from "assets/whiteQueen";
 import { twMerge } from "tailwind-merge";
 
-function QueenPiece({ color }: GenericPiece) {
+function QueenPiece({ color, className }: GenericPiece) {
   return (
-    <div className={twMerge("size-full absolute bg-contain z-20 ")}>
+    <div className={twMerge("size-full absolute bg-contain z-20", className)}>
       {color === Colors.WHITE ? <WhiteQueenAsset /> : <BlackQueenAsset />}
     </div>
   );
