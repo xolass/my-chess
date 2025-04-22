@@ -3,9 +3,11 @@ import KnightPiece from "@/components/pieces/knight";
 import QueenPiece from "@/components/pieces/queen";
 import RookPiece from "@/components/pieces/rook";
 import { useOutsideClick } from "@/hooks/useClickOutside";
+import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { Colors, PromotionOptions } from "@/shared/types";
 import { gameStore } from "@/stores/GameContext";
-import { usePromotionStore } from "@/stores/PromotionContext";
+import { promotionStore } from "@/stores/PromotionContext";
+import ReactDOM from "react-dom";
 import { twMerge } from "tailwind-merge";
 
 interface PromotionPopupProps {
@@ -16,12 +18,16 @@ interface PromotionPopupProps {
 export function PromotionPopup(props: PromotionPopupProps) {
   const { colToSpawn, colorToSpawnTo } = props;
   const { game } = gameStore.getState();
-  const handlePromotingPiece = usePromotionStore((state) => state.handlePromotingPiece);
+  const { handlePromotingPiece } = promotionStore.getState();
 
-  const isPromotionModalOpen = usePromotionStore((state) => state.isPromotionModalOpen);
-  const positionToSpawnModal = usePromotionStore((state) => state.positionToSpawnModal);
+  const rowToSpawn = colorToSpawnTo === Colors.WHITE ? 0 : 7;
 
   const clickOutsideRef = useOutsideClick(onClickOutside);
+
+  const cellToSpawnId = MoveNotation.toCell({
+    col: colToSpawn,
+    row: rowToSpawn,
+  });
 
   function onClickOutside() {
     choosePiece(null);
@@ -32,58 +38,61 @@ export function PromotionPopup(props: PromotionPopupProps) {
     handlePromotingPiece(piece);
   }
 
-  const isPromotingInThisCell = false; // isPromotionModalOpen && positionToSpawnModal?.col === col && positionToSpawnModal?.row === row;
-
-  if (!isPromotingInThisCell) return null;
-
-  return (
+  return ReactDOM.createPortal(
     <>
-      <div id="modal-background" className="absolute inset-0 bg-black/25 z-10"></div>
+      <div id="modal-background" className="fixed inset-0 bg-black/25 z-30"></div>
       <div
         ref={clickOutsideRef}
         className={twMerge(
-          "flex z-20 absolute",
+          "flex z-40 absolute",
           game.currentPlayer === Colors.WHITE && "flex-col top-0",
           game.currentPlayer === Colors.BLACK && "flex-col-reverse bottom-0"
         )}
       >
-        <button
-          id="promotion-queen"
-          className="relative size-24 rounded-[999px] bg-white/40 transition-all duration-0 ease-in hover:rounded-[4px] "
-          onClick={() => choosePiece("q")}
-        >
-          <div className="cursor-pointer flex items-center justify-center">
-            <QueenPiece color={game.currentPlayer} />
-          </div>
-        </button>
-        <button
-          id="promotion-rook"
-          className="relative size-24 rounded-[999px] bg-white/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
-          onClick={() => choosePiece("r")}
-        >
-          <div className="cursor-pointer flex items-center justify-center">
-            <RookPiece color={game.currentPlayer} />
-          </div>
-        </button>
-        <button
-          id="promotion-knight"
-          className="relative size-24 rounded-[999px] bg-white/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
-          onClick={() => choosePiece("n")}
-        >
-          <div className="cursor-pointer flex items-center justify-center">
-            <KnightPiece color={game.currentPlayer} />
-          </div>
-        </button>
-        <button
-          id="promotion-bishop"
-          className="relative size-24 rounded-[999px] bg-white/40 transition-[border-radius] duration-0 ease-in hover:rounded-[4px] "
-          onClick={() => choosePiece("b")}
-        >
-          <div className="cursor-pointer flex items-center justify-center">
-            <BishopPiece color={game.currentPlayer} />
-          </div>
-        </button>
+        <PromotionButtonPiece id="promotion-queen" onClick={() => choosePiece("q")}>
+          <QueenPiece
+            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            color={game.currentPlayer}
+          />
+        </PromotionButtonPiece>
+
+        <PromotionButtonPiece id="promotion-rook" onClick={() => choosePiece("r")}>
+          <RookPiece
+            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            color={game.currentPlayer}
+          />
+        </PromotionButtonPiece>
+        <PromotionButtonPiece id="promotion-knight" onClick={() => choosePiece("n")}>
+          <KnightPiece
+            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            color={game.currentPlayer}
+          />
+        </PromotionButtonPiece>
+        <PromotionButtonPiece id="promotion-bishop" onClick={() => choosePiece("b")}>
+          <BishopPiece
+            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            color={game.currentPlayer}
+          />
+        </PromotionButtonPiece>
       </div>
-    </>
+    </>,
+    document.getElementById(cellToSpawnId) as HTMLElement
+  );
+}
+interface PromotionButtonPieceProps {
+  id: string;
+  onClick: VoidFunction;
+  children?: React.ReactNode;
+}
+
+function PromotionButtonPiece({ id, onClick, children }: PromotionButtonPieceProps) {
+  return (
+    <button
+      id={id}
+      className="relative size-[97px] rounded-[50px] bg-gray-100/90 shadow-promotion-popup-cell transition-all duration-200 ease-out hover:rounded-[4px]"
+      onClick={onClick}
+    >
+      <div className="cursor-pointer flex items-center justify-center">{children}</div>
+    </button>
   );
 }

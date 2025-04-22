@@ -20,6 +20,9 @@ const config: Config = {
         "legal-move-green": "var(--legal-move-green)",
         "pre-move-gray": "var(--pre-move-gray)",
       },
+      boxShadow: {
+        "promotion-popup-cell": "inset 0 0 25px 3px gray",
+      },
     },
   },
   plugins: [],
