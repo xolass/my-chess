@@ -7,6 +7,7 @@ import { MoveNotation } from "@/shared/classes/MoveNotation";
 import { Colors, PromotionOptions } from "@/shared/types";
 import { gameStore } from "@/stores/GameContext";
 import { promotionStore } from "@/stores/PromotionContext";
+import { CSSProperties } from "react";
 import ReactDOM from "react-dom";
 import { twMerge } from "tailwind-merge";
 
@@ -38,9 +39,17 @@ export function PromotionPopup(props: PromotionPopupProps) {
     handlePromotingPiece(piece);
   }
 
+  const cellToSpawn = document.getElementById(cellToSpawnId);
+
+  if (!cellToSpawn) {
+    throw new Error("Promotion popup cell not found");
+  }
+
+  const cellSize = `${cellToSpawn.getBoundingClientRect().width}px`;
+
   return ReactDOM.createPortal(
     <>
-      <div id="modal-background" className="fixed inset-0 bg-black/25 z-30"></div>
+      <div id="modal-background" className="fixed inset-0 bg-black/35 z-30"></div>
       <div
         ref={clickOutsideRef}
         className={twMerge(
@@ -49,47 +58,65 @@ export function PromotionPopup(props: PromotionPopupProps) {
           game.currentPlayer === Colors.BLACK && "flex-col-reverse bottom-0"
         )}
       >
-        <PromotionButtonPiece id="promotion-queen" onClick={() => choosePiece("q")}>
+        <PromotionButtonPiece
+          id="promotion-queen"
+          onClick={() => choosePiece("q")}
+          style={{ height: cellSize, width: cellSize }}
+        >
           <QueenPiece
-            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            className="transition-all duration-200 ease-out size-[80%] hover:size-[100%]"
             color={game.currentPlayer}
           />
         </PromotionButtonPiece>
 
-        <PromotionButtonPiece id="promotion-rook" onClick={() => choosePiece("r")}>
+        <PromotionButtonPiece
+          id="promotion-rook"
+          onClick={() => choosePiece("r")}
+          style={{ height: cellSize, width: cellSize }}
+        >
           <RookPiece
-            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            className="transition-all duration-200 ease-out size-[80%] hover:size-[100%]"
             color={game.currentPlayer}
           />
         </PromotionButtonPiece>
-        <PromotionButtonPiece id="promotion-knight" onClick={() => choosePiece("n")}>
+        <PromotionButtonPiece
+          id="promotion-knight"
+          onClick={() => choosePiece("n")}
+          style={{ height: cellSize, width: cellSize }}
+        >
           <KnightPiece
-            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            className="transition-all duration-200 ease-out size-[80%] hover:size-[100%]"
             color={game.currentPlayer}
           />
         </PromotionButtonPiece>
-        <PromotionButtonPiece id="promotion-bishop" onClick={() => choosePiece("b")}>
+        <PromotionButtonPiece
+          id="promotion-bishop"
+          onClick={() => choosePiece("b")}
+          style={{ height: cellSize, width: cellSize }}
+        >
           <BishopPiece
-            className="transition-all duration-200 ease-out size-20 hover:size-24"
+            className="transition-all duration-200 ease-out size-[80%] hover:size-[100%]"
             color={game.currentPlayer}
           />
         </PromotionButtonPiece>
       </div>
     </>,
-    document.getElementById(cellToSpawnId) as HTMLElement
+    cellToSpawn
   );
 }
 interface PromotionButtonPieceProps {
   id: string;
   onClick: VoidFunction;
+  style: CSSProperties;
   children?: React.ReactNode;
 }
 
-function PromotionButtonPiece({ id, onClick, children }: PromotionButtonPieceProps) {
+function PromotionButtonPiece({ id, onClick, children, style }: PromotionButtonPieceProps) {
   return (
     <button
       id={id}
-      className="relative size-[97px] rounded-[50px] bg-gray-100/90 shadow-promotion-popup-cell transition-all duration-200 ease-out hover:rounded-[4px]"
+      style={style}
+      className="relative rounded-[50px] bg-gray-100/90 shadow-promotion-popup-cell transition-all duration-200 ease-out hover:rounded-[4px]"
       onClick={onClick}
     >
       <div className="cursor-pointer flex items-center justify-center">{children}</div>
