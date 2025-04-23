@@ -6,7 +6,6 @@ import { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: AuthOptions = {
-  debug: true,
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   providers: [
